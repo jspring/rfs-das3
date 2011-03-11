@@ -7,19 +7,15 @@
 	We're not sure if the above command is just for compile or also for runtime, 
 	but it can't hurt to have it global for all users.
 
-2.  Launch /home/nt-onboard/test/vehicle_status -c car -e experiment
+2.  Launch /home/das3/test/vehicle_status -c car
 	-c options include "altima" or "audi"
 	-d domain	
 	-f main_window_file
 	-i main_window_id
-	-e options include
-		default: none
-		ntsafety
 	-p twd_dir_full_path
-		default is gnome: /home/nt-onboard/ui/twd/gnome
-		for kde use: /home/nt-onboard/ui/twd/kde
+		default is gnome: /home/das3/ui/twd
 	-v verbose
 
-3.  See /home/nt-onboard/system_setup/INSTALL.checklist (Section 13) 
+3.  See /home/das3/ui/doc/autologin_slackware/
     for instruction on getting a tilcon app to run on startup.
 
