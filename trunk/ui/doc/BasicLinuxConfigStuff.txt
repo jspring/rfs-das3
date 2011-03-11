@@ -1,0 +1,22 @@
+/* Documentation on how to add a user in linux and configure SVN
+
+1.	From a root prompt:
+	adduser username
+		Hit enter to answer the questions - most defaults are fine.
+		You must fill in something for the "Real Name" field.
+		Give it a password.
+		
+2.  Edit /home/username/.bashrc to add the following commands:
+		umask 2
+		export SVNURL=svn+ssh://128.32.234.234/usr/local/sw/repo
+		export SVN_EDITOR=/usr/bin/pico (or vi)
+		export CAPATH_MK_DEFS=/home/path/build/capath_lnx.mk
+		export Tilcon="/usr/Tilcon"
+		
+3.  If you need to change the hostname on a vehicle, it's in /etc/HOSTNAME
+
+4.  If you need to edit an xorg.conf file, it's in /etc/X11
+
+5.  addgroup chrisn sudo
+
+6.  usermod -g users username

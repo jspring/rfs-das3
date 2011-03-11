@@ -1,0 +1,87 @@
+/* Documentation on how to do the following:
+ *
+ * 1. Autologin a non-root user at startup
+ * 2. Get that user to automatically startx on the screen
+ * 3. Get a tilcon program to start up automatically
+ *
+ * This method will run the tilcon app in a user space from boot
+ * so that it will not take up massive amounts of cpu time.
+ * 
+ * The slackware_autologin.pdf file gives the basics of how to do
+ * this from a website.  The instructions here make corrections.
+ *
+ */
+
+	13.0 cp /home/nt-onboard/ui/doc/xorg.conf-engineering /etc/X11/xorg.conf
+
+	13.1 If tilcon user does not exist, from root: adduser tilcon (lapidar1X)
+
+	13.2 Edit autologin.c to use the desired username (if not tilcon)
+    		Compile autologin.c "gcc -o autologin autologin.c"
+    		As root: chown root:root autologin
+			 cp autologin /usr/local/sbin
+
+	13.3 As root: edit /etc/inittab to look like what follows:
+		# Default runlevel. (Do not set to 0 or 6)
+		id:3:initdefault:
+		#x:3:once:/bin/su root -l -c "/bin/bash --login -c /usr/bin/startx >/dev/null 2>&1"
+
+		# These are the standard console login getties in multiuser mode:
+		# c1:1235:respawn:/sbin/agetty 38400 tty1 linux
+		c1:235:respawn:/sbin/agetty -n -l /usr/local/sbin/autologin 38400 tty1 linux
+
+	13.4 As root: edit /etc/login.defs to look like what follows:
+		# If defined, either full pathname of a file containing device names or
+		# a ":" delimited list of device names. No password is required to log
+		# in as a non-root user on these devices.
+		#
+		#NO_PASSWORD_CONSOLE tty1:tty2:tty3:tty4:tty5:tty6
+		NO_PASSWORD_CONSOLE tty1
+
+	13.5 Edit the tilcon users /home/tilcon/.bash_profile
+		 Include the following:
+		 
+		 export Tilcon=/usr/Tilcon
+   		
+		 Then…
+		
+		 ln -s .bash_profile .bashrc
+
+	13.6 Reboot the computer.  At the end of the reboot, you should be logged 
+		 into a shell as the user tilcon.
+		 
+		 - Type startx in order to create kde preferences & .kde/Autostart
+		 - Quit the calendar and clipboard apps on the menu bar
+		 - Set those apps to no longer autostart
+		 - Right click on the desktop & disable screensaver
+		 - Disable KDE Startup and Shutdown sounds in
+		   K Menu>Settings>Sounds and Multimedia>System Notifications
+
+	13.7 Edit /home/nt-onboard/system_setup/start_tilcon.sh:
+
+		If this car is an Altima, do nothing.
+
+		If this car is an Audi, replace 
+
+		"... -c altima..."
+
+		with	
+
+		"... -c audi..."
+	
+	13.8 cp /home/nt-onboard/system_setup/start_tilcon.sh /home/tilcon/.kde/Autostart
+
+	13.9 Log out of X, startx again.  An xterm will launch, but vehicle_status 
+		 may still fail to launch. If so, log out of X, startx again, and this 
+		 time the vehicle_status tilcon screen should come up. Else, try again.
+		 Once it's up, do the following:
+		 
+		- K Menu>Settings>KDE Components>Session Manager -> "Restore manually saved session"
+		- K Menu>Save Session
+
+	13.10 Edit the tilcon user's /home/tilcon/.bash_profile to include 
+		  the following:
+		
+		  if [ -z "$DISPLAY" ] && [ $(tty) == "/dev/vc/1" ]; then
+			  startx
+		  fi
