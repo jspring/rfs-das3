@@ -12,7 +12,7 @@
  *
  */
 
-	13.0 cp /home/nt-onboard/ui/doc/xorg.conf-engineering /etc/X11/xorg.conf
+	13.0 cp /home/das3/ui/doc/xorg.conf-engineering /etc/X11/xorg.conf
 
 	13.1 If tilcon user does not exist, from root: adduser tilcon (lapidar1X)
 
@@ -57,7 +57,7 @@
 		 - Disable KDE Startup and Shutdown sounds in
 		   K Menu>Settings>Sounds and Multimedia>System Notifications
 
-	13.7 Edit /home/nt-onboard/system_setup/start_tilcon.sh:
+	13.7 Edit /home/das3/ui/doc/start_tilcon.sh:
 
 		If this car is an Altima, do nothing.
 
@@ -69,7 +69,7 @@
 
 		"... -c audi..."
 	
-	13.8 cp /home/nt-onboard/system_setup/start_tilcon.sh /home/tilcon/.kde/Autostart
+	13.8 cp /home/das3/ui/doc/start_tilcon.sh /home/tilcon/.kde/Autostart
 
 	13.9 Log out of X, startx again.  An xterm will launch, but vehicle_status 
 		 may still fail to launch. If so, log out of X, startx again, and this 
