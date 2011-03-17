@@ -7,11 +7,12 @@ include $(CAPATH_MK_DEFS)
 
 DAS3DIR = /home/capath/das3
 ALTIMA_DIR = $(DAS3DIR)/veh/altima/src
+VIDEO_SYNC_DIR = $(VIDEO_DIR)/capath/video/videorecorder
 PATH_CFLAGS += -I$(ATSC_INC_DIR) 
 PATH_CFLAGS += -I$(CICAS_EXP_DIR) -I$(CICAS_FUSION_DIR) 
 PATH_CFLAGS += -I$(CICAS_VEH_DIR)
 PATH_CFLAGS += -I$(ALTIMA_DIR)
-PATH_CFLAGS += -I$(VIDEO_DIR)
+PATH_CFLAGS += -I$(VIDEO_SYNC_DIR)
 PATH_LDFLAGS += -L$(DSCUD_DIR) -L$(SENS_DIR)/gpio/lnx
 PATH_OBJS += $(OBJDIR)/wrfiles_lib.o
 
