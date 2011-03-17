@@ -3,7 +3,6 @@
 # Copyright (c) 2010   Regents of the University of California
 #
 include $(CAPATH_MK_DEFS)
-# temp stuff temp stuff
 DAS3_DIR=$(DISTRIB_DIR)/das3
 AUDI_DIR=$(DAS3_DIR)/veh
 VIDEO_DIR=$(DISTRIB_DIR)/capath/video/videorecorder
