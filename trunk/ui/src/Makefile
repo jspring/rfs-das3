@@ -3,12 +3,10 @@
 # Copyright (c) 2008   Regents of the University of California
 #
 include $(CAPATH_MK_DEFS)
-NT_CANDIR=/home/nt-onboard/can
-NT_SRCDIR=/home/nt-onboard/src
-
-PATH_CFLAGS += $(TILCON_CFLAGS) -I$(NT_CANDIR)/altima 
-PATH_CFLAGS += -I$(NT_CANDIR)/audi/cSlap-1.0.5-i386-Release/src
-PATH_CFLAGS +=  -I$(NT_SRCDIR)
+CANDIR=/home/das3/veh
+PATH_CFLAGS += $(TILCON_CFLAGS)
+PATH_CFLAGS += -I$(CANDIR)/altima/can
+PATH_CFLAGS += -I$(CANDIR)/audi/can/src
 PATH_CFLAGS += -g
 PATH_LDFLAGS += $(TILCON_LDFLAGS)
 PATH_LIBS = $(TILCON_LIBS) -lpath_gps $(PATH_CORE_LIBS)
