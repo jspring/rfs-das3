@@ -1,1 +1,1 @@
-nt-eng-altima-silver.sh
+startup_altima.sh

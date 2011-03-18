@@ -97,9 +97,8 @@ data_log_column_spec_t altima_data_spec[] =
 int num_gdfile_col = sizeof(altima_data_spec)/sizeof(data_log_column_spec_t);
 
 void save_altima(FILE *fout, timestamp_t timestamp,
-                        int use_memory, buff_typ *pbuff,
-                        int num_columns) {
+                        int use_memory, buff_typ *pbuff) {
 
-        save_to_spec (fout, timestamp, use_memory, pbuff, num_columns,
+        save_to_spec (fout, timestamp, use_memory, pbuff, num_gdfile_col,
                 &altima_data_spec[0]);
 }
