@@ -8,7 +8,8 @@
 
 include $(CAPATH_MK_DEFS)
 
-all:	./make_includes
+all:
+	./make_includes
 	make -C src
 	make -C veh
 	make -C ui/src
