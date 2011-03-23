@@ -81,8 +81,8 @@ FILE *f_evt300A = NULL;
 FILE *f_audi = NULL;
 buff_typ *pbuff_evt300A;
 buff_typ *pbuff_audi;
-extern db_var_spec_t db_vars[];
-extern int num_db_vars;
+extern db_var_spec_t audi_db_vars[];
+extern int num_audi_db_vars;
 extern void save_audi(FILE *fout, timestamp_t timestamp, 
 	int use_memory, buff_typ *pbuff);
 extern evt300_radar_typ evt300a;
@@ -198,12 +198,12 @@ int main(int argc, char *argv[])
         }
         if (do_audi) {
                 if (first_file == NULL) {
-                        open_data_log(&f_audi, "/big/data/d", ".dat",
+                        open_data_log(&f_audi, "/big/data/jd", ".dat",
                          &start_time, &old_fileday, &serial_num, id_string);
                         first_file = f_audi;
-                        first_file_str = "/big/data/d";
+                        first_file_str = "/big/data/jd";
                 } else {
-                        open_another_file(&f_audi, "/big/data/d",
+                        open_another_file(&f_audi, "/big/data/jd",
                                   id_string, ".dat");
                 }
         }
@@ -239,11 +239,11 @@ int main(int argc, char *argv[])
                 /* Read in all DB vars, whether or not the associated files
                  * are being written
                  */
-                for (i = 0; i < num_db_vars; i++)
+                for (i = 0; i < num_audi_db_vars; i++)
                         db_clt_read(pclt,
-                                db_vars[i].db_id_num,
-                                db_vars[i].size,
-                                db_vars[i].var_pointer);
+                                audi_db_vars[i].db_id_num,
+                                audi_db_vars[i].size,
+                                audi_db_vars[i].var_pointer);
 
                 if (do_evt300) {
                         save_evt300(f_evt300A, &evt300a, timestamp, use_memory,
@@ -269,7 +269,7 @@ int main(int argc, char *argv[])
                         }
                         if (do_audi) {
                                 reopen_another_file(&f_audi,
-                                        "/big/data/a", id_string,
+                                        "/big/data/jd", id_string,
                                         ".dat", pbuff_audi);
                         }
                         if (use_memory)

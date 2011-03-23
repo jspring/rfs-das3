@@ -12,17 +12,7 @@
 #include <db_sync.h>
 #include "audi_can.h"
 #include "uimu.h"
-
-/// These variables require processing other than DB reads done by wrfiles_nt.c
-double seconds_since_midnight = 0.0;    // from hh:mm.ss.sss in column 1
-double seconds_since_start = 0.0;       // local time since start of run
-double seconds_last_curl = 0.0;         // seconds since midnight, last curl 
-double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
-double clock_gps_read_seconds = 0.0;    // gps read time, seconds since midnight
-double local_clock_seconds = 0.0;       // local time seconds since midnight
-
-
-float gps_formatted_utc_time = 0.0;    // hhmmss.ss 
+#include "veh.h"
 
 /// All these global variables must have extern statements in wrfiles_nt.h
 /// They correspond to DB variables that are read.
@@ -30,12 +20,11 @@ evt300_radar_typ evt300a;
 uimu_typ uimu;
 sync_record_typ video;
 path_gps_point_t gps_point; // on-vehicle GPS
-char * not_implemented = "9999";
 audi_t	audi;
 
 /** Add lines here when new DB variables are referenced in the tables.
  */
-db_var_spec_t db_vars[] =
+db_var_spec_t audi_db_vars[] =
 {
         {DB_EVT300_RADAR1_VAR, sizeof(evt300_radar_typ), &evt300a},
         {DB_GPS_PT_LCL_VAR, sizeof(path_gps_point_t), &gps_point},
@@ -44,7 +33,7 @@ db_var_spec_t db_vars[] =
         {DB_AUDI_VAR, sizeof(audi_t), &audi},
 };
 
-int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
+int num_audi_db_vars = (sizeof(audi_db_vars)/sizeof(db_var_spec_t));
 
 /** The following array is used to specify the output format of the "d" file
  *  for the Volkswagen Audi - vehicle code 'h'.
@@ -95,6 +84,6 @@ void save_audi(FILE *fout, timestamp_t timestamp,
                         int use_memory, buff_typ *pbuff,
                         int num_columns) {
 
-        save_to_spec (fout, timestamp, use_memory, pbuff, num_columns,
+        save_to_spec (fout, timestamp, use_memory, pbuff, num_jdfile_col,
                 &audi_data_spec[0]);
 }
