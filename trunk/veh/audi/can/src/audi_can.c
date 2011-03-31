@@ -153,6 +153,11 @@ void setRunning(int signum)
 {
 	running = 0;
 }
+db_id_t db_vars_list[] =  {
+	{DB_AUDI_VAR, sizeof(audi_t)}
+};
+
+int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
 
 int main(int argc, char **argv)
 {
@@ -201,8 +206,8 @@ int main(int argc, char **argv)
         }
 	if(!no_db) {
         	get_local_name(hostname, MAXHOSTNAMELEN);
-        	pclt = db_list_init(argv[0], hostname, domain, xport, NULL,
-        	        0, NULL, 0);
+        	pclt = db_list_init(argv[0], hostname, domain, xport, 
+			db_vars_list, num_db_variables, NULL, 0);
 	}
 
         /* Catch the signals SIGINT, SIGQUIT, and SIGTERM.  If signal occurs,

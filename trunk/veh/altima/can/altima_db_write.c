@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 	}
         get_local_name(hostname, MAXHOSTNAMELEN);
         if ((pclt = db_list_init(argv[0], hostname, domain, xport,
-			NULL, 0, NULL, 0)) == NULL) {
+			db_vars_list, num_db_variables, NULL, 0)) == NULL) {
                 printf("Database initialization error in %s\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
