@@ -21,13 +21,13 @@
  *  of other DB variables being used on the system.
  */
 #define DB_ALTIMA_BASE		900
-#define DB_ALT_CCFTM_VAR	DB_ALTIMA_BASE+1
-#define DB_ALT_CCFD_VAR		DB_ALTIMA_BASE+2
-#define DB_ALT_ENG_VAR		DB_ALTIMA_BASE+3
-#define DB_ALT_GI_VAR		DB_ALTIMA_BASE+4
-#define DB_ALT_VS_VAR		DB_ALTIMA_BASE+5
-#define DB_ALT_FWBS_VAR		DB_ALTIMA_BASE+6
-#define DB_ALT_TSI_VAR		DB_ALTIMA_BASE+7
+#define DB_ALT_CCFTM_VAR	901
+#define DB_ALT_CCFD_VAR		902
+#define DB_ALT_ENG_VAR		903
+#define DB_ALT_GI_VAR		904
+#define DB_ALT_VS_VAR		905
+#define DB_ALT_FWBS_VAR		906
+#define DB_ALT_TSI_VAR		907
 
 #define DB_ALT_CCFTM_TYPE	DB_ALT_CCFTM_VAR
 #define DB_ALT_CCFD_TYPE	DB_ALT_CCFD_VAR
