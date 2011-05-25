@@ -4,6 +4,15 @@
 
 #include "wrfiles_lib.h"
 
+/// These variables require processing other than DB reads done by wrfiles_nt.c
+double seconds_since_midnight = 0.0;    // from hh:mm.ss.sss in column 1
+double seconds_since_start = 0.0;       // local time since start of run
+double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
+double clock_gps_read_seconds = 0.0;    // gps read time, seconds since midnight
+double local_clock_seconds = 0.0;       // local time seconds since midnight
+float gps_formatted_utc_time = 0.0;    // hhmmss.ss
+char * not_implemented = "9999";
+
 /**
  *      Since EVT300  radar data has complicated structure 
  *      and is used for multiple devices, easier to write
