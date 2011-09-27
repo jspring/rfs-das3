@@ -18,7 +18,7 @@ static void sig_hand(int code)
                 longjmp(exit_env, code);
 }
 
-const char *usage = "-A <Chan A baud rate (500 kHz)>\n\t\t-B <Chan B baud rate (500 kHz)> \n\t\t-w <power, 0=all off, 1=Chan A on only, 2=Chan B on only, \n\t\t\t3=both channels on, default=3)> \n\t\t-t <timeout (1000 ms)> \n\t\t-v verbose";
+const char *usage = "-v verbose";
 
 db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t)},
@@ -27,49 +27,28 @@ db_id_t db_vars_list[] =  {
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
+int db_trig_list[] =  {
+        DB_KOMODO_VAR
+};
+
+int num_trig_variables = sizeof(db_trig_list)/sizeof(db_id_t);
 
 int main(int argc, char *argv[]) {
-	Komodo km;
-	int power[2] = {1,1};
-	int bitrate[2] = {500000, 500000};
-	unsigned short timeout = 1000;
-	int port = 0;
 	int verbose = 0;
 	int print_msg = 0;
-	int ret;
-	km_can_info_t info;
-	km_can_packet_t pkt;
-	int data_len;
-	unsigned char msg[8];
 	int option;
-	int tmp;
 	int count = 0;
 
         char hostname[MAXHOSTNAMELEN];
         char *domain = DEFAULT_SERVICE; /// on Linux sets DB q-file directory
         db_clt_typ *pclt;               /// data server client pointer
         int xport = COMM_OS_XPORT;      /// value set correctly in sys_os.h
+	db_komodo_t db_kom;
 
 	m56_engine_rpm_t m56_engine_rpm;
 
-        while ((option = getopt(argc, argv, "A:B:w:t:vp:")) != EOF) {
+        while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
-                case 'A':
-                        bitrate[0] = atoi(optarg) * 1000;
-                        break;
-                case 'B':
-                        bitrate[1] = atoi(optarg) * 1000;
-                        break;
-                case 'w':
-			tmp = atoi(optarg);
-			power[0] = tmp & 0x1;
-			power[1] = tmp & 0x2;
-                        break;
-                case 't':
-                        timeout = atoi(optarg);
-                        break;
-                case 'p':
-			print_msg = atoi(optarg);
                 case 'v':
                         verbose = 1;
                         break;
@@ -81,7 +60,7 @@ int main(int argc, char *argv[]) {
         }
         get_local_name(hostname, MAXHOSTNAMELEN);
         if ((pclt = db_list_init(argv[0], hostname, domain, xport,
-                        db_vars_list, num_db_variables, NULL, 0)) == NULL) {
+	    db_vars_list, num_db_variables, db_trig_list, num_trig_variables)) == NULL) {
                 printf("Database initialization error in %s\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
@@ -93,14 +72,9 @@ int main(int argc, char *argv[]) {
         } else
                sig_ign(sig_list, sig_hand);
 
-
-
-	init_kom(km, &power, port, timeout, &bitrate);
-
 	for(;;) {
-
-        ret = km_can_read(km, &info, &pkt, data_len, msg);
-	   switch(pkt.id) {
+	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
+	   switch(db_kom.id) {
 		case 0x002:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, sizeof(msg), &msg); 
 		    break;
@@ -114,7 +88,7 @@ int main(int argc, char *argv[]) {
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG177_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x180:
-		    get_m56_engine_rpm(msg, &m56_engine_rpm);
+		    get_m56_engine_rpm(db_kom.msg, &m56_engine_rpm);
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
 		    printf("engine rpm %f\n", m56_engine_rpm.engine_rpm);
 		    break;
@@ -161,9 +135,9 @@ int main(int argc, char *argv[]) {
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, sizeof(msg), &msg); 
 		    break;
 	   if(print_msg)
-		printmsg(pkt.id, msg);
+		printmsg(db_kom.id, db_kom.msg);
 	   if(verbose)
-		printcan(pkt.id, msg);
+		printcan(db_kom.id, db_kom.msg);
 	}
 	}
 	return 0;

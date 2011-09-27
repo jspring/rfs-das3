@@ -105,6 +105,12 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
 //	p->pedal_position = logic stuff with data[0] ;
 }
 
-
-int init_kom(Komodo km, int power, int port, u16 timeout, u32 bitrate); 
+/*
+** printcan.c - prints 8-byte CAN message to stdout
+*/
 int printcan(int can_id, unsigned char *msg);
+
+/*
+** printmsg - prints parsed contents of M56 CAN message to stdout
+*/
+int printmsg(int can_id, unsigned char *msg);
