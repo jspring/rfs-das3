@@ -135,9 +135,9 @@ int main(int argc, char *argv[]) {
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, sizeof(msg), &msg); 
 		    break;
 	   if(print_msg)
-		printmsg(db_kom.id, db_kom.msg);
+		printmsg(&db_kom);
 	   if(verbose)
-		printcan(db_kom.id, db_kom.msg);
+		printcan(&db_kom);
 	}
 	}
 	return 0;

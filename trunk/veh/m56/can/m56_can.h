@@ -108,9 +108,9 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
 /*
 ** printcan.c - prints 8-byte CAN message to stdout
 */
-int printcan(int can_id, unsigned char *msg);
+int printcan(db_komodo_t *db_kom);
 
 /*
 ** printmsg - prints parsed contents of M56 CAN message to stdout
 */
-int printmsg(int can_id, unsigned char *msg);
+int printmsg(db_komodo_t *db_kom);
