@@ -24,6 +24,8 @@ db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t)},
         {DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t)},
         {DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t)},
+        {DB_M56_VCAN2_MSG284_VAR, sizeof(m56_wheel_speed_front_t)},
+        {DB_M56_VCAN2_MSG285_VAR, sizeof(m56_wheel_speed_rear_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -46,6 +48,10 @@ int main(int argc, char *argv[]) {
 	db_komodo_t db_kom;
 
 	m56_engine_rpm_t m56_engine_rpm;
+	m56_pedal_position_t m56_pedal_position;
+	m56_wheel_speed_front_t m56_wheel_speed_front;
+	m56_wheel_speed_rear_t m56_wheel_speed_rear;
+        m56_steering_t m56_steering;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -76,7 +82,11 @@ int main(int argc, char *argv[]) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
 	   switch(db_kom.id) {
 		case 0x002:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, sizeof(msg), &msg); 
+		    get_m56_steering(db_kom.msg, &m56_steering);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t), &m56_steering); 
+		    printf("steering_angle %f steering_velocity %f\n", 
+			m56_steering.steering_angle, 
+			m56_steering.steering_velocity);
 		    break;
 		case 0x160:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG160_VAR, sizeof(msg), &msg); 
@@ -89,23 +99,34 @@ int main(int argc, char *argv[]) {
 		    break;
 		case 0x180:
 		    get_m56_engine_rpm(db_kom.msg, &m56_engine_rpm);
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
 		    printf("engine rpm %f\n", m56_engine_rpm.engine_rpm);
 		    break;
 		case 0x1c3:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x239:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, sizeof(msg), &msg); 
+		    get_m56_pedal_position(db_kom.msg, &m56_pedal_position);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t), &m56_pedal_position); 
+		    printf("pedal position %f%%\n", m56_pedal_position.pedal_position);
 		    break;
 		case 0x245:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG245_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x284:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, sizeof(msg), &msg); 
+		    get_m56_wheel_speed_front(db_kom.msg, &m56_wheel_speed_front);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, sizeof(m56_wheel_speed_front_t), &m56_wheel_speed_front); 
+		    printf("wheel_speed_front_right %f wheel_speed_front_left %f vehicle_speed_copy %f \n", 
+			m56_wheel_speed_front.wheel_speed_front_right, 
+			m56_wheel_speed_front.wheel_speed_front_left, 
+			m56_wheel_speed_front.vehicle_speed_copy);
 		    break;
 		case 0x285:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, sizeof(msg), &msg); 
+		    get_m56_wheel_speed_rear(db_kom.msg, &m56_wheel_speed_rear);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, sizeof(m56_wheel_speed_rear_t), &m56_wheel_speed_rear); 
+		    printf("wheel_speed_rear_right %f wheel_speed_rear_left %f\n", 
+			m56_wheel_speed_rear.wheel_speed_rear_right, 
+			m56_wheel_speed_rear.wheel_speed_rear_left);
 		    break;
 		case 0x292:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, sizeof(msg), &msg); 
