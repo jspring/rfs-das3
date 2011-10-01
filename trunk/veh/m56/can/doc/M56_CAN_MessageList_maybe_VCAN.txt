@@ -1,0 +1,387 @@
+															
+ID	"with period(ms)"	"DataLength(byte)" "BytePosition"	"BitPosition DataLength(bit) SignalName ByteOrder S/U	Unit Resolution OffSet PhysicalValue(MIN) PhysicalValue(MAX) Coding(Bit Position is MSB first.) ADAS
+160	10	7	0	7	8	TargetEngineTorque_WithoutTMReq	upper	U	Nm	0.5	-400	-400	1647.5		R
+			1	7	4		lower								
+			2	-	-	-									
+			3	-	-	-									
+			4	-	-	-									
+			5	-	-	-									
+			6	-	-	-									
+180	10	8	0	7	8	EngineRPM	upper	U	Tr/min	0.125	0	0	8191.75		R
+			1	7	8			lower								
+			2	7	8	MeanEffectiveTorque	upper	U	Nm	0.5	-400	-400	1647		
+			3	7	4			lower								
+			4	-	-	-									
+			5	7	8	RawSensor	upper	U	%	0.125	0	0	125		
+			6	7	2			lower								
+			6	3	4	ECM_Clock		U	-	1	0	0	15		
+			7	7	3	TorqueRequestStatus						000b = normal
+														001b = exact torque request can 
+															not be achieved (measure 
+															imprecision)
+														010b = transient state preventing 
+															torque request realization
+														011b = torque request can not be 
+															achieved 
+239	20	8 	0 	7 	8 	AcceleratorPedalPosition		U	%	0.39216 	0	0	100		R
+			1 	7 	8 										
+			2 	7 	1 	ACC inhibit signal						0b = ACC not inhibited
+														1b = ACC inhibited
+			2 	6 	1 										
+			2 	5 	1 	ACC control Requested signal					0b = During not control (for ACC request)
+														1b = During the control (for ACC request)
+			2 	4 	1 	ASCD fail flag							0b = OK
+														1b = NG
+			2 	3 	1 	ACC target value fail flag					0b = target value OK
+														1b = target value NG(ACC inhibited)
+			2 	2 	1 	temporary acceleration flag					0b = not temporary acceleration
+														1b = temporary acceleration
+			2 	1 	1 	ECM main switch							0b = main switch off                  
+														1b = main switch on
+			2 	0 	1 	APS IDLE judge							0b = IDLE SW off
+														1b = IDLE SW on
+			3 	7 	1 										
+			3 	6 	1 										
+			3 	5 	1 										
+			3 	4 	1 	RES switch is ON						0b = RES switch is off
+														1b = RES switch is on
+			3 	3 	1 	SET switch is ON						0b = SET switch is off
+														1b = SET switch is on
+			3 	2 	1 	DIST switch is ON						0b = DIST switch is off
+														1b = DIST switch is on
+			3 	1 	1 	CAN switch is ON						0b = CAN switch is off
+														1b = CAN switch is on
+			3 	0	1	MAIN switch is ON						0b = MAIN switch is off
+														1b = MAIN switch is on
+			4	7	1	ACC CAN fail flag						0b = not fail
+														1b = fail"	
+			4	6	1	Brake BNC_SW							0b = Brake ON
+														1b = Brake OFF"	
+			4	5	1	Brake BNO_SW							0b = Brake OFF
+														1b = Brake ON"	
+			4	4	1	TPS IDLE judge							0b = IDLE SW OFF
+														1b = IDLE SW ON"	
+			4 	1 	2 	Message counter		U	-	1 	0	0	3		
+			5 	-	-										
+			6 	-	-										
+			7	2	1	TorqueRequestStatus						0b = not limited
+														1b = limited"	
+174	10	8	0	7	8										R
+			1	7	8										
+			2	7	8				
+			3	7	4	TransmRangeEngaged_Target					0000b = declut1100bed at 
+																rest
+														0001b = 1st gear
+														0010b = 2nd gear
+														0011b = 3rd gear
+														0100b = 4th gear
+														0101b = 5th gear
+														0110b = 6th gear
+														0111b = 7th gear
+														1000b = 8th gear
+														1001b = Reverse
+														1010b = neutral or parking
+														1011b = CVT in continuous mode
+														1100b = Not used
+														1101b = Not used
+														1110b = Not used
+														1111b = AT in limphome"	
+			3	3	4	TransmRangeEngaged_Current					0000b = declut1100bed at rest
+														0001b = 1st gear
+														0010b = 2nd gear
+														0011b = 3rd gear
+														0100b = 4th gear
+														0101b = 5th gear
+														0110b = 6th gear
+														0111b = 7th gear
+														1000b = 8th gear
+														1001b = Reverse
+														1010b = neutral or parking
+														1011b = CVT in continuous mode
+														1100b = Not used
+														1101b = Not used
+														1110b = Not used
+														1111b = AT in limphome"	
+			4	7	4										
+			4	3	4	AT_Clock		U	-	1	0	0	15		
+			5	7	8										
+			6	7	8										
+			7	7	8										
+177	10	8	0	7	8										R
+			1	7	1	ManualModeState							0b = not MANUAL mode
+														1b = MANUAL mode"	
+			1	6	7										
+			2	7	8										
+			3	7	8										
+			4	7	8										
+			5	7	8										
+			6	7	8										
+			7	7	8										
+421	60+Event	3	0	7	5	ATCVT_RangeIndication							00000b = OFF
+																00001b = P range
+																00010b = R range
+																00011b = N range
+																00100b = D range (A range)
+																00101b = S range
+																00110b = L range
+																00111b = B range
+																01000b = 1 range
+																01001b = 2 range
+																01010b = 3 range
+																01011b = 4 range
+																01100b = 5 range
+																01101b = 6 range
+																01110b = Not used
+																01111b = Not used
+																10000b = Manual 1st
+																10001b = Manual 2nd
+																10010b = Manual 3rd
+																10011b = Manual 4th
+																10100b = Manual 5th
+																10101b = Manual 6th
+																10110b = Manual 7th
+																10111b = Manual 8th
+																11000b = Auto 1st
+																11001b = Auto 2nd
+																11010b = Auto 3rd
+																11011b = Auto 4th
+																11100b = Auto 5th
+																11101b = Auto 6th
+																11110b = Not used
+																11111b = Not used	R
+			1	7	8	-									
+			2	7	8	-									
+245	20	8	0	7	8	-									R
+			1	7	8	-									
+			2	7	8	-									
+			3	7	6	-									
+			3	1	1	ESPMalfunction								0b = no VDC(ESP) malfunction
+															1b = VDC(ESP) malfunction"	
+			3	0	1	ESPDeactivated								0b = VDC(ESP) available
+															1b = VDC(ESP) disabled by the driver
+			4			-									
+			5	7	1	ASRinRegulation								0b = no TCS(ASR) regulation
+															1b = TSC(ASR) in regulation
+			5	6	1	AYCinRegulation								0b = no VDC(AYC) regulation
+															1b = VDC(AYC) in regulation"	
+			5	7	4	-									
+			5	3	1	ASRMalfunction								"0b = no TCS(ASR) malfunction
+															1b = TCS(ASR) malfunction"	
+			5	2	3	-									
+			6	7	8	-									
+			7	7	6	-									
+			7	1	2	Messege Counter 			U	-	1	0	0	3		
+284	20	8	0	7	8	WheelSpeed.F.R			upper	U	rpm	1/24	0	0	2730.58333		R
+			1	7	8					lower								
+			2	7	8	WheelSpeed.F.L			upper	U	rpm	1/24	0	0	2730.58333		
+			3	7	8					lower								
+			4	7	8	VehicleSpeed(copy)		upper	U	km/h	0.01	0	0	655.34		
+			5	7	8					lower								
+			6	7	8	MessageCounterFront			U	-	1	0	0	255 		
+			7	7	8	-									
+285	20	8	0	7	8	WheelSpeed.R.R			upper	U	rpm	1/24	0	0	2730.58333 		R
+			1	7	8					lower								
+			2	7	8	WheelSpeed.R.L			upper	U	rpm	1/24	0	0	2730.58333 		
+			3	7	8					lower								
+			4	7	8	-									
+			5	7	8	-									
+			6	7	8	MessageCounterRear			U	-	1	0	0	255 		
+			7	7	8	-									
+292	20	8	0	7	8	LongitudinalAccelerationProc02	upper	U	G	0.001	-2.048	-2	2 		R
+			1	7	4					lower
+			1	3	4	Transversalacceleration02	upper	U	G	0.001	-2.048	-2	2 		
+			2	7	8					lower								
+			3	7	8	YawRate02			upper	U	deg/s	0.1	-204.8	-200	200 		
+			4	7	4					lower								
+			4	3	4	-									
+			5	7	8	-									
+			6	7	8	Pressure Sensor Signal02		U	bar	1	0	0	254		
+			7	7	5	-									
+			7	1	2	Message counter				U	-	1	0	0	3		
+2AA	20	8	0	7	8	Estimated Pressure Value	upper	U	bar	0.05	0	0	100		R
+			1	7	3					lower								
+			1	4	1	release_SW									0b = ????
+																1b = ???????????
+			1	3	1	PBFS_NC										0b = ?????
+																1b = ?????"	
+			1	2	1	PBFS_NO										0b = ?????
+																1b = ?????"	
+			1	1	1	ACC. Enable									0b = ACC not Enable
+																1b = ACC Enable"	
+			1	0	1	-									
+			2	7	2	-									
+			2	5	1	ACC. Status									0b = ACC not operation
+																1b = ACC operation (pressure ON)
+			2	4	1										
+			2	3	2	-									
+			2	1	1	ACC. Alive								0b = Abnormal (function standstill)
+															1b = normal
+			2	0	1										
+			3	7	8	-									
+			4	7	8	-									
+			5	7	8	-									
+			6	7	4	-									
+			6	3	4	Message counter		U	-	1	0	0	15		
+			7	7	8	-									
+354	40	8	0	7	8	-									R
+			1	7	8	-									
+			2	7	8	-									
+			3	7	8	-									
+			4	7	8	-									
+			5	7	3	-									
+			5	4	2	Messege Counter 		U	-	1	0	0	3		
+			5	2	3	-									
+			6	7	1	ABSMalfunction								0b = ABS OK
+															1b = ABS malfunction
+			6	6	1	ABSinRegulation								0b = ABS not in regulation
+															1b = ABS in regulation
+			6	5	2	CloseActiveBrakeSwitch_ABS						00b = brake not active
+															01b = brake active
+															10b = Not used
+															11b = invalid
+			6	3	4	-									
+			7	7	8	-									
+002	10	8	0	7	8	Steering Angle	lower	2S	deg	0.1	0	-864.0 	864.0 		R
+			1	7	8		upper								
+			2	7	8	Steering Angle Velocity		U	deg/s	4	0	0	1016 		
+			3	7	8	-									
+			4	7	4	-									
+			4	3	4	Message Counter		U	-	1	0	0	15 		
+			5	7	8	-									
+			6	7	8	-									
+			7	7	8	-									
+625	100+Event	6	0	7	8	-									R
+			1	7	8	-									
+			2	5	2	-									
+			2	3	2	FrontWiperStatus								00b = front wiper stopped
+																01b = low speed active
+																10b = high speed active
+																11b = invalid"	
+			2	1	2	-									
+			3	7	8	-									
+			4	7	8	-									
+			5	7	8	-									
+358	100+Event	8	0	7	8	-									R
+			1	7	8	-									
+			2	7	5	-									
+			2	2	2	TurnSwitchStatus						00b = Turn SW Left and Turn SW Right are OFF
+														01b = Turn SW Left is ON
+														10b = Turn SW Right is ON
+														11b = invalid
+			2	0	1	-									
+			3	7	8	-									
+			4	7	8	-									
+			5	7	8	-									
+			6	7	8	-									
+			7	7	8	-									
+5B0	100	2	0	7	2	SNOW_ModeSW_Status								00b = OFF
+																01b = ON
+																10b = UNKNOWN
+																11b = NOT USE	R
+			0	5	2	ECO_ModeSW_Status								00b = OFF
+																01b = ON
+																10b = UNKNOWN
+																11b = NOT USE
+			0	3	2	STANDARD_ModeSW_Status								00b = OFF
+																01b = ON
+																10b = UNKNOWN
+																11b = NOT USE
+			0	1	2	SPORT_ModeSW_Status								00b = OFF
+																01b = ON
+																10b = UNKNOWN
+																11b = NOT USE
+			1	7	8	-									
+			2	7	8	-									
+1C3	10	8	0	7	8	ITS target pressure	upper	U	bar	0.05	0	0	100		T
+			1	7	3		lower								
+			1	4	1	ITS alive flag								0b = Not Alive
+															1b = Alive"	T
+			1	3	1	ACC request flag							0b = Not Requiring
+															1b = Requiring"	T
+			1	2	1										T
+			1	1	2	-									T
+			2	7	8	-									T
+			3	7	8	-									T
+			4	7	8	-									T
+			5	7	6	-									T
+			5	1	2	Message counter		U	-	1	0	0	3		T
+			6	7	8	-									T
+			7	7	8	-									T
+2B0	10	8 	0 	7 	8 	Target EngineTorque(Main CPU)	lower	2S	Nm	0.4 	0	-819.2	818.8		T
+			1 	7 	4 		upper								
+			1 	3 	4 	Target EngineTorque(Sub CPU)	lower	2S	Nm	0.4 	0	-819.2	818.8		T
+			2 	7 	8 		upper								
+			3 	7 	1 	Driver Brake(Normally Closed)							0b = Brake Pedal ON
+																1b = Brake Pedal OFF"	T
+			3 	6 	1 	Driver Brake(Normally Open)							0b = Brake Pedal OFF
+																1b = Brake Pedal ON"	T
+			3 	5 	1 	ACC Main SW									0b = Main SW OFF
+																1b = Main SW ON"	T
+			3 	1 	1 	OD/OFF Flag									0b = Not Request
+																1b = Request"	T
+			3 	0 	1 	ACC Fail Flag									0b = ACC not fail
+																1b = ACC fail"	T
+			4 	7 	1 	Control Autostop Flag								0b = Stop control not operation
+																1b = Stop control operation"	T
+			4 	6 	1 	ACC Active flag(for ECM)							0b = EngineTorque Not Request
+																1b = EngineTorque Request"	T
+			4 	5 	1 	ACC Cruise Flag									0b = ACC Cruise Flag OFF
+																1b = ACC Cruise Flag ON"	T
+			4	4	1	-										0b = Not Request
+																1b = Request"	T
+			4	3	1	-										0b = Not Reduce the Speed
+																1b = Reduce the Speed "	T
+			5 	7 	8 	Virtual Accelerator Angle		U	%	0.39216 	0	0	100		T
+			6 	7 	4 	Message counter		U	-	1 	0	0	15		T
+			7 	7 	8 	Check sum		U	-	1 	0	0	255		T
+2B3	20	8 	0 	7 	1 	Main SW										0b = OFF
+																1b = ON"	T
+			0 	5 	1 	Target Lock									0b = OFF
+																1b = ON"	T
+			0 	4 	2 	Target Approach Warning								00b = Not Warning
+																01b = Warning 1st
+																10b = Warning 2nd
+																11b = Warning 3rd"	T
+			0 	2 	1 	Blink at Target Icon								0b = Not Blink
+																1b = Blink"	T
+			0 	1 	2 	"Segment ""Car Space"""								00b = Invalid
+																01b = Short
+																10b = Middle
+																11b = Long"	T
+			1 	7 	1 	Oneself										0b = OFF
+																1b = ON"	T
+			1 	6 	1 	Auto Brake									0b = OFF
+																1b = ON"	T
+			1 	5 	1 	"""--"" indicator signal"							0b = OFF
+																1b = ON"	T
+			1 	4 	1 	"""km/h"" indicator signal"							0b = OFF
+																1b = ON"	T
+			1 	2 	1 										T
+			1 	1 	1 	ACC Buzzer signal							0b = OFF
+															1b = ON 	T
+			1 	0 	1 	PBS2 warning								0b = OFF
+															1b = ON 	T
+			2 	7 	8 	Speed Set(Driver)		U	km/h	1	0	0	255		T
+			3 	6 	1 	ACC Buzzer 3rd								0b = OFF
+															1b = ON 	T
+			3 	5 	1 	ACC Buzzer 2nd								0b = OFF
+															1b = ON 	T
+			3 	3 	1 	Booster Active(Reverse Bit)						0b = Pressure control operating
+															1b = Pressure control not operating"	T
+			3 	2 	1 	Booster Active								0b = Pressure control not operating
+															1b = Pressure control operating"T
+			3 	1 	1 	PBS2 OFF								0b = OFF
+															1b = ON"	T
+			3 	0 	1 	ACC Bulb Check								0b = Normal Mode
+															1b = Bulb Check Mode"	T
+			4 	7 	1 	ACC System Fail1  (invert)						0b = System NG
+															1b = System OK"	T
+			4 	6 	1 	ACC System Fail1							0b = System OK
+															1b = System NG"	T
+			5 	7 	8 	Trouble Trigger Code							0b = OK
+															Except for 0b = ACC Trouble	T
+			6 	7 	8 	-									
+			7 	7 	8 	-									
+															
+															
+															
