@@ -5,7 +5,10 @@
 #include <db_include.h>
 #include <komodo.h>
 
-int printmsg(db_komodo_t *db_kom);
+int printmsg(db_komodo_t *db_kom) {
+	int i;
+}
+
 int printcan(db_komodo_t *db_kom){
 	int i;
 

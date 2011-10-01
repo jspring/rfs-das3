@@ -26,6 +26,7 @@ db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t)},
         {DB_M56_VCAN2_MSG284_VAR, sizeof(m56_wheel_speed_front_t)},
         {DB_M56_VCAN2_MSG285_VAR, sizeof(m56_wheel_speed_rear_t)},
+        {DB_M56_VCAN2_MSG292_VAR, sizeof(m56_acceleration_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -52,6 +53,7 @@ int main(int argc, char *argv[]) {
 	m56_wheel_speed_front_t m56_wheel_speed_front;
 	m56_wheel_speed_rear_t m56_wheel_speed_rear;
         m56_steering_t m56_steering;
+        m56_acceleration_t m56_acceleration;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -129,7 +131,12 @@ int main(int argc, char *argv[]) {
 			m56_wheel_speed_rear.wheel_speed_rear_left);
 		    break;
 		case 0x292:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, sizeof(msg), &msg); 
+		    get_m56_acceleration(db_kom.msg, &m56_acceleration);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, sizeof(m56_acceleration_t), &m56_acceleration); 
+		    printf("long_accel_proc_02 %f transverse_accel_proc_02 %f yaw_rate_02 %f\n", 
+			m56_acceleration.long_accel_proc_02, 
+			m56_acceleration.transverse_accel_proc_02, 
+			m56_acceleration.yaw_rate_02);
 		    break;
 		case 0x2aa:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG2aa_VAR, sizeof(msg), &msg); 
@@ -155,11 +162,11 @@ int main(int argc, char *argv[]) {
 		case 0x625:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, sizeof(msg), &msg); 
 		    break;
+	}
 	   if(print_msg)
 		printmsg(&db_kom);
 	   if(verbose)
 		printcan(&db_kom);
-	}
 	}
 	return 0;
 }

@@ -178,6 +178,50 @@ static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed
 	p->wheel_speed_rear_left = ((data[2] << 8) + data[3]) * wheel_speed_res;
 }
 
+/*****************************************************************************************
+ *      m56_acceleration
+ *      Message ID      0x292
+ *      Transmitted every 20 ms
+ *
+ *      long_accel_proc_02
+ *      Byte Position   0
+ *      Bit Position    0-7
+ *      Byte Position   1
+ *      Bit Position    4-7
+ *      Bit Length      12
+ *
+ *      transverse_accel_proc_02
+ *      Byte Position   1
+ *      Bit Position    0-3
+ *      Byte Position   2
+ *      Bit Position    0-7
+ *      Bit Length      12
+ *
+ *      yaw_rate_02
+ *      Byte Position   3
+ *      Bit Position    0-7
+ *      Byte Position   4
+ *      Bit Position    4-7
+ *      Bit Length      12
+ */
+
+typedef struct {
+	timestamp_t ts;
+	float long_accel_proc_02;
+	float transverse_accel_proc_02;
+	float yaw_rate_02;
+} m56_acceleration_t;
+
+const float acceleration_res = 0.001;
+const float acceleration_offset = -2.048;
+const float yaw_rate_res = 0.1;
+const float yaw_rate_offset = -204.8;
+static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t *p) {
+	p->long_accel_proc_02 = (((data[0] << 4) + (data[1] >> 4)) * acceleration_res) + acceleration_offset;
+	p->transverse_accel_proc_02 = (((data[1] << 8) + data[2]) * acceleration_res) + acceleration_offset;
+	p->yaw_rate_02 = (((data[3] << 4) + (data[4] >> 4)) * yaw_rate_res) + yaw_rate_offset;
+}
+
 /*
 ** printcan.c - prints 8-byte CAN message to stdout
 */
