@@ -23,11 +23,13 @@ const char *usage = "-v verbose";
 db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t)},
         {DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t)},
+        {DB_M56_VCAN2_MSG1c3_VAR, sizeof(m56_its_alive_t)},
         {DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t)},
         {DB_M56_VCAN2_MSG284_VAR, sizeof(m56_wheel_speed_front_t)},
         {DB_M56_VCAN2_MSG285_VAR, sizeof(m56_wheel_speed_rear_t)},
         {DB_M56_VCAN2_MSG292_VAR, sizeof(m56_acceleration_t)},
         {DB_M56_VCAN2_MSG2aa_VAR, sizeof(m56_acc_status_t)},
+        {DB_M56_VCAN2_MSG2b0_VAR, sizeof(m56_eng_tq_acc_and_brake_flags_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -50,12 +52,14 @@ int main(int argc, char *argv[]) {
 	db_komodo_t db_kom;
 
 	m56_engine_rpm_t m56_engine_rpm;
+	m56_its_alive_t m56_its_alive;
 	m56_pedal_position_t m56_pedal_position;
 	m56_wheel_speed_front_t m56_wheel_speed_front;
 	m56_wheel_speed_rear_t m56_wheel_speed_rear;
         m56_steering_t m56_steering;
         m56_acceleration_t m56_acceleration;
         m56_acc_status_t m56_acc_status;
+	m56_eng_tq_acc_and_brake_flags_t m56_eng_tq_acc_and_brake_flags;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -87,77 +91,58 @@ int main(int argc, char *argv[]) {
 	   switch(db_kom.id) {
 		case 0x002:
 		    get_m56_steering(db_kom.msg, &m56_steering);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t), &m56_steering); 
-		    printf("steering_angle %f steering_velocity %f\n", 
-			m56_steering.steering_angle, 
-			m56_steering.steering_velocity);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
+			sizeof(m56_steering_t), &m56_steering); 
 		    break;
 		case 0x160:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG160_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x174:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG174_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x177:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG177_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x180:
 		    get_m56_engine_rpm(db_kom.msg, &m56_engine_rpm);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
-		    printf("engine rpm %f\n", m56_engine_rpm.engine_rpm);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, 
+			sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
 		    break;
 		case 0x1c3:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, sizeof(msg), &msg); 
+		    get_m56_its_alive(db_kom.msg, &m56_its_alive);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, 
+			sizeof(m56_its_alive_t), &m56_its_alive); 
 		    break;
 		case 0x239:
 		    get_m56_pedal_position(db_kom.msg, &m56_pedal_position);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t), &m56_pedal_position); 
-		    printf("pedal position %f%% acc_inhibit %d resume_sw %d acc_set_sw %d following_dist_sw %d can_sw %d main_sw %d acc_can_fail_flag %d brake_nc_sw %d brake_no_sw %d\n", 
-			m56_pedal_position.pedal_position,
-			m56_pedal_position.acc_inhibit,
-			m56_pedal_position.resume_sw,
-			m56_pedal_position.acc_set_sw,
-			m56_pedal_position.following_dist_sw,
-			m56_pedal_position.can_sw,
-			m56_pedal_position.main_sw,
-			m56_pedal_position.acc_can_fail_flag,
-			m56_pedal_position.brake_nc_sw,
-			m56_pedal_position.brake_no_sw);
-
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, 
+			sizeof(m56_pedal_position_t), &m56_pedal_position); 
 		    break;
 		case 0x245:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG245_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x284:
-		    get_m56_wheel_speed_front(db_kom.msg, &m56_wheel_speed_front);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, sizeof(m56_wheel_speed_front_t), &m56_wheel_speed_front); 
-		    printf("wheel_speed_front_right %f wheel_speed_front_left %f vehicle_speed_copy %f \n", 
-			m56_wheel_speed_front.wheel_speed_front_right, 
-			m56_wheel_speed_front.wheel_speed_front_left, 
-			m56_wheel_speed_front.vehicle_speed_copy);
+		    get_m56_wheel_speed_front(db_kom.msg,&m56_wheel_speed_front);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, 
+		      sizeof(m56_wheel_speed_front_t), &m56_wheel_speed_front); 
 		    break;
 		case 0x285:
 		    get_m56_wheel_speed_rear(db_kom.msg, &m56_wheel_speed_rear);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, sizeof(m56_wheel_speed_rear_t), &m56_wheel_speed_rear); 
-		    printf("wheel_speed_rear_right %f wheel_speed_rear_left %f\n", 
-			m56_wheel_speed_rear.wheel_speed_rear_right, 
-			m56_wheel_speed_rear.wheel_speed_rear_left);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, 
+			sizeof(m56_wheel_speed_rear_t), &m56_wheel_speed_rear); 
 		    break;
 		case 0x292:
 		    get_m56_acceleration(db_kom.msg, &m56_acceleration);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, sizeof(m56_acceleration_t), &m56_acceleration); 
-		    printf("long_accel_proc_02 %f transverse_accel_proc_02 %f yaw_rate_02 %f pressure_sensor_02 %hhu\n", 
-			m56_acceleration.long_accel_proc_02, 
-			m56_acceleration.transverse_accel_proc_02, 
-			m56_acceleration.yaw_rate_02,
-			m56_acceleration.pressure_sensor_02);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, 
+			sizeof(m56_acceleration_t), &m56_acceleration); 
 		    break;
 		case 0x2aa:
 		    get_m56_acc_status(db_kom.msg, &m56_acc_status);
-	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2aa_VAR, sizeof(m56_acc_status_t), &m56_acc_status); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2aa_VAR, 
+			sizeof(m56_acc_status_t), &m56_acc_status); 
 		    break;
 		case 0x2b0:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG2b0_VAR, sizeof(msg), &msg); 
+                    get_m56_eng_tq_acc_and_brake_flags(db_kom.msg, 
+			&m56_eng_tq_acc_and_brake_flags);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2b0_VAR, 
+			sizeof(m56_eng_tq_acc_and_brake_flags_t), 
+			&m56_eng_tq_acc_and_brake_flags); 
 		    break;
 		case 0x2b3:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG2b3_VAR, sizeof(msg), &msg); 
@@ -169,7 +154,6 @@ int main(int argc, char *argv[]) {
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x421:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG421_VAR, sizeof(msg), &msg); 
 		    break;
 		case 0x5b0:
 	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, sizeof(msg), &msg); 

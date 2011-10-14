@@ -7,6 +7,8 @@
 #define steering_angle_res  0.1 //deg
 #define steering_velocity_res  4 //deg/sec
 #define rpm_res  0.125
+#define mean_eff_tq_res 0.5
+#define mean_eff_tq_off 400
 #define pedal_pos_res  0.392
 #define wheel_speed_res  0.04166666
 #define vehicle_speed_res  0.01
@@ -15,7 +17,10 @@
 #define yaw_rate_res  0.1
 #define yaw_rate_offset  -204.8
 #define estimated_pressure_res 0.05
-
+#define its_target_pressure_res 0.05
+#define targ_eng_tq_res 0.4
+#define targ_eng_tq_off 819.2
+#define virtual_accelerator_angle_res 0.392
 #endif
 
 #define DB_M56_VCAN2_MSG002_TYPE	5000
@@ -68,16 +73,19 @@
 #define DB_M56_ITSCAN_MSG52D_VAR 	DB_M56_ITSCAN_MSG52D_TYPE
 #define DB_M56_ITSCAN_MSG27A_VAR	DB_M56_ITSCAN_MSG27A_TYPE
 
-#define MASK_b0	0x01
-#define MASK_b1	0x02
-#define MASK_b2	0x04
-#define MASK_b3	0x08
-#define MASK_b4	0x10
-#define MASK_b5	0x20
-#define MASK_b6	0x40
+#define MASK_b0	 0x01
+#define MASK_b1	 0x02
+#define MASK_b01 0x03
+#define MASK_b03 0x0F
+#define MASK_b2	 0x04
+#define MASK_b3	 0x08
+#define MASK_b4	 0x10
+#define MASK_b47 0xF0
+#define MASK_b5	 0x20
+#define MASK_b6	 0x40
 #define MASK_b7	0x80
 
-/*****************************************************************************************
+/*******************************************************************************
  *      m56_steering
  *      Message ID      0x002
  *      Transmitted every 10 ms
@@ -91,38 +99,96 @@
  *      Byte Position   2-3
  *      Bit Position    0-7
  *      Bit Length      8
+ *
+ *	message_counter
+ *      Byte Position   4
+ *      Bit Position    3
+ *      Bit Length      4
  */
 
 typedef struct {
 	timestamp_t ts;
 	float steering_angle;
 	float steering_velocity;
+	unsigned char message_counter;
 } m56_steering_t;
 
 static inline void get_m56_steering(unsigned char *data, m56_steering_t *p) {
 	p->steering_angle = ((data[0] << 8) + data[1]) * steering_angle_res;
 	p->steering_velocity = data[2]  * steering_velocity_res;
+	p->message_counter = data[4] & MASK_b03;
 }
 
-/*****************************************************************************************
+/*******************************************************************************
  *      m56_engine_rpm
  *      Message ID      0x180
- *      Byte Position   ?
- *      Bit Position    ?
- *      Bit Length      ?
  *      Transmitted every 10 ms
+ *
+ *	engine_rpm
+ *      Byte Position   0-1
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+ *	mean_effective_torque
+ *      Byte Position   2-3
+ *      Bit Position    0-11
+ *      Bit Length      12
  */
 
 typedef struct {
 	timestamp_t ts;
 	float engine_rpm;
+	float mean_effective_torque;
 } m56_engine_rpm_t;
 
 static inline void get_m56_engine_rpm(unsigned char *data, m56_engine_rpm_t *p) {
-	p->engine_rpm = ( (data[0] << 8) + data[1]) * rpm_res;
+	p->engine_rpm = ((data[0] << 8) + data[1]) * rpm_res;
+	p->mean_effective_torque = (((data[2] << 4) + ((data[3]& MASK_b47) >> 4)) * mean_eff_tq_res) - mean_eff_tq_off;
 }
 
-/*****************************************************************************************
+/*******************************************************************************
+ *      m56_its_alive
+ *      Message ID      0x1c3
+ *      Transmitted every 10 ms
+ *
+ *	its_target_pressure
+ *      Byte Position   0-1
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+ *	its_alive_flag
+ *      Byte Position   1
+ *      Bit Position    4
+ *      Bit Length      1
+ *
+ *	acc_request_flag
+ *      Byte Position   1
+ *      Bit Position    3
+ *      Bit Length      1
+ *
+ *	message_counter
+ *      Byte Position   5
+ *      Bit Position    1
+ *      Bit Length      2
+ *
+ */
+
+typedef struct {
+	timestamp_t ts;
+	float its_target_pressure;
+	unsigned char its_alive_flag;
+	unsigned char acc_request_flag;
+	unsigned char message_counter;
+} m56_its_alive_t;
+
+static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
+        p->its_target_pressure = ((data[0] << 8) + data[1])* its_target_pressure_res;
+        p->its_alive_flag = (data[1] & MASK_b4) >> 4;
+        p->acc_request_flag = (data[1] & MASK_b3) >> 3;
+        p->message_counter = data[5] & MASK_b01;
+}
+
+/*******************************************************************************
  *      m56_pedal_position
  *      Message ID      0x239
  *      Transmitted every 20 ms
@@ -172,6 +238,11 @@ static inline void get_m56_engine_rpm(unsigned char *data, m56_engine_rpm_t *p) 
  *      Bit Position    5
  *      Bit Length      1
  *
+ *	message_counter
+ *      Byte Position   4
+ *      Bit Position    1
+ *      Bit Length      2
+ *
  */
 
 typedef struct {
@@ -186,6 +257,7 @@ typedef struct {
 	unsigned char acc_can_fail_flag;
 	unsigned char brake_nc_sw;
 	unsigned char brake_no_sw;
+	unsigned char message_counter;
 } m56_pedal_position_t;
 
 static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_position_t *p) {
@@ -199,9 +271,10 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
 	p->acc_can_fail_flag = (data[4] & MASK_b7) >> 7;
 	p->brake_nc_sw = (data[4] & MASK_b6) >> 6;
 	p->brake_no_sw = (data[4] & MASK_b5) >> 5;
+	p->message_counter = data[4] & MASK_b01;
 }
 
-/*****************************************************************************************
+/*******************************************************************************
  *      m56_wheel_speed_front
  *      Message ID      0x284
  *      Transmitted every 20 ms
@@ -220,6 +293,11 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
  *      Byte Position   4-5
  *      Bit Position    0-15
  *      Bit Length      16
+ *
+ *      message_counter
+ *      Byte Position   6
+ *      Bit Position    7
+ *      Bit Length      8
  */
 
 typedef struct {
@@ -227,21 +305,24 @@ typedef struct {
 	float wheel_speed_front_right;
 	float wheel_speed_front_left;
 	float vehicle_speed_copy;
+	unsigned char message_counter;
 } m56_wheel_speed_front_t;
 
 static inline void get_m56_wheel_speed_front(unsigned char *data, m56_wheel_speed_front_t *p) {
 	p->wheel_speed_front_right = ((data[0] << 8) + data[1]) * wheel_speed_res;
 	p->wheel_speed_front_left = ((data[2] << 8) + data[3]) * wheel_speed_res;
 	p->vehicle_speed_copy = ((data[4] << 8) + data[5]) * vehicle_speed_res;
+	p->message_counter = data[6];
 }
 
 typedef struct {
 	timestamp_t ts;
 	float wheel_speed_rear_right;
 	float wheel_speed_rear_left;
+	unsigned char message_counter;
 } m56_wheel_speed_rear_t;
 
-/**
+/*******************************************************************************
  *      m56_wheel_speed_rear
  *      Message ID      0x285
  *      Transmitted every 20 ms
@@ -255,14 +336,20 @@ typedef struct {
  *      Byte Position   2-3
  *      Bit Position    0-15
  *      Bit Length      16
+ *
+ *      message_counter
+ *      Byte Position   6
+ *      Bit Position    7
+ *      Bit Length      8
  */
 
 static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed_rear_t *p) {
 	p->wheel_speed_rear_right = ((data[0] << 8) + data[1]) * wheel_speed_res;
 	p->wheel_speed_rear_left = ((data[2] << 8) + data[3]) * wheel_speed_res;
+	p->message_counter = data[6];
 }
 
-/*****************************************************************************************
+/*******************************************************************************
  *      m56_acceleration
  *      Message ID      0x292
  *      Transmitted every 20 ms
@@ -287,6 +374,11 @@ static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed
  *      Byte Position   4
  *      Bit Position    4-7
  *      Bit Length      12
+ *
+ *      message_counter
+ *      Byte Position   7
+ *      Bit Position    1
+ *      Bit Length      2
  */
 
 typedef struct {
@@ -295,6 +387,7 @@ typedef struct {
 	float transverse_accel_proc_02;
 	float yaw_rate_02;
 	unsigned char pressure_sensor_02;
+	unsigned char message_counter;
 } m56_acceleration_t;
 
 static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t *p) {
@@ -302,9 +395,10 @@ static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t 
 	p->transverse_accel_proc_02 = (((data[1] << 8) + data[2]) * acceleration_res) + acceleration_offset;
 	p->yaw_rate_02 = (((data[3] << 4) + (data[4] >> 4)) * yaw_rate_res) + yaw_rate_offset;
 	p->pressure_sensor_02 = data[6];
+	p->message_counter = data[7] & MASK_b01;
 }
 
-/*****************************************************************************************
+/*******************************************************************************
  *      m56_acc_status
  *      Message ID      0x2aa
  *      Transmitted every 20 ms
@@ -344,6 +438,11 @@ static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t 
  *      Bit Position    1
  *      Bit Length      1
  *
+ *	message_counter
+ *      Byte Position   6
+ *      Bit Position    3
+ *      Bit Length      4
+ *
  */
 
 typedef struct {
@@ -355,6 +454,7 @@ typedef struct {
 	unsigned char acc_enable;
 	unsigned char acc_status;
 	unsigned char acc_alive;
+	unsigned char message_counter;
 } m56_acc_status_t;
 
 static inline void get_m56_acc_status(unsigned char *data, m56_acc_status_t *p) {
@@ -365,6 +465,105 @@ static inline void get_m56_acc_status(unsigned char *data, m56_acc_status_t *p) 
         p->acc_enable = (data[1] & MASK_b1) >> 1;
         p->acc_status = (data[2] & MASK_b5) >> 5;
         p->acc_alive = (data[2] & MASK_b1) >> 1;
+        p->message_counter = data[6] & MASK_b03;
+}
+
+/*******************************************************************************
+ *      m56_eng_tq_acc_and_brake_flags
+ *      Message ID      0x2b0
+ *      Transmitted every 10 ms
+ *
+ *	target_engine_torque_main_cpu
+ *      Byte Position   0-1
+ *      Bit Position    0-7,0-3
+ *      Bit Length      12
+ *
+ *	target_engine_torque_sub_cpu
+ *      Byte Position   1-2
+ *      Bit Position    4-7,0-7
+ *      Bit Length      12
+ *
+ *	driver_brake_nc
+ *      Byte Position   3
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *	driver_brake_no
+ *      Byte Position   3
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *	acc_main_sw
+ *      Byte Position   3
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	od_off_flag
+ *      Byte Position   3
+ *      Bit Position    1
+ *      Bit Length      1
+ *
+ *	acc_fail_flag
+ *      Byte Position   3
+ *      Bit Position    0
+ *      Bit Length      1
+ *
+ *	control_autostop_flag
+ *      Byte Position   4
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *	acc_active_flag_for_ecm
+ *      Byte Position   4
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *	acc_cruise_flag
+ *      Byte Position   4
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	virtual_accelerator_angle
+ *      Byte Position   5
+ *      Bit Position    0-7
+ *      Bit Length      8
+ *
+ *	message_counter
+ *      Byte Position   6
+ *      Bit Position    4-7
+ *      Bit Length      4
+ *
+ */
+
+typedef struct {
+	timestamp_t ts;
+	float target_engine_torque_main_cpu;
+	float target_engine_torque_sub_cpu;
+	unsigned char driver_brake_nc;
+	unsigned char driver_brake_no;
+	unsigned char acc_main_sw;
+	unsigned char od_off_flag;
+	unsigned char acc_fail_flag;
+	unsigned char control_autostop_flag;
+	unsigned char acc_active_flag_for_ecm;
+	unsigned char acc_cruise_flag;
+	float virtual_accelerator_angle;
+	unsigned char message_counter;
+} m56_eng_tq_acc_and_brake_flags_t;
+
+static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data, m56_eng_tq_acc_and_brake_flags_t *p) {
+        p->target_engine_torque_main_cpu = ((data[0] + ((data[1] & MASK_b47) << 8)) * targ_eng_tq_res) - targ_eng_tq_off;
+        p->target_engine_torque_sub_cpu = (((data[1] & MASK_b03) + (data[2] << 4)) * targ_eng_tq_res) - targ_eng_tq_off;
+        p->driver_brake_nc = (data[3] & MASK_b7) >> 7;
+        p->driver_brake_nc = (data[3] & MASK_b6) >> 6;
+        p->acc_main_sw = (data[3] & MASK_b5) >> 5;
+        p->od_off_flag = (data[3] & MASK_b1) >> 1;
+        p->acc_fail_flag = data[3] & MASK_b0;
+        p->control_autostop_flag = (data[4] & MASK_b7) >> 7;
+        p->acc_active_flag_for_ecm = (data[4] & MASK_b6) >> 6;
+        p->acc_cruise_flag = (data[4] & MASK_b5) >> 5;
+        p->virtual_accelerator_angle = data[5] * virtual_accelerator_angle_res;
+        p->message_counter = (data[6] & MASK_b47) >> 4;
 }
 
 /*
