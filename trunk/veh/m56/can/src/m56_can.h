@@ -74,16 +74,22 @@
 #define DB_M56_ITSCAN_MSG27A_VAR	DB_M56_ITSCAN_MSG27A_TYPE
 
 #define MASK_b0	 0x01
-#define MASK_b1	 0x02
 #define MASK_b01 0x03
 #define MASK_b03 0x0F
+#define MASK_b07 0xFF
+#define MASK_b1	 0x02
+#define MASK_b12 0x06
 #define MASK_b2	 0x04
+#define MASK_b23 0x0C
 #define MASK_b3	 0x08
+#define MASK_b34 0x18
 #define MASK_b4	 0x10
+#define MASK_b45 0x30
 #define MASK_b47 0xF0
 #define MASK_b5	 0x20
 #define MASK_b6	 0x40
-#define MASK_b7	0x80
+#define MASK_b67 0xC0
+#define MASK_b7	 0x80
 
 /*******************************************************************************
  *      m56_steering
@@ -551,11 +557,19 @@ typedef struct {
 	unsigned char message_counter;
 } m56_eng_tq_acc_and_brake_flags_t;
 
-static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data, m56_eng_tq_acc_and_brake_flags_t *p) {
-        p->target_engine_torque_main_cpu = ((data[0] + ((data[1] & MASK_b47) << 8)) * targ_eng_tq_res) - targ_eng_tq_off;
-        p->target_engine_torque_sub_cpu = (((data[1] & MASK_b03) + (data[2] << 4)) * targ_eng_tq_res) - targ_eng_tq_off;
+static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data, 
+	m56_eng_tq_acc_and_brake_flags_t *p) {
+
+        p->target_engine_torque_main_cpu = 
+		((data[0] + 
+		((data[1] & MASK_b47) << 8)) * targ_eng_tq_res) - 
+		targ_eng_tq_off;
+        p->target_engine_torque_sub_cpu = 
+		(((data[1] & MASK_b03) + 
+		(data[2] << 4)) * targ_eng_tq_res) - 
+		targ_eng_tq_off;
         p->driver_brake_nc = (data[3] & MASK_b7) >> 7;
-        p->driver_brake_nc = (data[3] & MASK_b6) >> 6;
+        p->driver_brake_no = (data[3] & MASK_b6) >> 6;
         p->acc_main_sw = (data[3] & MASK_b5) >> 5;
         p->od_off_flag = (data[3] & MASK_b1) >> 1;
         p->acc_fail_flag = data[3] & MASK_b0;
@@ -564,6 +578,304 @@ static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data, m56_e
         p->acc_cruise_flag = (data[4] & MASK_b5) >> 5;
         p->virtual_accelerator_angle = data[5] * virtual_accelerator_angle_res;
         p->message_counter = (data[6] & MASK_b47) >> 4;
+}
+
+
+/*******************************************************************************
+ *      m56_dashboard_indicators
+ *      Message ID      0x2b3
+ *      Transmitted every 20 ms
+ *
+ *	main_sw
+ *      Byte Position   0
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *	target_lock
+ *      Byte Position   0
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	target_approach_warning
+ *      Byte Position   0
+ *      Bit Position    4
+ *      Bit Length      2
+ *
+ *	blink_at_target_icon
+ *      Byte Position   0
+ *      Bit Position    2
+ *      Bit Length      1
+ *
+ *	segment_car_space
+ *      Byte Position   0
+ *      Bit Position    1
+ *      Bit Length      2
+ *
+ *	oneself
+ *      Byte Position   1
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *	auto_brake
+ *      Byte Position   1
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *	dash_dash_indicator_signal
+ *      Byte Position   1
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	kph_indicator_signal
+ *      Byte Position   1
+ *      Bit Position    4
+ *      Bit Length      1
+ *
+ *	acc_buzzer_signal
+ *      Byte Position   1
+ *      Bit Position    1
+ *      Bit Length      1
+ *
+ *	pbs2_warning
+ *      Byte Position   1
+ *      Bit Position    0
+ *      Bit Length      1
+ *
+ *	speed_set_driver
+ *      Byte Position   2
+ *      Bit Position    7
+ *      Bit Length      8
+ *
+ *	acc_buzzer_3rd
+ *      Byte Position   3
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *	acc_buzzer_2nd
+ *      Byte Position   3
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	booster_active_reverse_bit
+ *      Byte Position   3
+ *      Bit Position    3
+ *      Bit Length      1
+ *
+ *	booster_active
+ *      Byte Position   3
+ *      Bit Position    2
+ *      Bit Length      1
+ *
+ *	pbs2_off
+ *      Byte Position   3
+ *      Bit Position    1
+ *      Bit Length      1
+ *
+ *	acc_bulb_check
+ *      Byte Position   3
+ *      Bit Position    0
+ *      Bit Length      1
+ *
+ *	acc_system_fail_1_invert
+ *      Byte Position   4
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *	acc_system_fail_1
+ *      Byte Position   4
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *	trouble_trigger_code
+ *      Byte Position   5
+ *      Bit Position    7
+ *      Bit Length      8
+ *
+ */
+
+typedef struct {
+	timestamp_t ts;
+	unsigned char main_sw;
+	unsigned char target_lock;
+	unsigned char target_approach_warning;
+	unsigned char blink_at_target_icon;
+	unsigned char segment_car_space;
+	unsigned char oneself;
+	unsigned char auto_brake;
+	unsigned char dash_dash_indicator_signal;
+	unsigned char kph_indicator_signal;
+	unsigned char acc_buzzer_signal;
+	unsigned char pbs2_warning;
+	unsigned char speed_set_driver;
+	unsigned char acc_buzzer_3rd;
+	unsigned char acc_buzzer_2nd;
+	unsigned char booster_active_reverse_bit;
+	unsigned char booster_active;
+	unsigned char pbs2_off;
+	unsigned char acc_bulb_check;
+	unsigned char acc_system_fail_1_invert;
+	unsigned char acc_system_fail_1;
+	unsigned char trouble_trigger_code;
+} m56_dashboard_indicators_t;
+
+static inline void get_m56_dashboard_indicators(unsigned char *data, 
+	m56_dashboard_indicators_t *p) {
+
+        p->main_sw = (data[0] & MASK_b7) >> 7;
+        p->target_lock = (data[0] & MASK_b5) >> 5;
+        p->target_approach_warning = (data[0] & MASK_b34) >> 3;
+        p->blink_at_target_icon = (data[0] & MASK_b2) >> 2;
+        p->segment_car_space = data[0] & MASK_b01;
+        p->oneself = (data[1] & MASK_b7) >> 7;
+        p->auto_brake = (data[1] & MASK_b6) >> 6;
+        p->dash_dash_indicator_signal = (data[1] & MASK_b5) >> 5;
+        p->kph_indicator_signal = (data[1] & MASK_b4) >> 4;
+        p->acc_buzzer_signal = (data[1] & MASK_b1) >> 1;
+        p->pbs2_warning = data[1] & MASK_b0;
+        p->speed_set_driver = data[2] & MASK_b07;
+        p->acc_buzzer_3rd = (data[3] & MASK_b6) >> 6;
+        p->acc_buzzer_2nd = (data[3] & MASK_b5) >> 5;
+        p->booster_active_reverse_bit = (data[3] & MASK_b3) >> 3;
+        p->booster_active = (data[3] & MASK_b2) >> 2;
+        p->pbs2_off = (data[3] & MASK_b1) >> 1;
+        p->acc_bulb_check = data[3] & MASK_b0;
+        p->acc_system_fail_1_invert = (data[4] & MASK_b7) >> 7;
+        p->acc_system_fail_1 = (data[4] & MASK_b6) >> 6;
+        p->trouble_trigger_code = data[5] & MASK_b07;
+}
+
+/*******************************************************************************
+ *      m56_abs_status
+ *      Message ID      0x354
+ *      Transmitted every 40 ms
+ *
+ *      message_counter
+ *      Byte Position   5
+ *      Bit Position    4
+ *      Bit Length      2
+ *
+ *      abs_malfunction
+ *      Byte Position   6
+ *      Bit Position    7
+ *      Bit Length      1
+ *
+ *      abs_in_regulation
+ *      Byte Position   6
+ *      Bit Position    6
+ *      Bit Length      1
+ *
+ *      close_active_brake_switch_abs
+ *      Byte Position   6
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+*/
+
+typedef struct {
+        timestamp_t ts;
+        unsigned char message_counter;
+        unsigned char abs_malfunction;
+        unsigned char abs_in_regulation;
+        unsigned char close_active_brake_switch_abs;
+} m56_abs_status_t;
+
+
+static inline void get_m56_abs_status(unsigned char *data, 
+	m56_abs_status_t *p) {
+
+        p->message_counter = (data[5] & MASK_b34) >> 3;
+        p->abs_malfunction = (data[6] & MASK_b7) >> 7;
+        p->abs_in_regulation = (data[6] & MASK_b6) >> 6;
+        p->close_active_brake_switch_abs = (data[6] & MASK_b45) >> 4;
+}
+
+/*******************************************************************************
+ *      m56_turn_switch_status 
+ *      Message ID      0x358
+ *      Transmitted every 100 ms + event
+ *
+ *      turn_switch_status
+ *      Byte Position   2
+ *      Bit Position    2
+ *      Bit Length      2
+ *
+*/
+
+typedef struct {
+        timestamp_t ts;
+        unsigned char turn_switch_status;
+} m56_turn_switch_status_t;
+
+static inline void get_m56_turn_switch_status(unsigned char *data, m56_turn_switch_status_t *p) {
+        p->turn_switch_status = (data[2] & MASK_b12) >> 1;
+}
+
+/*******************************************************************************
+ *      m56_transmission_mode
+ *      Message ID      0x5b0
+ *      Transmitted every 100 ms
+ *
+ *      snow_mode_sw_status
+ *      Byte Position   0
+ *      Bit Position    7
+ *      Bit Length      2
+ *
+ *      eco_mode_sw_status
+ *      Byte Position   0
+ *      Bit Position    5
+ *      Bit Length      2
+ *
+ *      standard_mode_sw_status
+ *      Byte Position   0
+ *      Bit Position    3
+ *      Bit Length      2
+ *
+ *      sport_mode_sw_status
+ *      Byte Position   0
+ *      Bit Position    1
+ *      Bit Length      2
+ *
+*/
+
+typedef struct {
+        timestamp_t ts;
+        unsigned char snow_mode_sw_status;
+        unsigned char eco_mode_sw_status;
+        unsigned char standard_mode_sw_status;
+        unsigned char sport_mode_sw_status;
+} m56_transmission_mode_t;
+
+static inline void get_m56_transmission_mode(unsigned char *data, 
+	m56_transmission_mode_t *p) {
+
+        p->snow_mode_sw_status = (data[0] & MASK_b67) >> 6;
+        p->eco_mode_sw_status = (data[0] & MASK_b45) >> 4;
+        p->standard_mode_sw_status = (data[0] & MASK_b23) >> 2;
+        p->sport_mode_sw_status = data[0] & MASK_b01;
+}
+
+
+/*******************************************************************************
+ *      m56_front_wiper_status
+ *      Message ID      0x625
+ *      Transmitted every 100 ms + event
+ *
+ *      front_wiper_status
+ *      Byte Position   2
+ *      Bit Position    3
+ *      Bit Length      2
+ *
+*/
+
+typedef struct {
+        timestamp_t ts;
+        unsigned char front_wiper_status;
+} m56_front_wiper_status_t;
+
+static inline void get_m56_front_wiper_status(unsigned char *data, 
+	m56_front_wiper_status_t *p) {
+
+        p->front_wiper_status = (data[2] & MASK_b23) >> 2;
 }
 
 /*

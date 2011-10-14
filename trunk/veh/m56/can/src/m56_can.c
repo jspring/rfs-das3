@@ -30,6 +30,11 @@ db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG292_VAR, sizeof(m56_acceleration_t)},
         {DB_M56_VCAN2_MSG2aa_VAR, sizeof(m56_acc_status_t)},
         {DB_M56_VCAN2_MSG2b0_VAR, sizeof(m56_eng_tq_acc_and_brake_flags_t)},
+        {DB_M56_VCAN2_MSG2b3_VAR, sizeof(m56_dashboard_indicators_t)},
+        {DB_M56_VCAN2_MSG354_VAR, sizeof(m56_abs_status_t)},
+        {DB_M56_VCAN2_MSG358_VAR, sizeof(m56_turn_switch_status_t)},
+        {DB_M56_VCAN2_MSG5b0_VAR, sizeof(m56_transmission_mode_t)},
+        {DB_M56_VCAN2_MSG625_VAR, sizeof(m56_front_wiper_status_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -60,6 +65,11 @@ int main(int argc, char *argv[]) {
         m56_acceleration_t m56_acceleration;
         m56_acc_status_t m56_acc_status;
 	m56_eng_tq_acc_and_brake_flags_t m56_eng_tq_acc_and_brake_flags;
+	m56_dashboard_indicators_t m56_dashboard_indicators;
+	m56_abs_status_t m56_abs_status;
+	m56_turn_switch_status_t m56_turn_switch_status;
+	m56_transmission_mode_t m56_transmission_mode;
+	m56_front_wiper_status_t m56_front_wiper_status;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -145,21 +155,35 @@ int main(int argc, char *argv[]) {
 			&m56_eng_tq_acc_and_brake_flags); 
 		    break;
 		case 0x2b3:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG2b3_VAR, sizeof(msg), &msg); 
+		    get_m56_dashboard_indicators(db_kom.msg,
+			&m56_dashboard_indicators);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2b3_VAR, 
+			sizeof(m56_dashboard_indicators_t), &m56_dashboard_indicators); 
 		    break;
 		case 0x354:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG354_VAR, sizeof(msg), &msg); 
+                    get_m56_abs_status(db_kom.msg,
+			&m56_abs_status);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG354_VAR, sizeof(m56_abs_status_t), &m56_abs_status); 
 		    break;
 		case 0x358:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, sizeof(msg), &msg); 
+                    get_m56_turn_switch_status(db_kom.msg,
+			&m56_turn_switch_status);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, 
+			sizeof(m56_turn_switch_status_t), &m56_turn_switch_status); 
 		    break;
 		case 0x421:
 		    break;
 		case 0x5b0:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, sizeof(msg), &msg); 
+                    get_m56_transmission_mode(db_kom.msg,
+			&m56_transmission_mode);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, 
+			sizeof(m56_transmission_mode_t), &m56_transmission_mode); 
 		    break;
 		case 0x625:
-	   	    //db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, sizeof(msg), &msg); 
+                    get_m56_front_wiper_status(db_kom.msg,
+			&m56_front_wiper_status);
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, 
+			sizeof(m56_front_wiper_status_t), &m56_front_wiper_status); 
 		    break;
 	}
 	   if(print_msg)
