@@ -75,6 +75,7 @@
 
 #define MASK_b0	 0x01
 #define MASK_b01 0x03
+#define MASK_b02 0x07
 #define MASK_b03 0x0F
 #define MASK_b07 0xFF
 #define MASK_b1	 0x02
@@ -113,7 +114,9 @@
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float steering_angle;
 	float steering_velocity;
 	unsigned char message_counter;
@@ -142,7 +145,9 @@ static inline void get_m56_steering(unsigned char *data, m56_steering_t *p) {
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float engine_rpm;
 	float mean_effective_torque;
 } m56_engine_rpm_t;
@@ -180,7 +185,9 @@ static inline void get_m56_engine_rpm(unsigned char *data, m56_engine_rpm_t *p) 
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float its_target_pressure;
 	unsigned char its_alive_flag;
 	unsigned char acc_request_flag;
@@ -188,7 +195,7 @@ typedef struct {
 } m56_its_alive_t;
 
 static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
-        p->its_target_pressure = ((data[0] << 8) + data[1])* its_target_pressure_res;
+        p->its_target_pressure = ((data[0] << 3) + (data[1] * MASK_b02)) * its_target_pressure_res;
         p->its_alive_flag = (data[1] & MASK_b4) >> 4;
         p->acc_request_flag = (data[1] & MASK_b3) >> 3;
         p->message_counter = data[5] & MASK_b01;
@@ -252,7 +259,9 @@ static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float pedal_position;
 	unsigned char acc_inhibit;
 	unsigned char resume_sw;
@@ -307,7 +316,9 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float wheel_speed_front_right;
 	float wheel_speed_front_left;
 	float vehicle_speed_copy;
@@ -320,13 +331,6 @@ static inline void get_m56_wheel_speed_front(unsigned char *data, m56_wheel_spee
 	p->vehicle_speed_copy = ((data[4] << 8) + data[5]) * vehicle_speed_res;
 	p->message_counter = data[6];
 }
-
-typedef struct {
-	timestamp_t ts;
-	float wheel_speed_rear_right;
-	float wheel_speed_rear_left;
-	unsigned char message_counter;
-} m56_wheel_speed_rear_t;
 
 /*******************************************************************************
  *      m56_wheel_speed_rear
@@ -348,6 +352,15 @@ typedef struct {
  *      Bit Position    7
  *      Bit Length      8
  */
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	float wheel_speed_rear_right;
+	float wheel_speed_rear_left;
+	unsigned char message_counter;
+} m56_wheel_speed_rear_t;
 
 static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed_rear_t *p) {
 	p->wheel_speed_rear_right = ((data[0] << 8) + data[1]) * wheel_speed_res;
@@ -388,7 +401,9 @@ static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float long_accel_proc_02;
 	float transverse_accel_proc_02;
 	float yaw_rate_02;
@@ -452,7 +467,9 @@ static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t 
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float estimated_pressure_value;
 	unsigned char release_sw;
 	unsigned char pbfs_nc;
@@ -464,7 +481,7 @@ typedef struct {
 } m56_acc_status_t;
 
 static inline void get_m56_acc_status(unsigned char *data, m56_acc_status_t *p) {
-        p->estimated_pressure_value = data[0] * estimated_pressure_res;
+        p->estimated_pressure_value = ((data[0] << 3) + (data[1] & MASK_b02)) * estimated_pressure_res;
         p->release_sw = (data[1] & MASK_b4) >> 4;
         p->pbfs_nc = (data[1] & MASK_b3) >> 3;
         p->pbfs_no = (data[1] & MASK_b2) >> 2;
@@ -542,7 +559,9 @@ static inline void get_m56_acc_status(unsigned char *data, m56_acc_status_t *p) 
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	float target_engine_torque_main_cpu;
 	float target_engine_torque_sub_cpu;
 	unsigned char driver_brake_nc;
@@ -694,7 +713,9 @@ static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data,
  */
 
 typedef struct {
-	timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char main_sw;
 	unsigned char target_lock;
 	unsigned char target_approach_warning;
@@ -732,7 +753,7 @@ static inline void get_m56_dashboard_indicators(unsigned char *data,
         p->kph_indicator_signal = (data[1] & MASK_b4) >> 4;
         p->acc_buzzer_signal = (data[1] & MASK_b1) >> 1;
         p->pbs2_warning = data[1] & MASK_b0;
-        p->speed_set_driver = data[2] & MASK_b07;
+        p->speed_set_driver = data[2];
         p->acc_buzzer_3rd = (data[3] & MASK_b6) >> 6;
         p->acc_buzzer_2nd = (data[3] & MASK_b5) >> 5;
         p->booster_active_reverse_bit = (data[3] & MASK_b3) >> 3;
@@ -741,7 +762,7 @@ static inline void get_m56_dashboard_indicators(unsigned char *data,
         p->acc_bulb_check = data[3] & MASK_b0;
         p->acc_system_fail_1_invert = (data[4] & MASK_b7) >> 7;
         p->acc_system_fail_1 = (data[4] & MASK_b6) >> 6;
-        p->trouble_trigger_code = data[5] & MASK_b07;
+        p->trouble_trigger_code = data[5];
 }
 
 /*******************************************************************************
@@ -772,7 +793,9 @@ static inline void get_m56_dashboard_indicators(unsigned char *data,
 */
 
 typedef struct {
-        timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
         unsigned char message_counter;
         unsigned char abs_malfunction;
         unsigned char abs_in_regulation;
@@ -802,7 +825,9 @@ static inline void get_m56_abs_status(unsigned char *data,
 */
 
 typedef struct {
-        timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
         unsigned char turn_switch_status;
 } m56_turn_switch_status_t;
 
@@ -838,7 +863,9 @@ static inline void get_m56_turn_switch_status(unsigned char *data, m56_turn_swit
 */
 
 typedef struct {
-        timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
         unsigned char snow_mode_sw_status;
         unsigned char eco_mode_sw_status;
         unsigned char standard_mode_sw_status;
@@ -868,7 +895,9 @@ static inline void get_m56_transmission_mode(unsigned char *data,
 */
 
 typedef struct {
-        timestamp_t ts;
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
         unsigned char front_wiper_status;
 } m56_front_wiper_status_t;
 
