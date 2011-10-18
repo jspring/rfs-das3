@@ -35,6 +35,9 @@ db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG358_VAR, sizeof(m56_turn_switch_status_t)},
         {DB_M56_VCAN2_MSG5b0_VAR, sizeof(m56_transmission_mode_t)},
         {DB_M56_VCAN2_MSG625_VAR, sizeof(m56_front_wiper_status_t)},
+        {DB_M56_ITSCAN_MSG52b_VAR, sizeof(m56_lidar_target_t)},
+        {DB_M56_ITSCAN_MSG52c_VAR, sizeof(m56_yaw_rate_t)},
+        {DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -72,6 +75,9 @@ int main(int argc, char *argv[]) {
 	m56_turn_switch_status_t m56_turn_switch_status;
 	m56_transmission_mode_t m56_transmission_mode;
 	m56_front_wiper_status_t m56_front_wiper_status;
+	m56_lidar_target_t m56_lidar_target;
+	m56_yaw_rate_t m56_yaw_rate;
+	m56_lidar_status_t m56_lidar_status;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -113,7 +119,7 @@ int main(int argc, char *argv[]) {
 	memset(&m56_transmission_mode, 0, sizeof(m56_transmission_mode_t));
 	memset(&m56_front_wiper_status, 0, sizeof(m56_front_wiper_status_t));
 
-	m56_steering.two_message_periods = 20; 		/ 2*10 msec
+	m56_steering.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
 	m56_its_alive.two_message_periods = 20; 	// 2*10 msec
 	m56_pedal_position.two_message_periods = 40; 	// 2*20 msec
@@ -124,9 +130,12 @@ int main(int argc, char *argv[]) {
 	m56_eng_tq_acc_and_brake_flags.two_message_periods = 20; // 2*10 msec
 	m56_dashboard_indicators.two_message_periods = 40; // 2*20 msec
 	m56_abs_status.two_message_periods = 80; 	// 2*40 msec
-	m56_turn_switch_status.two_message_periods = 200; // 2*100 msec
-	m56_transmission_mode.two_message_periods = 200; // 2*100 msec
+	m56_turn_switch_status.two_message_periods = 200;// 2*100 msec
+	m56_transmission_mode.two_message_periods = 200;// 2*100 msec
 	m56_front_wiper_status.two_message_periods = 200; // 2*100 msec
+	m56_lidar_target.two_message_periods = 200; 	// 2*100 msec
+	m56_yaw_rate.two_message_periods = 200; 	// 2*100 msec
+	m56_lidar_status.two_message_periods = 200; 	// 2*100 msec
 
 	for(;;) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
@@ -246,6 +255,30 @@ int main(int argc, char *argv[]) {
 			++m56_front_wiper_status.message_timeout_counter;
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, 
 			sizeof(m56_front_wiper_status_t), &m56_front_wiper_status); 
+		    break;
+		case 0x52b:
+                    get_m56_lidar_target(db_kom.msg,
+			&m56_lidar_target);
+		    if( (ts_ms - m56_lidar_target.ts_ms) > m56_lidar_target.two_message_periods )
+			++m56_lidar_target.message_timeout_counter;
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52b_VAR, 
+			sizeof(m56_lidar_target_t), &m56_lidar_target); 
+		    break;
+		case 0x52c:
+                    get_m56_yaw_rate(db_kom.msg,
+			&m56_yaw_rate);
+		    if( (ts_ms - m56_yaw_rate.ts_ms) > m56_yaw_rate.two_message_periods )
+			++m56_yaw_rate.message_timeout_counter;
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52c_VAR, 
+			sizeof(m56_yaw_rate_t), &m56_yaw_rate); 
+		    break;
+		case 0x52d:
+                    get_m56_lidar_status(db_kom.msg,
+			&m56_lidar_status);
+		    if( (ts_ms - m56_lidar_status.ts_ms) > m56_lidar_status.two_message_periods )
+			++m56_lidar_status.message_timeout_counter;
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52d_VAR, 
+			sizeof(m56_lidar_status_t), &m56_lidar_status); 
 		    break;
 	}
 	   if(print_msg)

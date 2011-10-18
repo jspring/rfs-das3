@@ -21,6 +21,8 @@
 #define targ_eng_tq_res 0.4
 #define targ_eng_tq_off 819.2
 #define virtual_accelerator_angle_res 0.392
+#define lidar_res 0.1
+#define yaw_rate_sensor_res 0.050
 #endif
 
 #define DB_M56_VCAN2_MSG002_TYPE	5000
@@ -43,9 +45,9 @@
 #define DB_M56_VCAN2_MSG5b0_TYPE	5017
 #define DB_M56_VCAN2_MSG625_TYPE	5018
 
-#define DB_M56_ITSCAN_MSG52B_TYPE	5019
-#define DB_M56_ITSCAN_MSG52C_TYPE	5020
-#define DB_M56_ITSCAN_MSG52D_TYPE	5021
+#define DB_M56_ITSCAN_MSG52b_TYPE	5019
+#define DB_M56_ITSCAN_MSG52c_TYPE	5020
+#define DB_M56_ITSCAN_MSG52d_TYPE	5021
 #define DB_M56_ITSCAN_MSG27A_TYPE	5022
 
 #define DB_M56_VCAN2_MSG002_VAR 	DB_M56_VCAN2_MSG002_TYPE
@@ -68,9 +70,9 @@
 #define DB_M56_VCAN2_MSG5b0_VAR 	DB_M56_VCAN2_MSG5b0_TYPE
 #define DB_M56_VCAN2_MSG625_VAR 	DB_M56_VCAN2_MSG625_TYPE
 
-#define DB_M56_ITSCAN_MSG52B_VAR 	DB_M56_ITSCAN_MSG52B_TYPE
-#define DB_M56_ITSCAN_MSG52C_VAR 	DB_M56_ITSCAN_MSG52C_TYPE
-#define DB_M56_ITSCAN_MSG52D_VAR 	DB_M56_ITSCAN_MSG52D_TYPE
+#define DB_M56_ITSCAN_MSG52b_VAR 	DB_M56_ITSCAN_MSG52b_TYPE
+#define DB_M56_ITSCAN_MSG52c_VAR 	DB_M56_ITSCAN_MSG52c_TYPE
+#define DB_M56_ITSCAN_MSG52d_VAR 	DB_M56_ITSCAN_MSG52d_TYPE
 #define DB_M56_ITSCAN_MSG27A_VAR	DB_M56_ITSCAN_MSG27A_TYPE
 
 #define MASK_b0	 0x01
@@ -905,6 +907,119 @@ static inline void get_m56_front_wiper_status(unsigned char *data,
 	m56_front_wiper_status_t *p) {
 
         p->front_wiper_status = (data[2] & MASK_b23) >> 2;
+}
+
+/*******************************************************************************
+ *      m56_lidar_target
+ *      Message ID      0x52b
+ *      Transmitted every 100 ms
+ *
+ *	distance_to_target
+ *      Byte Position   0-1
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+ *	relative_speed_to_target
+ *      Byte Position   2-3
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+ *	object_type
+ *      Byte Position   4
+ *      Bit Position    1
+ *      Bit Length      1
+ *
+ *	object_data_valid
+ *      Byte Position   4
+ *      Bit Position    0
+ *      Bit Length      1
+ *
+*/
+
+typedef struct {
+        int ts_ms;
+        unsigned char two_message_periods;
+        unsigned int message_timeout_counter;
+	float distance_to_target;
+	float relative_speed_to_target;
+        unsigned char object_type;
+        unsigned char object_data_valid;
+} m56_lidar_target_t;
+
+
+static inline void get_m56_lidar_target(unsigned char *data, 
+	m56_lidar_target_t *p) {
+
+        p->distance_to_target = (data[0] + (data[1] << 8)) * lidar_res;
+        p->relative_speed_to_target = (data[2] + (data[3] << 8)) * lidar_res;
+        p->object_type = (data[4] & MASK_b1) >> 1;
+        p->object_data_valid = data[4] & MASK_b0;
+}
+
+/*******************************************************************************
+ *      m56_yaw_rate
+ *      Message ID      0x52c
+ *      Transmitted every 100 ms
+ *
+ *	yaw_rate
+ *      Byte Position   0-1
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+ *	yaw_rate_sensor_value
+ *      Byte Position   5-6
+ *      Bit Position    0-15
+ *      Bit Length      16
+ *
+*/
+
+typedef struct {
+        int ts_ms;
+        unsigned char two_message_periods;
+        unsigned int message_timeout_counter;
+	float yaw_rate;
+	float yaw_rate_sensor_value;
+} m56_yaw_rate_t;
+
+
+static inline void get_m56_yaw_rate(unsigned char *data, 
+	m56_yaw_rate_t *p) {
+
+        p->yaw_rate = (data[0] + (data[1] << 8)) * yaw_rate_sensor_res;
+        p->yaw_rate_sensor_value = (data[5] + (data[6] << 8)) * yaw_rate_sensor_res;
+}
+
+/*******************************************************************************
+ *      m56_lidar_status
+ *      Message ID      0x52d
+ *      Transmitted every 100 ms
+ *
+ *	laser_operating_flag
+ *      Byte Position   1
+ *      Bit Position    4
+ *      Bit Length      1
+ *
+ *	laser_fail
+ *      Byte Position   1
+ *      Bit Position    0
+ *      Bit Length      1
+ *
+*/
+
+typedef struct {
+        int ts_ms;
+        unsigned char two_message_periods;
+        unsigned int message_timeout_counter;
+        unsigned char laser_operating_flag;
+        unsigned char laser_fail;
+} m56_lidar_status_t;
+
+
+static inline void get_m56_lidar_status(unsigned char *data, 
+	m56_lidar_status_t *p) {
+
+        p->laser_operating_flag = (data[1] & MASK_b4) >> 4;
+        p->laser_fail = data[1] & MASK_b0;
 }
 
 /*
