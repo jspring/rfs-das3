@@ -583,7 +583,7 @@ static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data,
 
         p->target_engine_torque_main_cpu = 
 		((data[0] + 
-		((data[1] & MASK_b47) << 8)) * targ_eng_tq_res) - 
+		((data[1] & MASK_b47) << 4)) * targ_eng_tq_res) - 
 		targ_eng_tq_off;
         p->target_engine_torque_sub_cpu = 
 		(((data[1] & MASK_b03) + 
