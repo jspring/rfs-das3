@@ -137,6 +137,14 @@ int main(int argc, char *argv[]) {
 	m56_yaw_rate.two_message_periods = 200; 	// 2*100 msec
 	m56_lidar_status.two_message_periods = 200; 	// 2*100 msec
 
+void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms, unsigned char *two_message_periods, unsigned int *message_timeout_counter) {
+	if( (curr_ts_ms - *prev_ts_ms) > *two_message_periods ) {
+	   ++*message_timeout_counter;
+	   *prev_ts_ms = curr_ts_ms;
+	}
+}
+
+
 	for(;;) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
 	   get_current_timestamp(&ts);
@@ -144,8 +152,7 @@ int main(int argc, char *argv[]) {
 	   switch(db_kom.id) {
 		case 0x002:
 		    get_m56_steering(db_kom.msg, &m56_steering);
-		    if( (ts_ms - m56_steering.ts_ms) > m56_steering.two_message_periods )
-			++m56_steering.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_steering.ts_ms, &m56_steering.two_message_periods, &m56_steering.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
 			sizeof(m56_steering_t), &m56_steering); 
 		    break;
@@ -157,22 +164,19 @@ int main(int argc, char *argv[]) {
 		    break;
 		case 0x180:
 		    get_m56_engine_rpm(db_kom.msg, &m56_engine_rpm);
-		    if( (ts_ms - m56_steering.ts_ms) > m56_steering.two_message_periods )
-			++m56_steering.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_engine_rpm.ts_ms, &m56_engine_rpm.two_message_periods, &m56_engine_rpm.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, 
 			sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
 		    break;
 		case 0x1c3:
 		    get_m56_its_alive(db_kom.msg, &m56_its_alive);
-		    if( (ts_ms - m56_pedal_position.ts_ms) > m56_pedal_position.two_message_periods )
-			++m56_pedal_position.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_its_alive.ts_ms, &m56_its_alive.two_message_periods, &m56_its_alive.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, 
 			sizeof(m56_its_alive_t), &m56_its_alive); 
 		    break;
 		case 0x239:
 		    get_m56_pedal_position(db_kom.msg, &m56_pedal_position);
-		    if( (ts_ms - m56_pedal_position.ts_ms) > m56_pedal_position.two_message_periods )
-			++m56_pedal_position.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_pedal_position.ts_ms, &m56_pedal_position.two_message_periods, &m56_pedal_position.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, 
 			sizeof(m56_pedal_position_t), &m56_pedal_position); 
 		    break;
@@ -180,37 +184,32 @@ int main(int argc, char *argv[]) {
 		    break;
 		case 0x284:
 		    get_m56_wheel_speed_front(db_kom.msg,&m56_wheel_speed_front);
-		    if( (ts_ms - m56_wheel_speed_front.ts_ms) > m56_wheel_speed_front.two_message_periods )
-			++m56_wheel_speed_front.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_wheel_speed_front.ts_ms, &m56_wheel_speed_front.two_message_periods, &m56_wheel_speed_front.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, 
 		      sizeof(m56_wheel_speed_front_t), &m56_wheel_speed_front); 
 		    break;
 		case 0x285:
 		    get_m56_wheel_speed_rear(db_kom.msg, &m56_wheel_speed_rear);
-		    if( (ts_ms - m56_wheel_speed_rear.ts_ms) > m56_wheel_speed_rear.two_message_periods )
-			++m56_wheel_speed_rear.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_wheel_speed_rear.ts_ms, &m56_wheel_speed_rear.two_message_periods, &m56_wheel_speed_rear.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, 
 			sizeof(m56_wheel_speed_rear_t), &m56_wheel_speed_rear); 
 		    break;
 		case 0x292:
 		    get_m56_acceleration(db_kom.msg, &m56_acceleration);
-		    if( (ts_ms - m56_acceleration.ts_ms) > m56_acceleration.two_message_periods )
-			++m56_acceleration.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_acceleration.ts_ms, &m56_acceleration.two_message_periods, &m56_acceleration.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, 
 			sizeof(m56_acceleration_t), &m56_acceleration); 
 		    break;
 		case 0x2aa:
 		    get_m56_acc_status(db_kom.msg, &m56_acc_status);
-		    if( (ts_ms - m56_acc_status.ts_ms) > m56_acc_status.two_message_periods )
-			++m56_acc_status.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_acc_status.ts_ms, &m56_acc_status.two_message_periods, &m56_acc_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2aa_VAR, 
 			sizeof(m56_acc_status_t), &m56_acc_status); 
 		    break;
 		case 0x2b0:
                     get_m56_eng_tq_acc_and_brake_flags(db_kom.msg, 
 			&m56_eng_tq_acc_and_brake_flags);
-		    if( (ts_ms - m56_eng_tq_acc_and_brake_flags.ts_ms) > m56_eng_tq_acc_and_brake_flags.two_message_periods )
-			++m56_eng_tq_acc_and_brake_flags.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_eng_tq_acc_and_brake_flags.ts_ms, &m56_eng_tq_acc_and_brake_flags.two_message_periods, &m56_eng_tq_acc_and_brake_flags.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2b0_VAR, 
 			sizeof(m56_eng_tq_acc_and_brake_flags_t), 
 			&m56_eng_tq_acc_and_brake_flags); 
@@ -218,23 +217,20 @@ int main(int argc, char *argv[]) {
 		case 0x2b3:
 		    get_m56_dashboard_indicators(db_kom.msg,
 			&m56_dashboard_indicators);
-		    if( (ts_ms - m56_dashboard_indicators.ts_ms) > m56_dashboard_indicators.two_message_periods )
-			++m56_dashboard_indicators.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_dashboard_indicators.ts_ms, &m56_dashboard_indicators.two_message_periods, &m56_dashboard_indicators.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG2b3_VAR, 
 			sizeof(m56_dashboard_indicators_t), &m56_dashboard_indicators); 
 		    break;
 		case 0x354:
                     get_m56_abs_status(db_kom.msg,
 			&m56_abs_status);
-		    if( (ts_ms - m56_abs_status.ts_ms) > m56_abs_status.two_message_periods )
-			++m56_abs_status.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_abs_status.ts_ms, &m56_abs_status.two_message_periods, &m56_abs_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG354_VAR, sizeof(m56_abs_status_t), &m56_abs_status); 
 		    break;
 		case 0x358:
                     get_m56_turn_switch_status(db_kom.msg,
 			&m56_turn_switch_status);
-		    if( (ts_ms - m56_turn_switch_status.ts_ms) > m56_turn_switch_status.two_message_periods )
-			++m56_turn_switch_status.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_turn_switch_status.ts_ms, &m56_turn_switch_status.two_message_periods, &m56_turn_switch_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, 
 			sizeof(m56_turn_switch_status_t), &m56_turn_switch_status); 
 		    break;
@@ -243,40 +239,35 @@ int main(int argc, char *argv[]) {
 		case 0x5b0:
                     get_m56_transmission_mode(db_kom.msg,
 			&m56_transmission_mode);
-		    if( (ts_ms - m56_transmission_mode.ts_ms) > m56_transmission_mode.two_message_periods )
-			++m56_transmission_mode.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_transmission_mode.ts_ms, &m56_transmission_mode.two_message_periods, &m56_transmission_mode.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, 
 			sizeof(m56_transmission_mode_t), &m56_transmission_mode); 
 		    break;
 		case 0x625:
                     get_m56_front_wiper_status(db_kom.msg,
 			&m56_front_wiper_status);
-		    if( (ts_ms - m56_front_wiper_status.ts_ms) > m56_front_wiper_status.two_message_periods )
-			++m56_front_wiper_status.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_front_wiper_status.ts_ms, &m56_front_wiper_status.two_message_periods, &m56_front_wiper_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, 
 			sizeof(m56_front_wiper_status_t), &m56_front_wiper_status); 
 		    break;
 		case 0x52b:
                     get_m56_lidar_target(db_kom.msg,
 			&m56_lidar_target);
-		    if( (ts_ms - m56_lidar_target.ts_ms) > m56_lidar_target.two_message_periods )
-			++m56_lidar_target.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_lidar_target.ts_ms, &m56_lidar_target.two_message_periods, &m56_lidar_target.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52b_VAR, 
 			sizeof(m56_lidar_target_t), &m56_lidar_target); 
 		    break;
 		case 0x52c:
                     get_m56_yaw_rate(db_kom.msg,
 			&m56_yaw_rate);
-		    if( (ts_ms - m56_yaw_rate.ts_ms) > m56_yaw_rate.two_message_periods )
-			++m56_yaw_rate.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_yaw_rate.ts_ms, &m56_yaw_rate.two_message_periods, &m56_yaw_rate.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52c_VAR, 
 			sizeof(m56_yaw_rate_t), &m56_yaw_rate); 
 		    break;
 		case 0x52d:
                     get_m56_lidar_status(db_kom.msg,
 			&m56_lidar_status);
-		    if( (ts_ms - m56_lidar_status.ts_ms) > m56_lidar_status.two_message_periods )
-			++m56_lidar_status.message_timeout_counter;
+		    check_msg_timeout(ts_ms, &m56_lidar_status.ts_ms, &m56_lidar_status.two_message_periods, &m56_lidar_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52d_VAR, 
 			sizeof(m56_lidar_status_t), &m56_lidar_status); 
 		    break;
