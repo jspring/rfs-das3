@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
 	int print_msg = 0;
 	int option;
 	int count = 0;
+	int create_db_vars = 0;
 
         char hostname[MAXHOSTNAMELEN];
         char *domain = DEFAULT_SERVICE; /// on Linux sets DB q-file directory
@@ -84,6 +85,9 @@ int main(int argc, char *argv[]) {
                 case 'v':
                         verbose = 1;
                         break;
+                case 'c':
+                        create_db_vars = 1;
+                        break;
                 default:
                         printf("Usage: %s %s\n", argv[0], usage);
                         exit(EXIT_FAILURE);
@@ -91,12 +95,18 @@ int main(int argc, char *argv[]) {
                 }
         }
         get_local_name(hostname, MAXHOSTNAMELEN);
-        if ((pclt = db_list_init(argv[0], hostname, domain, xport,
-	    db_vars_list, num_db_variables, db_trig_list, num_trig_variables)) == NULL) {
-                printf("Database initialization error in %s\n", argv[0]);
+        if ( create_db_vars && ((pclt = db_list_init(argv[0], hostname, domain, 
+	    xport, db_vars_list, num_db_variables, db_trig_list, 
+	    num_trig_variables)) == NULL)) 
+	{
+            exit(EXIT_FAILURE);
+        } else {
+            if ( (pclt = db_list_init(argv[0], hostname, domain, xport,
+	        NULL, 0, db_trig_list, num_trig_variables)) 
+		== NULL) {
                 exit(EXIT_FAILURE);
-        }
-
+	    }
+	}
         if (setjmp(exit_env) != 0) {
                 db_list_done(pclt, db_vars_list, num_db_variables, NULL, 0);
                 printf("%s: received %d CAN messages\n", argv[0], count);
