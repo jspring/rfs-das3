@@ -123,11 +123,17 @@ int main(int argc, char *argv[]) {
 	memset(&m56_wheel_speed_rear, 0, sizeof(m56_wheel_speed_rear_t));
 	memset(&m56_acceleration, 0, sizeof(m56_acceleration_t));
 	memset(&m56_acc_status, 0, sizeof(m56_acc_status_t));
-	memset(&m56_eng_tq_acc_and_brake_flags, 0, sizeof(m56_eng_tq_acc_and_brake_flags_t));
-	memset(&m56_dashboard_indicators, 0, sizeof(m56_dashboard_indicators_t));
+	memset(&m56_eng_tq_acc_and_brake_flags, 0, 
+		sizeof(m56_eng_tq_acc_and_brake_flags_t));
+	memset(&m56_dashboard_indicators, 0, 
+		sizeof(m56_dashboard_indicators_t));
 	memset(&m56_abs_status, 0, sizeof(m56_abs_status_t));
+	memset(&m56_turn_switch_status, 0, sizeof(m56_turn_switch_status_t));
 	memset(&m56_transmission_mode, 0, sizeof(m56_transmission_mode_t));
 	memset(&m56_front_wiper_status, 0, sizeof(m56_front_wiper_status_t));
+	memset(&m56_lidar_target, 0, sizeof(m56_lidar_target_t));
+	memset(&m56_yaw_rate, 0, sizeof(m56_yaw_rate_t));
+	memset(&m56_lidar_status, 0, sizeof(m56_lidar_status_t));
 
 	m56_steering.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
@@ -147,13 +153,41 @@ int main(int argc, char *argv[]) {
 	m56_yaw_rate.two_message_periods = 200; 	// 2*100 msec
 	m56_lidar_status.two_message_periods = 200; 	// 2*100 msec
 
-void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms, unsigned char *two_message_periods, unsigned int *message_timeout_counter) {
-	if( (curr_ts_ms - *prev_ts_ms) > *two_message_periods ) {
-	   ++*message_timeout_counter;
-	   *prev_ts_ms = curr_ts_ms;
-	}
-}
-
+	db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
+		sizeof(m56_steering_t), &m56_steering); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, 
+		sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, 
+		sizeof(m56_its_alive_t), &m56_its_alive); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG239_VAR, 
+		sizeof(m56_pedal_position_t), &m56_pedal_position); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG284_VAR, 
+		sizeof(m56_wheel_speed_front_t), &m56_wheel_speed_front); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG285_VAR, 
+		sizeof(m56_wheel_speed_rear_t), &m56_wheel_speed_rear); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG292_VAR, 
+		sizeof(m56_acceleration_t), &m56_acceleration); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG2aa_VAR, 
+		sizeof(m56_acc_status_t), &m56_acc_status); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG2b0_VAR, 
+		sizeof(m56_eng_tq_acc_and_brake_flags_t), 
+		&m56_eng_tq_acc_and_brake_flags); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG2b3_VAR, 
+		sizeof(m56_dashboard_indicators_t), &m56_dashboard_indicators); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG354_VAR, 
+		sizeof(m56_abs_status_t), &m56_abs_status); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, 
+		sizeof(m56_turn_switch_status_t), &m56_turn_switch_status); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, 
+		sizeof(m56_transmission_mode_t), &m56_transmission_mode); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, 
+		sizeof(m56_front_wiper_status_t), &m56_front_wiper_status); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG52b_VAR, 
+		sizeof(m56_lidar_target_t), &m56_lidar_target); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG52c_VAR, 
+		sizeof(m56_yaw_rate_t), &m56_yaw_rate); 
+    	db_clt_write(pclt,DB_M56_ITSCAN_MSG52d_VAR, 
+		sizeof(m56_lidar_status_t), &m56_lidar_status); 
 
 	for(;;) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
@@ -288,4 +322,13 @@ void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms, unsigned char *two_messa
 		printcan(&db_kom);
 	}
 	return 0;
+}
+
+void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms, 
+	unsigned char *two_message_periods, 
+	unsigned int *message_timeout_counter) {
+	if( (curr_ts_ms - *prev_ts_ms) > *two_message_periods ) {
+	   ++*message_timeout_counter;
+	   *prev_ts_ms = curr_ts_ms;
+	}
 }
