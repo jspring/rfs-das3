@@ -1,0 +1,44 @@
+Advantec KPC-DNR700NHB Camera Setup
+
+The KPC-DRN700 cameras, first used in the CACC Infiniti M56's, have a number
+of advanced features that are accessed using the joystick on the back of the 
+camera and an onscreen menu.
+
+The optimal configuration will differ between Driver (Interior) and Road Scene
+(Exterior) cameras.  Once a camera is configured, we should label it "D" for
+interior and E for exterior.
+
+Start with doing a factor reset (8).  Then you should just need to adjust the 
+settings that are indicated with an "*".
+
+1.   LENS -> MANUAL
+2.   Exposure
+	* Shutter -> AUTO 
+	  Brightness -> 50
+	  AGC -> MIDDLE (Once You Set Day & Night to Auto This Becomes ---)
+	* Sense-Up -> AUTO
+	* BLC -> OFF (Exterior) | BLC (Interior)
+	* D-WDR - OUTDOOR (Exterior) | INDOOR (Interior)
+3.   White BAL -> PUSH
+4. * Day & Night -> AUTO
+5.   Image
+	  Freeze -> OFF
+	  Mirror -> OFF
+	  D-Zoom -> OFF
+	  Sharpness -> 16
+	  Color Gain
+		Blue -> 63
+		Red  -> 62
+	  Gamma -> 0.45
+	  Neg. Image -> OFF
+6.   3DNR -> ON
+7.   Special
+	  Cam Title -> OFF
+	  Language -> English
+	  RS485
+	  Motion -> OFF
+	  Privacy -> OFF
+	  Synch -> INT
+8.   Reset
+	  Factory -> RESET
+9.   Exit
