@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 	m56_lidar_status_t m56_lidar_status;
 	m56_ignition_status_t m56_ignition_status;
 
-        while ((option = getopt(argc, argv, "v")) != EOF) {
+        while ((option = getopt(argc, argv, "vc")) != EOF) {
                 switch(option) {
                 case 'v':
                         verbose = 1;
