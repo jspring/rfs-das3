@@ -38,6 +38,7 @@ db_id_t db_vars_list[] =  {
         {DB_M56_ITSCAN_MSG52b_VAR, sizeof(m56_lidar_target_t)},
         {DB_M56_ITSCAN_MSG52c_VAR, sizeof(m56_yaw_rate_t)},
         {DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t)},
+	{DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -79,6 +80,7 @@ int main(int argc, char *argv[]) {
 	m56_lidar_target_t m56_lidar_target;
 	m56_yaw_rate_t m56_yaw_rate;
 	m56_lidar_status_t m56_lidar_status;
+	m56_ignition_status_t m56_ignition_status;
 
         while ((option = getopt(argc, argv, "v")) != EOF) {
                 switch(option) {
@@ -134,6 +136,7 @@ int main(int argc, char *argv[]) {
 	memset(&m56_lidar_target, 0, sizeof(m56_lidar_target_t));
 	memset(&m56_yaw_rate, 0, sizeof(m56_yaw_rate_t));
 	memset(&m56_lidar_status, 0, sizeof(m56_lidar_status_t));
+	memset(&m56_ignition_status, 0, sizeof(m56_ignition_status_t));
 
 	m56_steering.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
@@ -188,9 +191,13 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_yaw_rate_t), &m56_yaw_rate); 
     	db_clt_write(pclt,DB_M56_ITSCAN_MSG52d_VAR, 
 		sizeof(m56_lidar_status_t), &m56_lidar_status); 
+    	db_clt_write(pclt,DB_M56_IGNITION_VAR, 
+		sizeof(m56_ignition_status_t), &m56_ignition_status); 
 
 	for(;;) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
+	   m56_ignition_status.ignition_status = db_kom.gpio & M56_IGNITION_MASK;
+	   db_clt_write(pclt, DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t), &m56_ignition_status);
 	   get_current_timestamp(&ts);
 	   ts_ms = TS_TO_MS(&ts);
 	   switch(db_kom.id) {

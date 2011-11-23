@@ -49,6 +49,7 @@
 #define DB_M56_ITSCAN_MSG52c_TYPE	5020
 #define DB_M56_ITSCAN_MSG52d_TYPE	5021
 #define DB_M56_ITSCAN_MSG27A_TYPE	5022
+#define DB_M56_IGNITION_TYPE		5023
 
 #define DB_M56_VCAN2_MSG002_VAR 	DB_M56_VCAN2_MSG002_TYPE
 #define DB_M56_VCAN2_MSG160_VAR 	DB_M56_VCAN2_MSG160_TYPE
@@ -74,6 +75,7 @@
 #define DB_M56_ITSCAN_MSG52c_VAR 	DB_M56_ITSCAN_MSG52c_TYPE
 #define DB_M56_ITSCAN_MSG52d_VAR 	DB_M56_ITSCAN_MSG52d_TYPE
 #define DB_M56_ITSCAN_MSG27A_VAR	DB_M56_ITSCAN_MSG27A_TYPE
+#define DB_M56_IGNITION_VAR		DB_M56_IGNITION_TYPE
 
 #define MASK_b0	 0x01
 #define MASK_b01 0x03
@@ -93,6 +95,7 @@
 #define MASK_b6	 0x40
 #define MASK_b67 0xC0
 #define MASK_b7	 0x80
+#define M56_IGNITION_MASK 0X01
 
 /*******************************************************************************
  *      m56_steering
@@ -1021,6 +1024,10 @@ static inline void get_m56_lidar_status(unsigned char *data,
         p->laser_operating_flag = (data[1] & MASK_b4) >> 4;
         p->laser_fail = data[1] & MASK_b0;
 }
+
+typedef struct {
+	unsigned char ignition_status;
+} m56_ignition_status_t;
 
 /*
 ** printcan.c - prints 8-byte CAN message to stdout
