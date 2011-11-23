@@ -1032,3 +1032,6 @@ int printcan(db_komodo_t *db_kom);
 */
 int printmsg(db_komodo_t *db_kom);
 
+void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms,
+        unsigned char *two_message_periods,
+        unsigned int *message_timeout_counter);
