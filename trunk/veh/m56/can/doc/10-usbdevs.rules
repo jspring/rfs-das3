@@ -56,4 +56,4 @@ ACTION=="add", KERNEL=="advdaq*", ATTRS{product}=="USB4761 DA&C Device(FS)", NAM
 
 #KERNEL=="ttyUSB?",SUBSYSTEMS=="usb",ATTRS{product}=="Keyspan USA-19H",NAME="Keyspan19H",RUN+="/bin/stty -F /dev/Keyspan19H raw 19200"
 #KERNEL=="ttyUSB?",SUBSYSTEMS=="usb-serial",DRIVERS=="pl2303",NAME="gps_prolific",GROUP="uucp",RUN+="/bin/stty -F /dev/gps_prolific raw 4800"
-SUBSYSTEM=="usb",ATTR{manufacturer}=="Total Phase, Inc.",ATTRS{product}=="Komodo CAN Duo Interface",NAME="Komodo_Duo"
+SUBSYSTEM=="usb",ATTR{manufacturer}=="Total Phase, Inc.",ATTRS{product}=="Komodo CAN Duo Interface",NAME="Komodo_Duo",GROUP="plugdev"
