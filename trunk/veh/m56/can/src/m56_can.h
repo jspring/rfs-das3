@@ -1042,3 +1042,326 @@ int printmsg(db_komodo_t *db_kom);
 void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms,
         unsigned char *two_message_periods,
         unsigned int *message_timeout_counter);
+
+/*
+** Communication data between vehicles
+** 
+*/ 
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_01;
+	float v_VSP_491;
+	float VSPCOMN_491;
+	float ACVCOMO_491;
+} m56_vdne491_m210_t;
+    
+static inline void get_m56_vdne491_m210(unsigned char *data, 
+	m56_vdne491_m210_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_01 = data[1];
+	p->v_VSP_491 = (float)(0.1 * (data[2] + (data[3] << 8)));
+	p->VSPCOMN_491 = (float)(0.1 * (data[4] + (data[5] << 8)));
+	p->ACVCOMO_491 = (float)(0.1 * (data[6] + (data[7] << 8)));
+}
+
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_02;
+	float XG_491;
+	float vDISTANCE_491;
+	float vVR_491;
+	unsigned char fBRAKE_SE_491;
+	unsigned char fACCEL_SE_491;
+	unsigned char fACC_CRUISE_491;
+	unsigned char fSPORTSMODESW_491;
+	unsigned char fAUTOMODESW_491;
+	unsigned char fSTATE_LOCK_491;
+	unsigned char fACC_LMT_CACC_491;
+} m56_vdne491_m211_t;
+    
+static inline void get_m56_vdne491_m211(unsigned char *data, 
+	m56_vdne491_m211_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_02 = data[1];
+	p->XG_491 = (float)(0.1 * (data[2]));
+	p->vDISTANCE_491 = (float)(0.1 * (data[3] + (data[4] << 8)));
+	p->vVR_491 = (float)(0.1 * (data[5] + (data[6] << 8)));
+        p->fBRAKE_SE_491 = data[7] & MASK_b0;
+        p->fACCEL_SE_491 = data[7] & MASK_b1 >> 1;
+        p->fACC_CRUISE_491 = data[7] & MASK_b2 >> 2;
+        p->fSPORTSMODESW_491 = data[7] & MASK_b3 >> 3;
+        p->fAUTOMODESW_491 = data[7] & MASK_b4 >> 4;
+        p->fSTATE_LOCK_491 = data[7] & MASK_b5 >> 5;
+        p->fACC_LMT_CACC_491 = data[7] & MASK_b6 >> 6;
+}
+
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_03;
+	float vSET_VSP_491;
+} m56_vdne491_m212_t;
+    
+static inline void get_m56_vdne491_m212(unsigned char *data, 
+	m56_vdne491_m212_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_03 = data[1];
+	p->vSET_VSP_491 = (float)(0.1 * (data[2]));
+}
+
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_04;
+} m56_vdne491_m213_t;
+    
+    
+static inline void get_m56_vdne491_m213(unsigned char *data, 
+	m56_vdne491_m213_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_04 = data[1];
+}
+
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT01_PRO4;
+	float v_VSP_PRO4;
+	float VSPCOMN_PRO4;
+	float ACVCOMO_PRO4;
+} m56_vpro4_m214_t;
+    
+static inline void get_m56_vpro4_m214(unsigned char *data, 
+	m56_vpro4_m214_t *p) {
+	p->ID = data[0];
+	p->MSGCNT01_PRO4 = data[1];
+	p->v_VSP_PRO4 = (float)(0.1 * (data[2]) + (data[3] << 8));
+	p->VSPCOMN_PRO4 = (float)(0.1 * (data[4] + (data[5] << 8)));
+	p->ACVCOMO_PRO4 = (float)(0.1 * (data[6] + (data[7] << 8)));
+}
+    
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_02_PRO4;
+	float XG_PRO4;
+	float vDISTANCE_PRO4;
+	float vVR_PRO4;
+	unsigned char fBRAKE_SE_PRO4;
+	unsigned char fACCEL_SE_PRO4;
+	unsigned char fACC_CRUISE_PRO4;
+	unsigned char fSPORTSMODESW;
+	unsigned char fAUTOMODESW;
+	unsigned char fSTATE_LOCK_PRO4;
+	unsigned char fACC_LMT_CACC_PRO4;
+} m56_vpro4_m215_t;
+    
+static inline void get_m56_vpro4_m215(unsigned char *data, 
+	m56_vpro4_m215_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_02_PRO4 = data[1];
+	p->XG_PRO4 = (float)(0.1 * (data[2]));
+	p->vDISTANCE_PRO4 = (float)(0.1 * (data[3] + (data[4] << 8)));
+	p->vVR_PRO4 = (float)(0.1 * (data[5] + (data[6] << 8)));
+        p->fBRAKE_SE_PRO4 = data[7] & MASK_b0;
+        p->fACCEL_SE_PRO4 = data[7] & MASK_b1 >> 1;
+        p->fACC_CRUISE_PRO4 = data[7] & MASK_b2 >> 2;
+        p->fSPORTSMODESW = data[7] & MASK_b3 >> 3;
+        p->fAUTOMODESW = data[7] & MASK_b4 >> 4;
+        p->fSTATE_LOCK_PRO4 = data[7] & MASK_b5 >> 5;
+        p->fACC_LMT_CACC_PRO4 = data[7] & MASK_b6 >> 6;
+}
+    
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_03_PRO4;
+	float vSET_VSP_PRO4;
+} m56_vpro4_m216_t;
+    
+static inline void get_m56_vpro4_m216(unsigned char *data, 
+	m56_vpro4_m216_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_03_PRO4 = data[1];
+	p->vSET_VSP_PRO4 = (float)(0.1 * (data[2]));
+}
+    
+typedef struct {
+	unsigned char ID;
+	unsigned char MSGCNT_04;
+} m56_vpro4_m217_t;
+    
+static inline void get_m56_vpro4_m217(unsigned char *data, 
+	m56_vpro4_m217_t *p) {
+	p->ID = data[0];
+	p->MSGCNT_04 = data[1];
+}
+    
+typedef struct {
+	unsigned char ID_01_304;
+	unsigned char MSGNCT_01_304;
+	float v_VSP_304;
+	float VSPCOMN_304;
+	float ACVCOMO_304;
+} m56_vdnc304_m218_t;
+    
+static inline void get_m56_vdnc304_m218(unsigned char *data, 
+	m56_vdnc304_m218_t *p) {
+	p->ID_01_304 = data[0];
+	p->MSGNCT_01_304 = data[1];
+	p->v_VSP_304 = (float)(0.1 * (data[2]) + (data[3] << 8));
+	p->VSPCOMN_304 = (float)(0.1 * (data[4] + (data[5] << 8)));
+	p->ACVCOMO_304 = (float)(0.1 * (data[6] + (data[7] << 8)));
+}
+    
+typedef struct {
+	unsigned char ID_02_304;
+	unsigned char MSGCNT_02_304;
+	float XG_304;
+	float vDISTANCE_304;
+	float vVR_304;
+	unsigned char fBRAKE_SE_304;
+	unsigned char fACCEL_SE_304;
+	unsigned char fACC_CRUISE_304;
+	unsigned char fSPORTSMODESW;
+	unsigned char fAUTOMODESW;
+	unsigned char fSTATE_LOCK_304;
+	unsigned char fACC_LMT_CACC_304;
+} m56_vdnc304_m219_t;
+    
+static inline void get_m56_vdnc304_m219(unsigned char *data, 
+	m56_vdnc304_m219_t *p) {
+	p->ID_02_304 = data[0];
+	p->MSGCNT_02_304 = data[1];
+	p->XG_304 = (float)(0.1 * (data[2]));
+	p->vDISTANCE_304 = (float)(0.1 * (data[3] + (data[4] << 8)));
+	p->vVR_304 = (float)(0.1 * (data[5] + (data[6] << 8)));
+        p->fBRAKE_SE_304 = data[7] & MASK_b0;
+        p->fACCEL_SE_304 = data[7] & MASK_b1 >> 1;
+        p->fACC_CRUISE_304 = data[7] & MASK_b2 >> 2;
+        p->fSPORTSMODESW = data[7] & MASK_b3 >> 3;
+        p->fAUTOMODESW = data[7] & MASK_b4 >> 4;
+        p->fSTATE_LOCK_304 = data[7] & MASK_b5 >> 5;
+        p->fACC_LMT_CACC_304 = data[7] & MASK_b6 >> 6;
+}
+    
+typedef struct {
+	unsigned char ID_03_304;
+	unsigned char MSGCNT_03_304;
+	float vSET_VSP_304;
+} m56_vdnc304_m21a_t;
+    
+static inline void get_m56_vdnc304_m21a(unsigned char *data, 
+	m56_vdnc304_m21a_t *p) {
+	p->ID_03_304 = data[0];
+	p->MSGCNT_03_304 = data[1];
+	p->vSET_VSP_304 = (float)(0.1 * (data[2]));
+}
+    
+typedef struct {
+	unsigned char ID_04_304;
+	unsigned char MSGCNT_04_304;
+} m56_vdnc304_m21b_t;
+    
+static inline void get_m56_vdnc304_m21b(unsigned char *data, 
+	m56_vdnc304_m21b_t *p) {
+	p->ID_04_304 = data[0];
+	p->MSGCNT_04_304 = data[1];
+}
+    
+typedef struct {
+	unsigned char ID_01_PRO4_2;
+	unsigned char MSGNCT_01_PRO4;
+	float v_VSP_PRO4_2;
+	float VSPCOMN_PRO4_2;
+	float ACVCOMO_PRO4_2;
+} m56_vpro4_m21c_t;
+    
+static inline void get_m56_vpro4_m21c(unsigned char *data, 
+	m56_vpro4_m21c_t *p) {
+	p->ID_01_PRO4_2 = data[0];
+	p->MSGNCT_01_PRO4 = data[1];
+	p->v_VSP_PRO4_2 = (float)(0.1 * (data[2]) + (data[3] << 8));
+	p->VSPCOMN_PRO4_2 = (float)(0.1 * (data[4] + (data[5] << 8)));
+	p->ACVCOMO_PRO4_2 = (float)(0.1 * (data[6] + (data[7] << 8)));
+}
+
+typedef struct {
+	unsigned char ID_02_PRO4_2;
+	unsigned char MSGCNT_02_PRO4_2;
+	float XG_PRO4_2;
+	float vDISTANCE_PRO4_2;
+	float vVR_PRO4_2;
+	unsigned char fBRAKE_SE_PRO4_2;
+	unsigned char fACCEL_SE_PRO4_2;
+	unsigned char fACC_CRUISE_PRO4_2;
+	unsigned char fSPORTSMODESW;
+	unsigned char fAUTOMODESW;
+	unsigned char fSTATE_LOCK_PRO4_2;
+	unsigned char fACC_LMT_CACC_PRO4_2;
+} m56_vpro4_m21d_t;
+    
+static inline void get_m56_vpro4_m21d(unsigned char *data, 
+	m56_vpro4_m21d_t *p) {
+	p->ID_02_PRO4_2 = data[0];
+	p->MSGCNT_02_PRO4_2 = data[1];
+	p->XG_PRO4_2 = (float)(0.1 * (data[2]));
+	p->vDISTANCE_PRO4_2 = (float)(0.1 * (data[3] + (data[4] << 8)));
+	p->vVR_PRO4_2 = (float)(0.1 * (data[5] + (data[6] << 8)));
+        p->fBRAKE_SE_PRO4_2 = data[7] & MASK_b0;
+        p->fACCEL_SE_PRO4_2 = data[7] & MASK_b1 >> 1;
+        p->fACC_CRUISE_PRO4_2 = data[7] & MASK_b2 >> 2;
+        p->fSPORTSMODESW = data[7] & MASK_b3 >> 3;
+        p->fAUTOMODESW = data[7] & MASK_b4 >> 4;
+        p->fSTATE_LOCK_PRO4_2 = data[7] & MASK_b5 >> 5;
+        p->fACC_LMT_CACC_PRO4_2 = data[7] & MASK_b6 >> 6;
+}
+    
+typedef struct {
+	unsigned char ID_03_PRO4_2;
+	unsigned char MSGCNT_03_PRO4_2;
+	float vSET_VSP_PRO4_2;
+} m56_vpro4_m21a_t;
+    
+static inline void get_m56_vpro4_m21a(unsigned char *data, 
+	m56_vpro4_m21a_t *p) {
+	p->ID_03_PRO4_2 = data[0];
+	p->MSGCNT_03_PRO4_2 = data[1];
+	p->vSET_VSP_PRO4_2 = (float)(0.1 * (data[2]));
+}
+    
+typedef struct {
+	unsigned char ID_03_PRO4_2;
+	unsigned char MSGCNT_03_PRO4_2;
+	float vSET_VSP_PRO4_2;
+} m56_vpro4_m21f_t;
+    
+static inline void get_m56_vpro4_m21f(unsigned char *data, 
+	m56_vpro4_m21f_t *p) {
+	p->ID_03_PRO4_2 = data[0];
+	p->MSGCNT_03_PRO4_2 = data[1];
+	p->vSET_VSP_PRO4_2 = (float)(0.1 * (data[2]));
+}
+typedef struct {
+	//From ADAS - Fanping wants this   
+	float vACC_COM_LMT_z0;
+	float vMDISTANCE_ADAS;
+	float vvPRECEDING_SPEED_ADAS32;
+	unsigned char fSTATE_LOCK_ADAS;
+} m56_adas_289_t;
+    
+static inline void get_m56_adas_289(unsigned char *data, 
+	m56_adas_289_t *p) {
+	p->vACC_COM_LMT_z0 = 0.1 * data[0];
+	p->vMDISTANCE_ADAS = (float)(0.1 * (data[2]) + (data[3] << 8));
+	p->vvPRECEDING_SPEED_ADAS32 = 
+		(float)(0.1 * (data[4] + (data[5] << 8)));
+	p->fSTATE_LOCK_ADAS = data[6] & MASK_b0;
+}
+    
+typedef struct {
+	//From ADAS - Fanping wants this   
+	float vVSPCOMN;
+	float vACVCOMO;
+} m56_adas_28a_t;
+    
+static inline void get_m56_adas_28a(unsigned char *data, 
+	m56_adas_28a_t *p) {
+	p->vVSPCOMN = (float)(0.1 * (data[0]) + (data[1] << 8));
+	p->vACVCOMO = (float)(0.1 * (data[2]) + (data[3] << 8));
+}
