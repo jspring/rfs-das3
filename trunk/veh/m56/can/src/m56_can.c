@@ -39,6 +39,24 @@ db_id_t db_vars_list[] =  {
         {DB_M56_ITSCAN_MSG52c_VAR, sizeof(m56_yaw_rate_t)},
         {DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t)},
 	{DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t)},
+        {DB_M56_VCAN2_MSG210_VAR, sizeof(m56_vdne491_m210_t)},
+        {DB_M56_VCAN2_MSG211_VAR, sizeof(m56_vdne491_m211_t)},
+        {DB_M56_VCAN2_MSG212_VAR, sizeof(m56_vdne491_m212_t)},
+        {DB_M56_VCAN2_MSG213_VAR, sizeof(m56_vdne491_m213_t)},
+        {DB_M56_VCAN2_MSG214_VAR, sizeof(m56_vpro4_m214_t)},
+        {DB_M56_VCAN2_MSG215_VAR, sizeof(m56_vpro4_m215_t)},
+        {DB_M56_VCAN2_MSG216_VAR, sizeof(m56_vpro4_m216_t)},
+        {DB_M56_VCAN2_MSG217_VAR, sizeof(m56_vpro4_m217_t)},
+        {DB_M56_VCAN2_MSG218_VAR, sizeof(m56_vdnc304_m218_t)},
+        {DB_M56_VCAN2_MSG219_VAR, sizeof(m56_vdnc304_m219_t)},
+        {DB_M56_VCAN2_MSG21a_VAR, sizeof(m56_vdnc304_m21a_t)},
+        {DB_M56_VCAN2_MSG21b_VAR, sizeof(m56_vdnc304_m21b_t)},
+        {DB_M56_VCAN2_MSG21c_VAR, sizeof(m56_vpro4_m21c_t)},
+        {DB_M56_VCAN2_MSG21d_VAR, sizeof(m56_vpro4_m21d_t)},
+        {DB_M56_VCAN2_MSG21e_VAR, sizeof(m56_vpro4_m21e_t)},
+        {DB_M56_VCAN2_MSG21f_VAR, sizeof(m56_vpro4_m21f_t)},
+        {DB_M56_VCAN2_MSG289_VAR, sizeof(m56_adas_289_t)},
+        {DB_M56_VCAN2_MSG28a_VAR, sizeof(m56_adas_28a_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -81,6 +99,24 @@ int main(int argc, char *argv[]) {
 	m56_yaw_rate_t m56_yaw_rate;
 	m56_lidar_status_t m56_lidar_status;
 	m56_ignition_status_t m56_ignition_status;
+	m56_vdne491_m210_t m56_vdne491_m210;
+	m56_vdne491_m211_t m56_vdne491_m211;
+	m56_vdne491_m212_t m56_vdne491_m212;
+	m56_vdne491_m213_t m56_vdne491_m213;
+	m56_vpro4_m214_t m56_vpro4_m214;
+	m56_vpro4_m215_t m56_vpro4_m215;
+	m56_vpro4_m216_t m56_vpro4_m216;
+	m56_vpro4_m217_t m56_vpro4_m217;
+	m56_vdnc304_m218_t m56_vdnc304_m218;
+	m56_vdnc304_m219_t m56_vdnc304_m219;
+	m56_vdnc304_m21a_t m56_vdnc304_m21a;
+	m56_vdnc304_m21b_t m56_vdnc304_m21b;
+	m56_vpro4_m21c_t m56_vpro4_m21c;
+	m56_vpro4_m21d_t m56_vpro4_m21d;
+	m56_vpro4_m21e_t m56_vpro4_m21e;
+	m56_vpro4_m21f_t m56_vpro4_m21f;
+	m56_adas_289_t m56_adas_289;
+	m56_adas_28a_t m56_adas_28a;
 
         while ((option = getopt(argc, argv, "vc")) != EOF) {
                 switch(option) {
@@ -137,6 +173,24 @@ int main(int argc, char *argv[]) {
 	memset(&m56_yaw_rate, 0, sizeof(m56_yaw_rate_t));
 	memset(&m56_lidar_status, 0, sizeof(m56_lidar_status_t));
 	memset(&m56_ignition_status, 0, sizeof(m56_ignition_status_t));
+	memset(&m56_vdne491_m210, 0, sizeof(m56_vdne491_m210_t));
+	memset(&m56_vdne491_m211, 0, sizeof(m56_vdne491_m211_t));
+	memset(&m56_vdne491_m212, 0, sizeof(m56_vdne491_m212_t));
+	memset(&m56_vdne491_m213, 0, sizeof(m56_vdne491_m213_t));
+	memset(&m56_vpro4_m214, 0, sizeof(m56_vpro4_m214_t));
+	memset(&m56_vpro4_m215, 0, sizeof(m56_vpro4_m215_t));
+	memset(&m56_vpro4_m216, 0, sizeof(m56_vpro4_m216_t));
+	memset(&m56_vpro4_m217, 0, sizeof(m56_vpro4_m217_t));
+	memset(&m56_vdnc304_m218, 0, sizeof(m56_vdnc304_m218_t));
+	memset(&m56_vdnc304_m219, 0, sizeof(m56_vdnc304_m219_t));
+	memset(&m56_vdnc304_m21a, 0, sizeof(m56_vdnc304_m21a_t));
+	memset(&m56_vdnc304_m21b, 0, sizeof(m56_vdnc304_m21b_t));
+	memset(&m56_vpro4_m21c, 0, sizeof(m56_vpro4_m21c_t));
+	memset(&m56_vpro4_m21d, 0, sizeof(m56_vpro4_m21d_t));
+	memset(&m56_vpro4_m21e, 0, sizeof(m56_vpro4_m21e_t));
+	memset(&m56_vpro4_m21f, 0, sizeof(m56_vpro4_m21f_t));
+	memset(&m56_adas_289, 0, sizeof(m56_adas_289_t));
+	memset(&m56_adas_28a, 0, sizeof(m56_adas_28a_t));
 
 	m56_steering.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
@@ -155,6 +209,24 @@ int main(int argc, char *argv[]) {
 	m56_lidar_target.two_message_periods = 200; 	// 2*100 msec
 	m56_yaw_rate.two_message_periods = 200; 	// 2*100 msec
 	m56_lidar_status.two_message_periods = 200; 	// 2*100 msec
+	m56_vdne491_m210.two_message_periods = 200; 	// 2*100 msec
+	m56_vdne491_m211.two_message_periods = 200; 	// 2*100 msec
+	m56_vdne491_m212.two_message_periods = 200; 	// 2*100 msec
+	m56_vdne491_m213.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m214.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m215.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m216.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m217.two_message_periods = 200; 	// 2*100 msec
+	m56_vdnc304_m218.two_message_periods = 200; 	// 2*100 msec
+	m56_vdnc304_m219.two_message_periods = 200; 	// 2*100 msec
+	m56_vdnc304_m21a.two_message_periods = 200; 	// 2*100 msec
+	m56_vdnc304_m21b.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m21c.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m21d.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m21e.two_message_periods = 200; 	// 2*100 msec
+	m56_vpro4_m21f.two_message_periods = 200; 	// 2*100 msec
+	m56_adas_289.two_message_periods = 200; 	// 2*100 msec
+	m56_adas_28a.two_message_periods = 200; 	// 2*100 msec
 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
 		sizeof(m56_steering_t), &m56_steering); 
@@ -193,6 +265,42 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_lidar_status_t), &m56_lidar_status); 
     	db_clt_write(pclt,DB_M56_IGNITION_VAR, 
 		sizeof(m56_ignition_status_t), &m56_ignition_status); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG210_VAR, 
+		sizeof(m56_vdne491_m210_t), &m56_vdne491_m210); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG211_VAR, 
+		sizeof(m56_vdne491_m211_t), &m56_vdne491_m211); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG212_VAR, 
+		sizeof(m56_vdne491_m212_t), &m56_vdne491_m212); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG213_VAR, 
+		sizeof(m56_vdne491_m213_t), &m56_vdne491_m213); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG214_VAR, 
+		sizeof(m56_vpro4_m214_t), &m56_vpro4_m214); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG215_VAR, 
+		sizeof(m56_vpro4_m215_t), &m56_vpro4_m215); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG216_VAR, 
+		sizeof(m56_vpro4_m216_t), &m56_vpro4_m216); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG217_VAR, 
+		sizeof(m56_vpro4_m217_t), &m56_vpro4_m217); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG218_VAR, 
+		sizeof(m56_vdnc304_m218_t), &m56_vdnc304_m218); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG219_VAR, 
+		sizeof(m56_vdnc304_m219_t), &m56_vdnc304_m219); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21a_VAR, 
+		sizeof(m56_vdnc304_m21a_t), &m56_vdnc304_m21a); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21b_VAR, 
+		sizeof(m56_vdnc304_m218_t), &m56_vdnc304_m21b); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21c_VAR, 
+		sizeof(m56_vpro4_m21c_t), &m56_vpro4_m21c); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21d_VAR, 
+		sizeof(m56_vpro4_m21d_t), &m56_vpro4_m21d); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21e_VAR, 
+		sizeof(m56_vpro4_m21e_t), &m56_vpro4_m21e); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG21f_VAR, 
+		sizeof(m56_vpro4_m21f_t), &m56_vpro4_m21f); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG289_VAR, 
+		sizeof(m56_adas_289_t), &m56_adas_289); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG28a_VAR, 
+		sizeof(m56_adas_28a_t), &m56_adas_28a); 
 
 	for(;;) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
@@ -321,6 +429,104 @@ int main(int argc, char *argv[]) {
 		    check_msg_timeout(ts_ms, &m56_lidar_status.ts_ms, &m56_lidar_status.two_message_periods, &m56_lidar_status.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG52d_VAR, 
 			sizeof(m56_lidar_status_t), &m56_lidar_status); 
+		    break;
+
+		//Communication messages
+		case 0x210:
+                    get_m56_vdne491_m210(db_kom.msg, &m56_vdne491_m210);
+		    check_msg_timeout(ts_ms, &m56_vdne491_m210.ts_ms, &m56_vdne491_m210.two_message_periods, &m56_vdne491_m210.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG210_VAR, 
+			sizeof(m56_vdne491_m210_t), &m56_vdne491_m210); 
+		    break;
+		case 0x211:
+                    get_m56_vdne491_m211(db_kom.msg, &m56_vdne491_m211);
+		    check_msg_timeout(ts_ms, &m56_vdne491_m211.ts_ms, &m56_vdne491_m211.two_message_periods, &m56_vdne491_m211.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG211_VAR, 
+			sizeof(m56_vdne491_m211_t), &m56_vdne491_m211); 
+		    break;
+		case 0x212:
+                    get_m56_vdne491_m212(db_kom.msg, &m56_vdne491_m212);
+		    check_msg_timeout(ts_ms, &m56_vdne491_m212.ts_ms, &m56_vdne491_m212.two_message_periods, &m56_vdne491_m212.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG212_VAR, 
+			sizeof(m56_vdne491_m212_t), &m56_vdne491_m212); 
+		    break;
+		case 0x213:
+                    get_m56_vdne491_m213(db_kom.msg, &m56_vdne491_m213);
+		    check_msg_timeout(ts_ms, &m56_vdne491_m213.ts_ms, &m56_vdne491_m213.two_message_periods, &m56_vdne491_m213.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG213_VAR, 
+			sizeof(m56_vdne491_m213_t), &m56_vdne491_m213); 
+		    break;
+		case 0x214:
+                    get_m56_vpro4_m214(db_kom.msg, &m56_vpro4_m214);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m214.ts_ms, &m56_vpro4_m214.two_message_periods, &m56_vpro4_m214.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG214_VAR, 
+			sizeof(m56_vpro4_m214_t), &m56_vpro4_m214); 
+		    break;
+		case 0x215:
+                    get_m56_vpro4_m215(db_kom.msg, &m56_vpro4_m215);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m215.ts_ms, &m56_vpro4_m215.two_message_periods, &m56_vpro4_m215.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG215_VAR, 
+			sizeof(m56_vpro4_m215_t), &m56_vpro4_m215); 
+		    break;
+		case 0x216:
+                    get_m56_vpro4_m216(db_kom.msg, &m56_vpro4_m216);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m216.ts_ms, &m56_vpro4_m216.two_message_periods, &m56_vpro4_m216.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG216_VAR, 
+			sizeof(m56_vpro4_m216_t), &m56_vpro4_m216); 
+		    break;
+		case 0x217:
+                    get_m56_vpro4_m217(db_kom.msg, &m56_vpro4_m217);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m217.ts_ms, &m56_vpro4_m217.two_message_periods, &m56_vpro4_m217.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG217_VAR, 
+			sizeof(m56_vpro4_m217_t), &m56_vpro4_m217); 
+		    break;
+		case 0x218:
+                    get_m56_vdnc304_m218(db_kom.msg, &m56_vdnc304_m218);
+		    check_msg_timeout(ts_ms, &m56_vdnc304_m218.ts_ms, &m56_vdnc304_m218.two_message_periods, &m56_vdnc304_m218.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG218_VAR, 
+			sizeof(m56_vdnc304_m218_t), &m56_vdnc304_m218); 
+		    break;
+		case 0x219:
+                    get_m56_vdnc304_m219(db_kom.msg, &m56_vdnc304_m219);
+		    check_msg_timeout(ts_ms, &m56_vdnc304_m219.ts_ms, &m56_vdnc304_m219.two_message_periods, &m56_vdnc304_m219.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG219_VAR, 
+			sizeof(m56_vdnc304_m219_t), &m56_vdnc304_m219); 
+		    break;
+		case 0x21a:
+                    get_m56_vdnc304_m21a(db_kom.msg, &m56_vdnc304_m21a);
+		    check_msg_timeout(ts_ms, &m56_vdnc304_m21a.ts_ms, &m56_vdnc304_m21a.two_message_periods, &m56_vdnc304_m21a.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21a_VAR, 
+			sizeof(m56_vdnc304_m21a_t), &m56_vdnc304_m21a); 
+		    break;
+		case 0x21b:
+                    get_m56_vdnc304_m21b(db_kom.msg, &m56_vdnc304_m21b);
+		    check_msg_timeout(ts_ms, &m56_vdnc304_m21b.ts_ms, &m56_vdnc304_m21b.two_message_periods, &m56_vdnc304_m21b.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21b_VAR, 
+			sizeof(m56_vdnc304_m21b_t), &m56_vdnc304_m21b); 
+		    break;
+		case 0x21c:
+                    get_m56_vpro4_m21c(db_kom.msg, &m56_vpro4_m21c);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m21c.ts_ms, &m56_vpro4_m21c.two_message_periods, &m56_vpro4_m21c.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21c_VAR, 
+			sizeof(m56_vpro4_m21c_t), &m56_vpro4_m21c); 
+		    break;
+		case 0x21d:
+                    get_m56_vpro4_m21d(db_kom.msg, &m56_vpro4_m21d);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m21d.ts_ms, &m56_vpro4_m21d.two_message_periods, &m56_vpro4_m21d.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21d_VAR, 
+			sizeof(m56_vpro4_m21d_t), &m56_vpro4_m21d); 
+		    break;
+		case 0x21e:
+                    get_m56_vpro4_m21e(db_kom.msg, &m56_vpro4_m21e);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m21e.ts_ms, &m56_vpro4_m21e.two_message_periods, &m56_vpro4_m21e.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21e_VAR, 
+			sizeof(m56_vpro4_m21e_t), &m56_vpro4_m21e); 
+		    break;
+		case 0x21f:
+                    get_m56_vpro4_m21f(db_kom.msg, &m56_vpro4_m21f);
+		    check_msg_timeout(ts_ms, &m56_vpro4_m21f.ts_ms, &m56_vpro4_m21f.two_message_periods, &m56_vpro4_m21f.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG21f_VAR, 
+			sizeof(m56_vpro4_m21f_t), &m56_vpro4_m21f); 
 		    break;
 	}
 	   if(print_msg)

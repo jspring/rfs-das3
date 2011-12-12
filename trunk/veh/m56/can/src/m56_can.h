@@ -51,6 +51,25 @@
 #define DB_M56_ITSCAN_MSG27A_TYPE	5022
 #define DB_M56_IGNITION_TYPE		5023
 
+#define DB_M56_VCAN2_MSG210_TYPE		5024
+#define DB_M56_VCAN2_MSG211_TYPE		5025
+#define DB_M56_VCAN2_MSG212_TYPE		5026
+#define DB_M56_VCAN2_MSG213_TYPE		5027
+#define DB_M56_VCAN2_MSG214_TYPE		5028
+#define DB_M56_VCAN2_MSG215_TYPE		5029
+#define DB_M56_VCAN2_MSG216_TYPE		5030
+#define DB_M56_VCAN2_MSG217_TYPE		5031
+#define DB_M56_VCAN2_MSG218_TYPE		5032
+#define DB_M56_VCAN2_MSG219_TYPE		5033
+#define DB_M56_VCAN2_MSG21a_TYPE		5034
+#define DB_M56_VCAN2_MSG21b_TYPE		5035
+#define DB_M56_VCAN2_MSG21c_TYPE		5036
+#define DB_M56_VCAN2_MSG21d_TYPE		5037
+#define DB_M56_VCAN2_MSG21e_TYPE		5038
+#define DB_M56_VCAN2_MSG21f_TYPE		5039
+#define DB_M56_VCAN2_MSG289_TYPE		5040
+#define DB_M56_VCAN2_MSG28a_TYPE		5041
+
 #define DB_M56_VCAN2_MSG002_VAR 	DB_M56_VCAN2_MSG002_TYPE
 #define DB_M56_VCAN2_MSG160_VAR 	DB_M56_VCAN2_MSG160_TYPE
 #define DB_M56_VCAN2_MSG174_VAR 	DB_M56_VCAN2_MSG174_TYPE
@@ -76,6 +95,25 @@
 #define DB_M56_ITSCAN_MSG52d_VAR 	DB_M56_ITSCAN_MSG52d_TYPE
 #define DB_M56_ITSCAN_MSG27A_VAR	DB_M56_ITSCAN_MSG27A_TYPE
 #define DB_M56_IGNITION_VAR		DB_M56_IGNITION_TYPE
+
+#define DB_M56_VCAN2_MSG210_VAR 	DB_M56_VCAN2_MSG210_TYPE
+#define DB_M56_VCAN2_MSG211_VAR 	DB_M56_VCAN2_MSG211_TYPE
+#define DB_M56_VCAN2_MSG212_VAR 	DB_M56_VCAN2_MSG212_TYPE
+#define DB_M56_VCAN2_MSG213_VAR 	DB_M56_VCAN2_MSG213_TYPE
+#define DB_M56_VCAN2_MSG214_VAR 	DB_M56_VCAN2_MSG214_TYPE
+#define DB_M56_VCAN2_MSG215_VAR 	DB_M56_VCAN2_MSG215_TYPE
+#define DB_M56_VCAN2_MSG216_VAR 	DB_M56_VCAN2_MSG216_TYPE
+#define DB_M56_VCAN2_MSG217_VAR 	DB_M56_VCAN2_MSG217_TYPE
+#define DB_M56_VCAN2_MSG218_VAR 	DB_M56_VCAN2_MSG218_TYPE
+#define DB_M56_VCAN2_MSG219_VAR 	DB_M56_VCAN2_MSG219_TYPE
+#define DB_M56_VCAN2_MSG21a_VAR 	DB_M56_VCAN2_MSG21a_TYPE
+#define DB_M56_VCAN2_MSG21b_VAR 	DB_M56_VCAN2_MSG21b_TYPE
+#define DB_M56_VCAN2_MSG21c_VAR 	DB_M56_VCAN2_MSG21c_TYPE
+#define DB_M56_VCAN2_MSG21d_VAR 	DB_M56_VCAN2_MSG21d_TYPE
+#define DB_M56_VCAN2_MSG21e_VAR 	DB_M56_VCAN2_MSG21e_TYPE
+#define DB_M56_VCAN2_MSG21f_VAR 	DB_M56_VCAN2_MSG21f_TYPE
+#define DB_M56_VCAN2_MSG289_VAR 	DB_M56_VCAN2_MSG289_TYPE
+#define DB_M56_VCAN2_MSG28a_VAR 	DB_M56_VCAN2_MSG28a_TYPE
 
 #define MASK_b0	 0x01
 #define MASK_b01 0x03
@@ -1048,6 +1086,9 @@ void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms,
 ** 
 */ 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_01;
 	float v_VSP_491;
@@ -1065,6 +1106,9 @@ static inline void get_m56_vdne491_m210(unsigned char *data,
 }
 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_02;
 	float XG_491;
@@ -1096,6 +1140,9 @@ static inline void get_m56_vdne491_m211(unsigned char *data,
 }
 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_03;
 	float vSET_VSP_491;
@@ -1109,6 +1156,9 @@ static inline void get_m56_vdne491_m212(unsigned char *data,
 }
 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_04;
 } m56_vdne491_m213_t;
@@ -1121,6 +1171,9 @@ static inline void get_m56_vdne491_m213(unsigned char *data,
 }
 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT01_PRO4;
 	float v_VSP_PRO4;
@@ -1138,6 +1191,9 @@ static inline void get_m56_vpro4_m214(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_02_PRO4;
 	float XG_PRO4;
@@ -1169,6 +1225,9 @@ static inline void get_m56_vpro4_m215(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_03_PRO4;
 	float vSET_VSP_PRO4;
@@ -1182,6 +1241,9 @@ static inline void get_m56_vpro4_m216(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID;
 	unsigned char MSGCNT_04;
 } m56_vpro4_m217_t;
@@ -1193,6 +1255,9 @@ static inline void get_m56_vpro4_m217(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_01_304;
 	unsigned char MSGNCT_01_304;
 	float v_VSP_304;
@@ -1210,6 +1275,9 @@ static inline void get_m56_vdnc304_m218(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_02_304;
 	unsigned char MSGCNT_02_304;
 	float XG_304;
@@ -1241,6 +1309,9 @@ static inline void get_m56_vdnc304_m219(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_03_304;
 	unsigned char MSGCNT_03_304;
 	float vSET_VSP_304;
@@ -1254,6 +1325,9 @@ static inline void get_m56_vdnc304_m21a(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_04_304;
 	unsigned char MSGCNT_04_304;
 } m56_vdnc304_m21b_t;
@@ -1265,6 +1339,9 @@ static inline void get_m56_vdnc304_m21b(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_01_PRO4_2;
 	unsigned char MSGNCT_01_PRO4;
 	float v_VSP_PRO4_2;
@@ -1282,6 +1359,9 @@ static inline void get_m56_vpro4_m21c(unsigned char *data,
 }
 
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_02_PRO4_2;
 	unsigned char MSGCNT_02_PRO4_2;
 	float XG_PRO4_2;
@@ -1313,19 +1393,25 @@ static inline void get_m56_vpro4_m21d(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_03_PRO4_2;
 	unsigned char MSGCNT_03_PRO4_2;
 	float vSET_VSP_PRO4_2;
-} m56_vpro4_m21a_t;
+} m56_vpro4_m21e_t;
     
-static inline void get_m56_vpro4_m21a(unsigned char *data, 
-	m56_vpro4_m21a_t *p) {
+static inline void get_m56_vpro4_m21e(unsigned char *data, 
+	m56_vpro4_m21e_t *p) {
 	p->ID_03_PRO4_2 = data[0];
 	p->MSGCNT_03_PRO4_2 = data[1];
 	p->vSET_VSP_PRO4_2 = (float)(0.1 * (data[2]));
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	unsigned char ID_03_PRO4_2;
 	unsigned char MSGCNT_03_PRO4_2;
 	float vSET_VSP_PRO4_2;
@@ -1338,6 +1424,9 @@ static inline void get_m56_vpro4_m21f(unsigned char *data,
 	p->vSET_VSP_PRO4_2 = (float)(0.1 * (data[2]));
 }
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	//From ADAS - Fanping wants this   
 	float vACC_COM_LMT_z0;
 	float vMDISTANCE_ADAS;
@@ -1355,6 +1444,9 @@ static inline void get_m56_adas_289(unsigned char *data,
 }
     
 typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
 	//From ADAS - Fanping wants this   
 	float vVSPCOMN;
 	float vACVCOMO;
