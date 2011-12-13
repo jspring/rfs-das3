@@ -1084,6 +1084,9 @@ void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms,
 /*
 ** Communication data between vehicles
 ** 
+** DNE491 - Silver M56-S
+** DNC304 - Black exterior, gray interior
+** PRO4 -   Black exterior, black interior M56-S
 */ 
 typedef struct {
 	int ts_ms;
@@ -1412,17 +1415,16 @@ typedef struct {
 	int ts_ms;
 	unsigned char two_message_periods;
 	unsigned int message_timeout_counter;
-	unsigned char ID_03_PRO4_2;
-	unsigned char MSGCNT_03_PRO4_2;
-	float vSET_VSP_PRO4_2;
+	unsigned char ID_04_PRO4_2;
+	unsigned char MSGCNT_04_PRO4_2;
 } m56_vpro4_m21f_t;
     
 static inline void get_m56_vpro4_m21f(unsigned char *data, 
 	m56_vpro4_m21f_t *p) {
-	p->ID_03_PRO4_2 = data[0];
-	p->MSGCNT_03_PRO4_2 = data[1];
-	p->vSET_VSP_PRO4_2 = (float)(0.1 * (data[2]));
+	p->ID_04_PRO4_2 = data[0];
+	p->MSGCNT_04_PRO4_2 = data[1];
 }
+
 typedef struct {
 	int ts_ms;
 	unsigned char two_message_periods;
