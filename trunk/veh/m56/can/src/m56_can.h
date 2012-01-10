@@ -1524,3 +1524,4 @@ static inline void get_m56_adas_28a(unsigned char *data,
 	p->vVSPCOMN = (float)(0.1 * (data[0]) + (data[1] << 8));
 	p->vACVCOMO = (float)(0.1 * (data[2]) + (data[3] << 8));
 }
+//test
