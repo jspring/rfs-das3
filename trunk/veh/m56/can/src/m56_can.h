@@ -19,7 +19,6 @@
 #define estimated_pressure_res 0.05
 #define its_target_pressure_res 0.05
 #define targ_eng_tq_res 0.4
-#define targ_eng_tq_off 819.2
 #define virtual_accelerator_angle_res 0.392
 #define lidar_res 0.1
 #define yaw_rate_sensor_res 0.050
@@ -166,9 +165,40 @@ typedef struct {
 } m56_steering_t;
 
 static inline void get_m56_steering(unsigned char *data, m56_steering_t *p) {
-	p->steering_angle = ((data[0] << 8) + data[1]) * steering_angle_res;
-	p->steering_velocity = data[2]  * steering_velocity_res;
+	p->steering_angle = ((signed short)((data[0] + (data[1] << 8)))) * 
+		steering_angle_res;
+	p->steering_velocity = data[2] * steering_velocity_res;
 	p->message_counter = data[4] & MASK_b03;
+}
+
+/*******************************************************************************
+ *      m56_gear
+ *      Message ID      0x174
+ *      Transmitted every 10 ms
+ *
+ *	current_gear
+ *      Byte Position   3
+ *      Bit Position    0-3
+ *      Bit Length      4
+ *
+ *	next_gear
+ *      Byte Position   3
+ *      Bit Position    4-7
+ *      Bit Length      4
+ *
+ */
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char current_gear;
+	unsigned char next_gear;
+} m56_gear_t;
+
+static inline void get_m56_gear(unsigned char *data, m56_gear_t *p) {
+	p->current_gear = data[3] & MASK_b03;
+	p->next_gear = (data[3] & MASK_b47) >> 4;
 }
 
 /*******************************************************************************
@@ -254,9 +284,19 @@ static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
  *      Bit Position    7
  *      Bit Length      1
  *
- *	resume_sw
+ *	acc_control_requested
  *      Byte Position   2
- *      Bit Position    7
+ *      Bit Position    5
+ *      Bit Length      1
+ *
+ *	temporary_accel_flag
+ *      Byte Position   2
+ *      Bit Position    2
+ *      Bit Length      1
+ *
+ *	resume_sw
+ *      Byte Position   3
+ *      Bit Position    4
  *      Bit Length      1
  *
  *	acc_set_sw
@@ -266,12 +306,7 @@ static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
  *
  *	following_dist_sw	
  *      Byte Position   3
- *      Bit Position    3
- *      Bit Length      1
- *
- *	can_sw
- *      Byte Position   3
- *      Bit Position    1
+ *      Bit Position    2
  *      Bit Length      1
  *
  *	main_sw
@@ -307,10 +342,11 @@ typedef struct {
 	unsigned int message_timeout_counter;
 	float pedal_position;
 	unsigned char acc_inhibit;
+	unsigned char acc_control_requested;
+	unsigned char temporary_accel_flag;
 	unsigned char resume_sw;
 	unsigned char acc_set_sw;
 	unsigned char following_dist_sw;
-	unsigned char can_sw;
 	unsigned char main_sw;
 	unsigned char acc_can_fail_flag;
 	unsigned char brake_nc_sw;
@@ -321,10 +357,11 @@ typedef struct {
 static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_position_t *p) {
 	p->pedal_position = data[0] * pedal_pos_res;
 	p->acc_inhibit = (data[2] & MASK_b7) >> 7;
+	p->acc_control_requested = (data[2] & MASK_b5) >> 5;
+	p->temporary_accel_flag = (data[2] & MASK_b2) >> 2;
 	p->resume_sw = (data[3] & MASK_b4) >> 4;
 	p->acc_set_sw = (data[3] & MASK_b3) >> 3;
 	p->following_dist_sw = (data[3] & MASK_b2) >> 2;
-	p->can_sw = (data[3] & MASK_b1) >> 1;
 	p->main_sw = data[3] & MASK_b0;
 	p->acc_can_fail_flag = (data[4] & MASK_b7) >> 7;
 	p->brake_nc_sw = (data[4] & MASK_b6) >> 6;
@@ -623,13 +660,11 @@ static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data,
 	m56_eng_tq_acc_and_brake_flags_t *p) {
 
         p->target_engine_torque_main_cpu = 
-		((data[0] + 
-		((data[1] & MASK_b47) << 4)) * targ_eng_tq_res) - 
-		targ_eng_tq_off;
+		((signed short)((data[0] + ((data[1] & MASK_b47) << 4)))) * 
+			targ_eng_tq_res;
         p->target_engine_torque_sub_cpu = 
-		(((data[1] & MASK_b03) + 
-		(data[2] << 4)) * targ_eng_tq_res) - 
-		targ_eng_tq_off;
+		((signed short)(((data[1] & MASK_b03) + (data[2] << 4)))) * 
+			targ_eng_tq_res;
         p->driver_brake_nc = (data[3] & MASK_b7) >> 7;
         p->driver_brake_no = (data[3] & MASK_b6) >> 6;
         p->acc_main_sw = (data[3] & MASK_b5) >> 5;
@@ -879,6 +914,29 @@ static inline void get_m56_turn_switch_status(unsigned char *data, m56_turn_swit
 }
 
 /*******************************************************************************
+ *      m56_atcvt (Automatic Transmission Continuously Variable Transmission)
+ *      Message ID      0x421
+ *      Transmitted every 60 ms + event
+ *
+ *      virtual_gear
+ *      Byte Position   0
+ *      Bit Position    7
+ *      Bit Length      8
+ *
+*/
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+        unsigned char virtual_gear;
+} m56_atcvt_t;
+
+static inline void get_m56_atcvt(unsigned char *data, m56_atcvt_t *p) {
+        p->virtual_gear = data[0] & MASK_b03;
+}
+
+/*******************************************************************************
  *      m56_transmission_mode
  *      Message ID      0x5b0
  *      Transmitted every 100 ms
@@ -991,8 +1049,8 @@ typedef struct {
 static inline void get_m56_lidar_target(unsigned char *data, 
 	m56_lidar_target_t *p) {
 
-        p->distance_to_target = (data[0] + (data[1] << 8)) * lidar_res;
-        p->relative_speed_to_target = (data[2] + (data[3] << 8)) * lidar_res;
+        p->distance_to_target = ((signed short)((data[0] + (data[1] << 8)))) * lidar_res;
+        p->relative_speed_to_target = ((signed short)((data[2] + (data[3] << 8)))) * lidar_res;
         p->object_type = (data[4] & MASK_b1) >> 1;
         p->object_data_valid = data[4] & MASK_b0;
 }
@@ -1026,8 +1084,8 @@ typedef struct {
 static inline void get_m56_yaw_rate(unsigned char *data, 
 	m56_yaw_rate_t *p) {
 
-        p->yaw_rate = (data[0] + (data[1] << 8)) * yaw_rate_sensor_res;
-        p->yaw_rate_sensor_value = (data[5] + (data[6] << 8)) * yaw_rate_sensor_res;
+        p->yaw_rate = ((signed short)((data[0] + (data[1] << 8)))) * yaw_rate_sensor_res;
+        p->yaw_rate_sensor_value = ((signed short)((data[5] + (data[6] << 8)))) * yaw_rate_sensor_res;
 }
 
 /*******************************************************************************

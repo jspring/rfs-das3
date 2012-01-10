@@ -22,6 +22,7 @@ const char *usage = "-v verbose";
 
 db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG002_VAR, sizeof(m56_steering_t)},
+        {DB_M56_VCAN2_MSG174_VAR, sizeof(m56_gear_t)},
         {DB_M56_VCAN2_MSG180_VAR, sizeof(m56_engine_rpm_t)},
         {DB_M56_VCAN2_MSG1c3_VAR, sizeof(m56_its_alive_t)},
         {DB_M56_VCAN2_MSG239_VAR, sizeof(m56_pedal_position_t)},
@@ -33,6 +34,7 @@ db_id_t db_vars_list[] =  {
         {DB_M56_VCAN2_MSG2b3_VAR, sizeof(m56_dashboard_indicators_t)},
         {DB_M56_VCAN2_MSG354_VAR, sizeof(m56_abs_status_t)},
         {DB_M56_VCAN2_MSG358_VAR, sizeof(m56_turn_switch_status_t)},
+        {DB_M56_VCAN2_MSG421_VAR, sizeof(m56_atcvt_t)},
         {DB_M56_VCAN2_MSG5b0_VAR, sizeof(m56_transmission_mode_t)},
         {DB_M56_VCAN2_MSG625_VAR, sizeof(m56_front_wiper_status_t)},
         {DB_M56_ITSCAN_MSG52b_VAR, sizeof(m56_lidar_target_t)},
@@ -82,6 +84,7 @@ int main(int argc, char *argv[]) {
 	int ts_ms;
 
 	m56_engine_rpm_t m56_engine_rpm;
+	m56_gear_t m56_gear;
 	m56_its_alive_t m56_its_alive;
 	m56_pedal_position_t m56_pedal_position;
 	m56_wheel_speed_front_t m56_wheel_speed_front;
@@ -93,6 +96,7 @@ int main(int argc, char *argv[]) {
 	m56_dashboard_indicators_t m56_dashboard_indicators;
 	m56_abs_status_t m56_abs_status;
 	m56_turn_switch_status_t m56_turn_switch_status;
+	m56_atcvt_t m56_atcvt;
 	m56_transmission_mode_t m56_transmission_mode;
 	m56_front_wiper_status_t m56_front_wiper_status;
 	m56_lidar_target_t m56_lidar_target;
@@ -155,6 +159,7 @@ int main(int argc, char *argv[]) {
 	/* Zero data structures */
 	memset(&m56_steering, 0, sizeof(m56_steering_t));
 	memset(&m56_engine_rpm, 0, sizeof(m56_engine_rpm_t));
+	memset(&m56_gear, 0, sizeof(m56_gear_t));
 	memset(&m56_its_alive, 0, sizeof(m56_its_alive_t));
 	memset(&m56_pedal_position, 0, sizeof(m56_pedal_position_t));
 	memset(&m56_wheel_speed_front, 0, sizeof(m56_wheel_speed_front_t));
@@ -167,6 +172,7 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_dashboard_indicators_t));
 	memset(&m56_abs_status, 0, sizeof(m56_abs_status_t));
 	memset(&m56_turn_switch_status, 0, sizeof(m56_turn_switch_status_t));
+	memset(&m56_atcvt, 0, sizeof(m56_atcvt_t));
 	memset(&m56_transmission_mode, 0, sizeof(m56_transmission_mode_t));
 	memset(&m56_front_wiper_status, 0, sizeof(m56_front_wiper_status_t));
 	memset(&m56_lidar_target, 0, sizeof(m56_lidar_target_t));
@@ -193,6 +199,7 @@ int main(int argc, char *argv[]) {
 	memset(&m56_adas_28a, 0, sizeof(m56_adas_28a_t));
 
 	m56_steering.two_message_periods = 20; 		// 2*10 msec
+	m56_gear.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
 	m56_its_alive.two_message_periods = 20; 	// 2*10 msec
 	m56_pedal_position.two_message_periods = 40; 	// 2*20 msec
@@ -204,6 +211,7 @@ int main(int argc, char *argv[]) {
 	m56_dashboard_indicators.two_message_periods = 40; // 2*20 msec
 	m56_abs_status.two_message_periods = 80; 	// 2*40 msec
 	m56_turn_switch_status.two_message_periods = 200;// 2*100 msec
+	m56_atcvt.two_message_periods = 120;		// 2*60 msec
 	m56_transmission_mode.two_message_periods = 200;// 2*100 msec
 	m56_front_wiper_status.two_message_periods = 200; // 2*100 msec
 	m56_lidar_target.two_message_periods = 200; 	// 2*100 msec
@@ -230,6 +238,8 @@ int main(int argc, char *argv[]) {
 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
 		sizeof(m56_steering_t), &m56_steering); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG174_VAR, 
+		sizeof(m56_gear_t), &m56_gear); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG180_VAR, 
 		sizeof(m56_engine_rpm_t), &m56_engine_rpm); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG1c3_VAR, 
@@ -253,6 +263,8 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_abs_status_t), &m56_abs_status); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG358_VAR, 
 		sizeof(m56_turn_switch_status_t), &m56_turn_switch_status); 
+	db_clt_write(pclt,DB_M56_VCAN2_MSG421_VAR, 
+		sizeof(m56_atcvt_t), &m56_atcvt); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG5b0_VAR, 
 		sizeof(m56_transmission_mode_t), &m56_transmission_mode); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG625_VAR, 
@@ -318,6 +330,10 @@ int main(int argc, char *argv[]) {
 		case 0x160:
 		    break;
 		case 0x174:
+		    get_m56_gear(db_kom.msg, &m56_gear);
+		    check_msg_timeout(ts_ms, &m56_gear.ts_ms, &m56_gear.two_message_periods, &m56_gear.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG174_VAR, 
+			sizeof(m56_gear_t), &m56_gear); 
 		    break;
 		case 0x177:
 		    break;
@@ -394,6 +410,9 @@ int main(int argc, char *argv[]) {
 			sizeof(m56_turn_switch_status_t), &m56_turn_switch_status); 
 		    break;
 		case 0x421:
+                    get_m56_atcvt(db_kom.msg, &m56_atcvt);
+		    check_msg_timeout(ts_ms, &m56_atcvt.ts_ms, &m56_atcvt.two_message_periods, &m56_atcvt.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_VCAN2_MSG421_VAR, sizeof(m56_atcvt_t), &m56_atcvt); 
 		    break;
 		case 0x5b0:
                     get_m56_transmission_mode(db_kom.msg,
