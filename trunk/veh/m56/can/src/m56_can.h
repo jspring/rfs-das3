@@ -309,6 +309,11 @@ static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
  *      Bit Position    2
  *      Bit Length      1
  *
+ *	cancel_sw
+ *      Byte Position   3
+ *      Bit Position    1
+ *      Bit Length      1
+ *
  *	main_sw
  *      Byte Position   3
  *      Bit Position    0
@@ -347,6 +352,7 @@ typedef struct {
 	unsigned char resume_sw;
 	unsigned char acc_set_sw;
 	unsigned char following_dist_sw;
+	unsigned char cancel_sw;
 	unsigned char main_sw;
 	unsigned char acc_can_fail_flag;
 	unsigned char brake_nc_sw;
@@ -362,6 +368,7 @@ static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_positio
 	p->resume_sw = (data[3] & MASK_b4) >> 4;
 	p->acc_set_sw = (data[3] & MASK_b3) >> 3;
 	p->following_dist_sw = (data[3] & MASK_b2) >> 2;
+	p->cancel_sw = (data[3] & MASK_b1) >> 1;
 	p->main_sw = data[3] & MASK_b0;
 	p->acc_can_fail_flag = (data[4] & MASK_b7) >> 7;
 	p->brake_nc_sw = (data[4] & MASK_b6) >> 6;
