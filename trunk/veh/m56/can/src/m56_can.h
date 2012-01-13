@@ -118,6 +118,7 @@
 #define MASK_b01 0x03
 #define MASK_b02 0x07
 #define MASK_b03 0x0F
+#define MASK_b04 0x1F
 #define MASK_b07 0xFF
 #define MASK_b1	 0x02
 #define MASK_b12 0x06
@@ -940,7 +941,7 @@ typedef struct {
 } m56_atcvt_t;
 
 static inline void get_m56_atcvt(unsigned char *data, m56_atcvt_t *p) {
-        p->virtual_gear = data[0] & MASK_b03;
+        p->virtual_gear = data[0] & MASK_b04;
 }
 
 /*******************************************************************************
