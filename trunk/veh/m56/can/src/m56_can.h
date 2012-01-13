@@ -502,7 +502,7 @@ typedef struct {
 static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t *p) {
 	p->long_accel_proc_02 = (((signed short)((data[0] << 4) + (data[1] >> 4))) * acceleration_res) + acceleration_offset;
 	p->transverse_accel_proc_02 = (((signed short)(((data[1] & MASK_b03) << 8) + data[2])) * acceleration_res) + acceleration_offset;
-	p->yaw_rate_02 = (((signed short)((data[3] << 4) + (data[4] & MASK_b03))) * yaw_rate_res) + yaw_rate_offset;
+	p->yaw_rate_02 = (((signed short)((data[3] << 4) + (data[4] >> 4))) * yaw_rate_res) + yaw_rate_offset;
 	p->pressure_sensor_02 = data[6];
 	p->message_counter = data[7] & MASK_b01;
 }
