@@ -69,6 +69,124 @@
 #define DB_M56_VCAN2_MSG289_TYPE		5040
 #define DB_M56_VCAN2_MSG28a_TYPE		5041
 
+#define DB_M56_ITSCAN_MSG200_TYPE		5100
+#define DB_M56_ITSCAN_MSG201_TYPE		5101
+#define DB_M56_ITSCAN_MSG202_TYPE		5102
+#define DB_M56_ITSCAN_MSG203_TYPE		5103
+#define DB_M56_ITSCAN_MSG650_TYPE		5104
+#define DB_M56_ITSCAN_MSG651_TYPE		5105
+#define DB_M56_ITSCAN_MSG652_TYPE		5106
+#define DB_M56_ITSCAN_MSG653_TYPE		5107
+#define DB_M56_ITSCAN_MSG654_TYPE		5108
+#define DB_M56_ITSCAN_MSG655_TYPE		5109
+#define DB_M56_ITSCAN_MSG656_TYPE		5110
+#define DB_M56_ITSCAN_MSG657_TYPE		5111
+#define DB_M56_ITSCAN_MSG658_TYPE		5112
+#define DB_M56_ITSCAN_MSG710_TYPE		5113
+#define DB_M56_ITSCAN_MSG711_TYPE		5114
+
+#define DB_M56_ITSCAN_MSG430_TYPE		5115
+#define DB_M56_ITSCAN_MSG440_TYPE		5116
+#define DB_M56_ITSCAN_MSG450_TYPE		5117
+#define DB_M56_ITSCAN_MSG460_TYPE		5118
+#define DB_M56_ITSCAN_MSG470_TYPE		5119
+
+#define DB_M56_ITSCAN_MSG431_TYPE		5120
+#define DB_M56_ITSCAN_MSG441_TYPE		5121
+#define DB_M56_ITSCAN_MSG451_TYPE		5122
+#define DB_M56_ITSCAN_MSG461_TYPE		5123
+#define DB_M56_ITSCAN_MSG471_TYPE		5124
+
+#define DB_M56_ITSCAN_MSG432_TYPE		5125
+#define DB_M56_ITSCAN_MSG442_TYPE		5126
+#define DB_M56_ITSCAN_MSG452_TYPE		5127
+#define DB_M56_ITSCAN_MSG462_TYPE		5128
+#define DB_M56_ITSCAN_MSG472_TYPE		5129
+
+#define DB_M56_ITSCAN_MSG433_TYPE		5130
+#define DB_M56_ITSCAN_MSG443_TYPE		5131
+#define DB_M56_ITSCAN_MSG453_TYPE		5132
+#define DB_M56_ITSCAN_MSG463_TYPE		5133
+#define DB_M56_ITSCAN_MSG473_TYPE		5134
+
+#define DB_M56_ITSCAN_MSG434_TYPE		5135
+#define DB_M56_ITSCAN_MSG444_TYPE		5136
+#define DB_M56_ITSCAN_MSG454_TYPE		5137
+#define DB_M56_ITSCAN_MSG464_TYPE		5138
+#define DB_M56_ITSCAN_MSG474_TYPE		5139
+
+#define DB_M56_ITSCAN_MSG435_TYPE		5140
+#define DB_M56_ITSCAN_MSG445_TYPE		5141
+#define DB_M56_ITSCAN_MSG455_TYPE		5142
+#define DB_M56_ITSCAN_MSG465_TYPE		5143
+#define DB_M56_ITSCAN_MSG475_TYPE		5144
+
+#define DB_M56_ITSCAN_MSG436_TYPE		5145
+#define DB_M56_ITSCAN_MSG446_TYPE		5146
+#define DB_M56_ITSCAN_MSG456_TYPE		5147
+#define DB_M56_ITSCAN_MSG466_TYPE		5148
+#define DB_M56_ITSCAN_MSG476_TYPE		5149
+
+#define DB_M56_ITSCAN_MSG437_TYPE		5150
+#define DB_M56_ITSCAN_MSG447_TYPE		5151
+#define DB_M56_ITSCAN_MSG457_TYPE		5152
+#define DB_M56_ITSCAN_MSG467_TYPE		5153
+#define DB_M56_ITSCAN_MSG477_TYPE		5154
+
+#define DB_M56_ITSCAN_MSG438_TYPE		5155
+#define DB_M56_ITSCAN_MSG448_TYPE		5156
+#define DB_M56_ITSCAN_MSG458_TYPE		5157
+#define DB_M56_ITSCAN_MSG468_TYPE		5158
+#define DB_M56_ITSCAN_MSG478_TYPE		5159
+
+#define DB_M56_ITSCAN_MSG480_TYPE		5160
+#define DB_M56_ITSCAN_MSG490_TYPE		5161
+#define DB_M56_ITSCAN_MSG4A0_TYPE		5162
+#define DB_M56_ITSCAN_MSG4B0_TYPE		5163
+#define DB_M56_ITSCAN_MSG4C0_TYPE		5164
+
+#define DB_M56_ITSCAN_MSG481_TYPE		5165
+#define DB_M56_ITSCAN_MSG491_TYPE		5166
+#define DB_M56_ITSCAN_MSG4A1_TYPE		5167
+#define DB_M56_ITSCAN_MSG4B1_TYPE		5168
+#define DB_M56_ITSCAN_MSG4C1_TYPE		5169
+
+#define DB_M56_ITSCAN_MSG482_TYPE		5170
+#define DB_M56_ITSCAN_MSG492_TYPE		5171
+#define DB_M56_ITSCAN_MSG4A2_TYPE		5172
+#define DB_M56_ITSCAN_MSG4B2_TYPE		5173
+#define DB_M56_ITSCAN_MSG4C2_TYPE		5174
+
+#define DB_M56_ITSCAN_MSG483_TYPE		5175
+#define DB_M56_ITSCAN_MSG493_TYPE		5176
+#define DB_M56_ITSCAN_MSG4A3_TYPE		5177
+#define DB_M56_ITSCAN_MSG4B3_TYPE		5178
+#define DB_M56_ITSCAN_MSG4C3_TYPE		5179
+
+#define DB_M56_ITSCAN_MSG484_TYPE		5180
+#define DB_M56_ITSCAN_MSG494_TYPE		5181
+#define DB_M56_ITSCAN_MSG4A4_TYPE		5182
+#define DB_M56_ITSCAN_MSG4B4_TYPE		5183
+#define DB_M56_ITSCAN_MSG4C4_TYPE		5184
+
+#define DB_M56_ITSCAN_MSG485_TYPE		5185
+#define DB_M56_ITSCAN_MSG495_TYPE		5186
+#define DB_M56_ITSCAN_MSG4A5_TYPE		5187
+#define DB_M56_ITSCAN_MSG4B5_TYPE		5188
+#define DB_M56_ITSCAN_MSG4C5_TYPE		5189
+
+#define DB_M56_ITSCAN_MSG486_TYPE		5190
+#define DB_M56_ITSCAN_MSG496_TYPE		5191
+#define DB_M56_ITSCAN_MSG4A6_TYPE		5192
+#define DB_M56_ITSCAN_MSG4B6_TYPE		5193
+#define DB_M56_ITSCAN_MSG4C6_TYPE		5194
+
+#define DB_M56_ITSCAN_MSG487_TYPE		5195
+#define DB_M56_ITSCAN_MSG497_TYPE		5196
+#define DB_M56_ITSCAN_MSG4A7_TYPE		5197
+#define DB_M56_ITSCAN_MSG4B7_TYPE		5198
+#define DB_M56_ITSCAN_MSG4C7_TYPE		5199
+
 #define DB_M56_VCAN2_MSG002_VAR 	DB_M56_VCAN2_MSG002_TYPE
 #define DB_M56_VCAN2_MSG160_VAR 	DB_M56_VCAN2_MSG160_TYPE
 #define DB_M56_VCAN2_MSG174_VAR 	DB_M56_VCAN2_MSG174_TYPE
@@ -113,6 +231,126 @@
 #define DB_M56_VCAN2_MSG21f_VAR 	DB_M56_VCAN2_MSG21f_TYPE
 #define DB_M56_VCAN2_MSG289_VAR 	DB_M56_VCAN2_MSG289_TYPE
 #define DB_M56_VCAN2_MSG28a_VAR 	DB_M56_VCAN2_MSG28a_TYPE
+
+#define DB_M56_ITSCAN_MSG200_VAR 	DB_M56_ITSCAN_MSG200_TYPE
+#define DB_M56_ITSCAN_MSG201_VAR 	DB_M56_ITSCAN_MSG201_TYPE
+#define DB_M56_ITSCAN_MSG202_VAR 	DB_M56_ITSCAN_MSG202_TYPE
+#define DB_M56_ITSCAN_MSG203_VAR 	DB_M56_ITSCAN_MSG203_TYPE
+#define DB_M56_ITSCAN_MSG650_VAR 	DB_M56_ITSCAN_MSG650_TYPE
+
+#define DB_M56_ITSCAN_MSG651_VAR 	DB_M56_ITSCAN_MSG651_TYPE
+#define DB_M56_ITSCAN_MSG652_VAR 	DB_M56_ITSCAN_MSG652_TYPE
+#define DB_M56_ITSCAN_MSG653_VAR 	DB_M56_ITSCAN_MSG653_TYPE
+#define DB_M56_ITSCAN_MSG654_VAR 	DB_M56_ITSCAN_MSG654_TYPE
+#define DB_M56_ITSCAN_MSG655_VAR 	DB_M56_ITSCAN_MSG655_TYPE
+
+#define DB_M56_ITSCAN_MSG656_VAR 	DB_M56_ITSCAN_MSG656_TYPE
+#define DB_M56_ITSCAN_MSG657_VAR 	DB_M56_ITSCAN_MSG657_TYPE
+#define DB_M56_ITSCAN_MSG658_VAR 	DB_M56_ITSCAN_MSG658_TYPE
+#define DB_M56_ITSCAN_MSG710_VAR 	DB_M56_ITSCAN_MSG710_TYPE
+#define DB_M56_ITSCAN_MSG711_VAR 	DB_M56_ITSCAN_MSG711_TYPE
+
+#define DB_M56_ITSCAN_MSG430_VAR 	DB_M56_ITSCAN_MSG430_TYPE
+#define DB_M56_ITSCAN_MSG440_VAR 	DB_M56_ITSCAN_MSG440_TYPE
+#define DB_M56_ITSCAN_MSG450_VAR 	DB_M56_ITSCAN_MSG450_TYPE
+#define DB_M56_ITSCAN_MSG460_VAR 	DB_M56_ITSCAN_MSG460_TYPE
+#define DB_M56_ITSCAN_MSG470_VAR 	DB_M56_ITSCAN_MSG470_TYPE
+
+#define DB_M56_ITSCAN_MSG431_VAR 	DB_M56_ITSCAN_MSG431_TYPE
+#define DB_M56_ITSCAN_MSG441_VAR 	DB_M56_ITSCAN_MSG441_TYPE
+#define DB_M56_ITSCAN_MSG451_VAR 	DB_M56_ITSCAN_MSG451_TYPE
+#define DB_M56_ITSCAN_MSG461_VAR 	DB_M56_ITSCAN_MSG461_TYPE
+#define DB_M56_ITSCAN_MSG471_VAR 	DB_M56_ITSCAN_MSG471_TYPE
+
+#define DB_M56_ITSCAN_MSG432_VAR 	DB_M56_ITSCAN_MSG432_TYPE
+#define DB_M56_ITSCAN_MSG442_VAR 	DB_M56_ITSCAN_MSG442_TYPE
+#define DB_M56_ITSCAN_MSG452_VAR 	DB_M56_ITSCAN_MSG452_TYPE
+#define DB_M56_ITSCAN_MSG462_VAR 	DB_M56_ITSCAN_MSG462_TYPE
+#define DB_M56_ITSCAN_MSG472_VAR 	DB_M56_ITSCAN_MSG472_TYPE
+
+#define DB_M56_ITSCAN_MSG433_VAR 	DB_M56_ITSCAN_MSG433_TYPE
+#define DB_M56_ITSCAN_MSG443_VAR 	DB_M56_ITSCAN_MSG443_TYPE
+#define DB_M56_ITSCAN_MSG453_VAR 	DB_M56_ITSCAN_MSG453_TYPE
+#define DB_M56_ITSCAN_MSG463_VAR 	DB_M56_ITSCAN_MSG463_TYPE
+#define DB_M56_ITSCAN_MSG473_VAR 	DB_M56_ITSCAN_MSG473_TYPE
+
+#define DB_M56_ITSCAN_MSG434_VAR 	DB_M56_ITSCAN_MSG434_TYPE
+#define DB_M56_ITSCAN_MSG444_VAR 	DB_M56_ITSCAN_MSG444_TYPE
+#define DB_M56_ITSCAN_MSG454_VAR 	DB_M56_ITSCAN_MSG454_TYPE
+#define DB_M56_ITSCAN_MSG464_VAR 	DB_M56_ITSCAN_MSG464_TYPE
+#define DB_M56_ITSCAN_MSG474_VAR 	DB_M56_ITSCAN_MSG474_TYPE
+
+#define DB_M56_ITSCAN_MSG435_VAR 	DB_M56_ITSCAN_MSG435_TYPE
+#define DB_M56_ITSCAN_MSG445_VAR 	DB_M56_ITSCAN_MSG445_TYPE
+#define DB_M56_ITSCAN_MSG455_VAR 	DB_M56_ITSCAN_MSG455_TYPE
+#define DB_M56_ITSCAN_MSG465_VAR 	DB_M56_ITSCAN_MSG465_TYPE
+#define DB_M56_ITSCAN_MSG475_VAR 	DB_M56_ITSCAN_MSG475_TYPE
+
+#define DB_M56_ITSCAN_MSG436_VAR 	DB_M56_ITSCAN_MSG436_TYPE
+#define DB_M56_ITSCAN_MSG446_VAR 	DB_M56_ITSCAN_MSG446_TYPE
+#define DB_M56_ITSCAN_MSG456_VAR 	DB_M56_ITSCAN_MSG456_TYPE
+#define DB_M56_ITSCAN_MSG466_VAR 	DB_M56_ITSCAN_MSG466_TYPE
+#define DB_M56_ITSCAN_MSG476_VAR 	DB_M56_ITSCAN_MSG476_TYPE
+
+#define DB_M56_ITSCAN_MSG437_VAR 	DB_M56_ITSCAN_MSG437_TYPE
+#define DB_M56_ITSCAN_MSG447_VAR 	DB_M56_ITSCAN_MSG447_TYPE
+#define DB_M56_ITSCAN_MSG457_VAR 	DB_M56_ITSCAN_MSG457_TYPE
+#define DB_M56_ITSCAN_MSG467_VAR 	DB_M56_ITSCAN_MSG467_TYPE
+#define DB_M56_ITSCAN_MSG477_VAR 	DB_M56_ITSCAN_MSG477_TYPE
+
+#define DB_M56_ITSCAN_MSG438_VAR 	DB_M56_ITSCAN_MSG438_TYPE
+#define DB_M56_ITSCAN_MSG448_VAR 	DB_M56_ITSCAN_MSG448_TYPE
+#define DB_M56_ITSCAN_MSG458_VAR 	DB_M56_ITSCAN_MSG458_TYPE
+#define DB_M56_ITSCAN_MSG468_VAR 	DB_M56_ITSCAN_MSG468_TYPE
+#define DB_M56_ITSCAN_MSG478_VAR 	DB_M56_ITSCAN_MSG478_TYPE
+
+#define DB_M56_ITSCAN_MSG480_VAR 	DB_M56_ITSCAN_MSG480_TYPE
+#define DB_M56_ITSCAN_MSG490_VAR 	DB_M56_ITSCAN_MSG490_TYPE
+#define DB_M56_ITSCAN_MSG4A0_VAR 	DB_M56_ITSCAN_MSG4A0_TYPE
+#define DB_M56_ITSCAN_MSG4B0_VAR 	DB_M56_ITSCAN_MSG4B0_TYPE
+#define DB_M56_ITSCAN_MSG4C0_VAR 	DB_M56_ITSCAN_MSG4C0_TYPE
+
+#define DB_M56_ITSCAN_MSG481_VAR 	DB_M56_ITSCAN_MSG481_TYPE
+#define DB_M56_ITSCAN_MSG491_VAR 	DB_M56_ITSCAN_MSG491_TYPE
+#define DB_M56_ITSCAN_MSG4A1_VAR 	DB_M56_ITSCAN_MSG4A1_TYPE
+#define DB_M56_ITSCAN_MSG4B1_VAR 	DB_M56_ITSCAN_MSG4B1_TYPE
+#define DB_M56_ITSCAN_MSG4C1_VAR 	DB_M56_ITSCAN_MSG4C1_TYPE
+
+#define DB_M56_ITSCAN_MSG482_VAR 	DB_M56_ITSCAN_MSG482_TYPE
+#define DB_M56_ITSCAN_MSG492_VAR 	DB_M56_ITSCAN_MSG492_TYPE
+#define DB_M56_ITSCAN_MSG4A2_VAR 	DB_M56_ITSCAN_MSG4A2_TYPE
+#define DB_M56_ITSCAN_MSG4B2_VAR 	DB_M56_ITSCAN_MSG4B2_TYPE
+#define DB_M56_ITSCAN_MSG4C2_VAR 	DB_M56_ITSCAN_MSG4C2_TYPE
+
+#define DB_M56_ITSCAN_MSG483_VAR 	DB_M56_ITSCAN_MSG483_TYPE
+#define DB_M56_ITSCAN_MSG493_VAR 	DB_M56_ITSCAN_MSG493_TYPE
+#define DB_M56_ITSCAN_MSG4A3_VAR 	DB_M56_ITSCAN_MSG4A3_TYPE
+#define DB_M56_ITSCAN_MSG4B3_VAR 	DB_M56_ITSCAN_MSG4B3_TYPE
+#define DB_M56_ITSCAN_MSG4C3_VAR 	DB_M56_ITSCAN_MSG4C3_TYPE
+
+#define DB_M56_ITSCAN_MSG484_VAR 	DB_M56_ITSCAN_MSG484_TYPE
+#define DB_M56_ITSCAN_MSG494_VAR 	DB_M56_ITSCAN_MSG494_TYPE
+#define DB_M56_ITSCAN_MSG4A4_VAR 	DB_M56_ITSCAN_MSG4A4_TYPE
+#define DB_M56_ITSCAN_MSG4B4_VAR 	DB_M56_ITSCAN_MSG4B4_TYPE
+#define DB_M56_ITSCAN_MSG4C4_VAR 	DB_M56_ITSCAN_MSG4C4_TYPE
+
+#define DB_M56_ITSCAN_MSG485_VAR 	DB_M56_ITSCAN_MSG485_TYPE
+#define DB_M56_ITSCAN_MSG495_VAR 	DB_M56_ITSCAN_MSG495_TYPE
+#define DB_M56_ITSCAN_MSG4A5_VAR 	DB_M56_ITSCAN_MSG4A5_TYPE
+#define DB_M56_ITSCAN_MSG4B5_VAR 	DB_M56_ITSCAN_MSG4B5_TYPE
+#define DB_M56_ITSCAN_MSG4C5_VAR 	DB_M56_ITSCAN_MSG4C5_TYPE
+
+#define DB_M56_ITSCAN_MSG486_VAR 	DB_M56_ITSCAN_MSG486_TYPE
+#define DB_M56_ITSCAN_MSG496_VAR 	DB_M56_ITSCAN_MSG496_TYPE
+#define DB_M56_ITSCAN_MSG4A6_VAR 	DB_M56_ITSCAN_MSG4A6_TYPE
+#define DB_M56_ITSCAN_MSG4B6_VAR 	DB_M56_ITSCAN_MSG4B6_TYPE
+#define DB_M56_ITSCAN_MSG4C6_VAR 	DB_M56_ITSCAN_MSG4C6_TYPE
+
+#define DB_M56_ITSCAN_MSG487_VAR 	DB_M56_ITSCAN_MSG487_TYPE
+#define DB_M56_ITSCAN_MSG497_VAR 	DB_M56_ITSCAN_MSG497_TYPE
+#define DB_M56_ITSCAN_MSG4A7_VAR 	DB_M56_ITSCAN_MSG4A7_TYPE
+#define DB_M56_ITSCAN_MSG4B7_VAR 	DB_M56_ITSCAN_MSG4B7_TYPE
+#define DB_M56_ITSCAN_MSG4C7_VAR 	DB_M56_ITSCAN_MSG4C7_TYPE
 
 #define MASK_b0	 0x01
 #define MASK_b01 0x03
@@ -1525,4 +1763,684 @@ static inline void get_m56_adas_28a(unsigned char *data,
 	p->vVSPCOMN = (float)(0.1 * (data[0]) + (data[1] << 8));
 	p->vACVCOMO = (float)(0.1 * (data[2]) + (data[3] << 8));
 }
+
+    
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_msgcnt_id200;
+
+	//my current speed
+	float hosttx_curr_spd_vsp_491;
+
+	//my target speed, no cars ahead
+	float hosttx_target_spd_vspcomn_491;
+
+	//my target speed, distance ahead controlled because of cars ahead
+	float hosttx_dist_ctl_target_spd_acvcomo_491;
+
+	//my acceleration
+	float hosttx_acceleration_xg_491;
+} m56_m200_t;
+    
+static inline void get_m56_m200(unsigned char *data, 
+	m56_m200_t *p) {
+	p->hosttx_msgcnt_id200 = data[0];
+	p->hosttx_curr_spd_vsp_491 = (float)(0.1 * (data[1]) + (data[2] << 8));
+	p->hosttx_target_spd_vspcomn_491 = (float)(0.1 * (data[3]) + (data[4] << 8));
+	p->hosttx_dist_ctl_target_spd_acvcomo_491 = (float)(0.1 * (data[5]) + (data[6] << 8));
+	p->hosttx_acceleration_xg_491 = (float)(0.1 * data[7]);
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_msgcnt_id201;
+
+	//distance to previous car
+	float hosttx_prev_spd_mdistance_491;
+
+	//relative speed to previous car
+	float hosttx_relative_spd_vr_491;
+
+	//Driver brake status
+	unsigned char hosttx_brake_sw_491;
+
+	//Accelerator switch status
+	unsigned char hosttx_accel_sw_491;
+
+	//set speed
+	float hosttx_setvsp_491;
+
+} m56_m201_t;
+    
+static inline void get_m56_m201(unsigned char *data, 
+	m56_m201_t *p) {
+	p->hosttx_msgcnt_id201 = data[0];
+	p->hosttx_prev_spd_mdistance_491 = (float)(0.1 * (data[1]) + (data[2] << 8));
+	p->hosttx_relative_spd_vr_491 = (float)(0.1 * (data[3]) + (data[4] << 8));
+	p->hosttx_brake_sw_491 = data[5] & MASK_b0;
+	p->hosttx_accel_sw_491 = (data[5] & MASK_b1) >> 1;
+	p->hosttx_setvsp_491 = (float)(0.1 * (data[6]) + (data[7] << 8));
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_msgcnt_id202;
+} m56_m202_t;
+    
+static inline void get_m56_m202(unsigned char *data, 
+	m56_m202_t *p) {
+	p->hosttx_msgcnt_id202 = data[0];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	float yaw_rate;
+	unsigned char couple_prec_veh;
+	unsigned char couple_follow_veh;
+} m56_m203_t;
+    
+static inline void get_m56_m203(unsigned char *data, 
+	m56_m203_t *p) {
+	p->yaw_rate = (float)(0.1 * (data[0]) + (data[1] << 8));
+	p->couple_prec_veh = (data[2] & MASK_b47) >> 4;
+	p->couple_follow_veh = data[2] & MASK_b03;
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_veh_ctr4;
+
+	//GPS range to preceding vehicle
+	float hosttx_gps_range_prev_veh;
+
+	//Tracking status (0=idle, 1=detecting, 2=tracking, 3=coupling, 0xF=invalid)
+	unsigned char hosttx_tracking_status;
+
+	// Vehicle position type (0=stand alone vehicle, 1=head of train, 
+	// 2=tail 0f train, 3=middle vehicle of train, 0xf=invalid)
+	unsigned char hosttx_veh_position_type;
+
+	// Forward sequence number (0=head vehicle of train, 
+	// 0x01-0xFE=following vehicles, 0xFF=invalid)
+	unsigned char hosttx_veh_fwd_seq_num;
+
+	// Backward sequence number (0=tail vehicle of train, 
+	// 0x01-0xFE=preceding vehicles, 0xFF=invalid)
+	unsigned char hosttx_veh_backwd_seq_num;
+} m56_m650_t;
+    
+static inline void get_m56_m650(unsigned char *data, 
+	m56_m650_t *p) {
+	p->hosttx_host_veh_ctr4 = data[0];
+	p->hosttx_gps_range_prev_veh = (float)(0.1 * (data[1]) + (data[2] << 8));
+	p->hosttx_tracking_status = data[3] & MASK_b03;
+	p->hosttx_veh_position_type = (data[3] & MASK_b47) >> 4;
+	p->hosttx_veh_fwd_seq_num = data[4];
+	p->hosttx_veh_backwd_seq_num = data[5];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr6;
+
+	//GPS latitude
+	float hosttx_gps_latitude;
+
+	//GPS latitude accuracy
+	float hosttx_gps_lat_accuracy;
+
+} m56_m651_t;
+    
+static inline void get_m56_m651(unsigned char *data, 
+	m56_m651_t *p) {
+	p->hosttx_host_gps_ctr6 = data[0];
+	p->hosttx_gps_latitude = ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )/256.0;
+	p->hosttx_gps_lat_accuracy = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr7;
+
+	//GPS longitude
+	float hosttx_gps_longitude;
+
+	//GPS longitude accuracy
+	float hosttx_gps_long_accuracy;
+
+} m56_m652_t;
+    
+static inline void get_m56_m652(unsigned char *data, 
+	m56_m652_t *p) {
+	p->hosttx_host_gps_ctr7 = data[0];
+	p->hosttx_gps_longitude = ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )/256.0;
+	p->hosttx_gps_long_accuracy = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr8;
+
+	//GPS altitude
+	float hosttx_gps_altitude;
+
+	//GPS altitude accuracy
+	float hosttx_gps_alt_accuracy;
+
+} m56_m653_t;
+    
+static inline void get_m56_m653(unsigned char *data, 
+	m56_m653_t *p) {
+	p->hosttx_host_gps_ctr8 = data[0];
+	p->hosttx_gps_altitude = (float)( 0.01 * ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ));
+	p->hosttx_gps_alt_accuracy = (float)( 0.01 * ( (data[5] << 8) + data[6] ));
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr9;
+
+	//GPS heading
+	float hosttx_gps_heading;
+
+	//GPS heading accuracy
+	float hosttx_gps_heading_accuracy;
+
+	//GPS speed
+	float hosttx_gps_speed;
+} m56_m654_t;
+    
+static inline void get_m56_m654(unsigned char *data, 
+	m56_m654_t *p) {
+	p->hosttx_host_gps_ctr9 = data[0];
+	p->hosttx_gps_heading = (float)( 0.1 * ( (data[1] << 8) + data[2] ));
+	p->hosttx_gps_heading_accuracy = (float)( 0.1 * ( (data[3] << 8) + data[4] ));
+	p->hosttx_gps_speed = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr10;
+
+	unsigned char hosttx_gps_num_sat_in_use;
+	unsigned char hosttx_gps_num_sat_in_view;
+	float hosttx_gps_hdop;
+	float hosttx_gps_pdop;
+	unsigned short hosttx_gps_fix_status;
+} m56_m655_t;
+    
+static inline void get_m56_m655(unsigned char *data, 
+	m56_m655_t *p) {
+	p->hosttx_host_gps_ctr10 = data[0];
+	p->hosttx_gps_num_sat_in_use = data[1];
+	p->hosttx_gps_num_sat_in_view = data[2];
+	p->hosttx_gps_hdop = (float)( 0.1 * data[3]);
+	p->hosttx_gps_pdop = (float)( 0.1 * data[4]);
+	p->hosttx_gps_fix_status = (float)((data[5] << 8) + data[6]);
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr11;
+
+	unsigned short hosttx_gps_ts_year;
+	unsigned char hosttx_gps_ts_month;
+	unsigned char hosttx_gps_ts_day;
+	unsigned char hosttx_gps_ts_hour;
+	unsigned char hosttx_gps_ts_minute;
+	unsigned char hosttx_gps_ts_second;
+} m56_m656_t;
+    
+static inline void get_m56_m656(unsigned char *data, 
+	m56_m656_t *p) {
+	p->hosttx_host_gps_ctr11 = data[0];
+	p->hosttx_gps_ts_year = (data[1] << 8) + data[2];
+	p->hosttx_gps_ts_month = data[3];
+	p->hosttx_gps_ts_day = data[4];
+	p->hosttx_gps_ts_hour = data[5];
+	p->hosttx_gps_ts_minute = data[6];
+	p->hosttx_gps_ts_second = data[7];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr12;
+
+	unsigned short hosttx_gps_ts_millisecond;
+} m56_m657_t;
+    
+static inline void get_m56_m657(unsigned char *data, 
+	m56_m657_t *p) {
+	p->hosttx_host_gps_ctr12 = data[0];
+	p->hosttx_gps_ts_millisecond = (data[1] << 8) + data[2];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char hosttx_host_gps_ctr13;
+} m56_m658_t;
+    
+static inline void get_m56_m658(unsigned char *data, 
+	m56_m658_t *p) {
+	p->hosttx_host_gps_ctr13 = data[0];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char keepalive_mabx2wsu_1;
+	unsigned char keepalive_mabx2wsu_2;
+	unsigned char keepalive_mabx2wsu_3;
+	unsigned char keepalive_mabx2wsu_4;
+	unsigned char keepalive_mabx2wsu_5;
+	unsigned char keepalive_mabx2wsu_6;
+} m56_m710_t;
+    
+static inline void get_m56_m710(unsigned char *data, 
+	m56_m710_t *p) {
+	p->keepalive_mabx2wsu_1 = data[0];
+	p->keepalive_mabx2wsu_2 = data[1];
+	p->keepalive_mabx2wsu_3 = data[2];
+	p->keepalive_mabx2wsu_4 = data[3];
+	p->keepalive_mabx2wsu_5 = data[4];
+	p->keepalive_mabx2wsu_6 = data[5];
+}
+
+typedef struct {
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char keepalive_echo_wsu2mabx_1;
+	unsigned char keepalive_echo_wsu2mabx_2;
+	unsigned char keepalive_echo_wsu2mabx_3;
+	unsigned char keepalive_echo_wsu2mabx_4;
+	unsigned char keepalive_echo_wsu2mabx_5;
+	unsigned char keepalive_echo_wsu2mabx_6;
+	unsigned short wsu_id;
+} m56_m711_t;
+    
+static inline void get_m56_m711(unsigned char *data, 
+	m56_m711_t *p) {
+	p->keepalive_echo_wsu2mabx_1 = data[0];
+	p->keepalive_echo_wsu2mabx_2 = data[1];
+	p->keepalive_echo_wsu2mabx_3 = data[2];
+	p->keepalive_echo_wsu2mabx_4 = data[3];
+	p->keepalive_echo_wsu2mabx_5 = data[4];
+	p->keepalive_echo_wsu2mabx_6 = data[5];
+	p->wsu_id = (data[6] << 8) + data[7];
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x430, for 2 cars ahead we get message number 0x440, and
+	// so forth until we get message number 0x470 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x480, for 2 cars behind we get message number 0x490, and
+	// so forth until we get message number 0x4C0 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_id200;
+
+	//Current speed received from n cars ahead
+	float host_rx_vsp_491;
+
+	//Target speed received from n cars ahead, distance not controlled
+	float host_rx_vspcomn_491;
+
+	//Target speed received from n cars ahead, distance controlled
+	float host_rx_acvcomo_491;
+
+	//Current acceleration received from n cars ahead
+	float host_rx_xg_491;
+} m56_m4n0_t;
+    
+static inline void get_m56_m4n0(unsigned char *data, 
+	m56_m4n0_t *p) {
+	p->msgcnt_id200 = data[0];
+	p->host_rx_vsp_491 = (float)(0.1 * ((data[2] << 8) + data[1]));
+	p->host_rx_vspcomn_491 = (float)(0.1 * ((data[4] << 8) + data[3]));
+	p->host_rx_acvcomo_491 = (float)(0.1 * ((data[6] << 8) + data[5]));
+	p->host_rx_xg_491 = (float)(0.01 * data[7]);
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x431, for 2 cars ahead we get message number 0x441, and
+	// so forth until we get message number 0x471 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x480, for 2 cars behind we get message number 0x490, and
+	// so forth until we get message number 0x4C0 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_id201;
+
+	//Distance received from n cars ahead
+	float host_rx_mdistance_491;
+
+	//Speed received from n cars ahead
+	float host_rx_vr_491;
+
+	//Brake switch status received from n cars ahead
+	unsigned char host_rx_brake_sw_491;
+
+	//Accelerator switch status received from n cars ahead
+	unsigned char host_rx_accel_sw_491;
+
+	//Set speed received from n cars ahead
+	float host_rx_setvsp_491;
+
+} m56_m4n1_t;
+    
+static inline void get_m56_m4n1(unsigned char *data, 
+	m56_m4n1_t *p) {
+	p->msgcnt_id201 = data[0];
+	p->host_rx_mdistance_491 = (float)(0.1 * ((data[2] << 8) + data[1]));
+	p->host_rx_vr_491 = (float)(0.1 * ((data[4] << 8) + data[3]));
+	p->host_rx_brake_sw_491 = data[5] & MASK_b0;
+	p->host_rx_accel_sw_491 = (data[5] & MASK_b1) >> 1;
+	p->host_rx_setvsp_491 = (float)(0.1 * ((data[7] << 8) + data[6]));
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x432, for 2 cars ahead we get message number 0x442, and
+	// so forth until we get message number 0x472 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x481, for 2 cars behind we get message number 0x491, and
+	// so forth until we get message number 0x4C1 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_id202;
+} m56_m4n2_t;
+    
+static inline void get_m56_m4n2(unsigned char *data, 
+	m56_m4n2_t *p) {
+	p->msgcnt_id202 = data[0];
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x433, for 2 cars ahead we get message number 0x443, and
+	// so forth until we get message number 0x473 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x483, for 2 cars behind we get message number 0x493, and
+	// so forth until we get message number 0x4C3 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//GPS range to n cars ahead
+	float host_rx_gps_range;
+
+	//Tracking status received from n cars ahead
+	//0=idle, 1=detecting, 2=tracking, 3=coupling, 0xF=invalid
+	unsigned char host_rx_gps_tracking_status;
+
+	//Vehicle position type received from n cars ahead
+	//0=standalone vehicle, 1=head of train, 2=tail of train,
+	//3=middle vehicle of train, 0xF=invalid
+	unsigned char host_rx_gps_veh_pos_type;
+
+	//Forward sequence number received from n cars ahead
+	//0=head vehicle of train, 1-0xFE=following vehicles,
+	//0xFF=invalid
+	unsigned char host_rx_fwd_seq_num;
+
+	//Backward sequence number received from n cars ahead
+	//0=tail vehicle of train, 1-0xFE=preceding vehicles,
+	//0xFF=invalid
+	unsigned char host_rx_backwd_seq_num;
+
+
+} m56_m4n3_t;
+    
+static inline void get_m56_m4n3(unsigned char *data, 
+	m56_m4n3_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_gps_range = (float)(0.1 * ((data[1] << 8) + data[2]));
+	p->host_rx_gps_tracking_status = data[3] & MASK_b03;
+	p->host_rx_gps_veh_pos_type = (data[3] & MASK_b47) >> 4;
+	p->host_rx_fwd_seq_num = data[4];
+	p->host_rx_backwd_seq_num = data[5];
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x434, for 2 cars ahead we get message number 0x444, and
+	// so forth until we get message number 0x474 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x484, for 2 cars behind we get message number 0x494, and
+	// so forth until we get message number 0x4C4 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//WSU ID from n cars ahead
+	unsigned short host_rx_wsu_id;
+
+	//Percent channel busy received from n cars ahead
+	unsigned char host_rx_chanbusy;
+
+	//RSS in dBm received from n cars ahead
+	float host_rx_rss;
+
+	//RxPktPER% received from n cars ahead
+	//I assume this is a percentage of packets received
+	float host_rx_pkt_pct;
+} m56_m4n4_t;
+    
+static inline void get_m56_m4n4(unsigned char *data, 
+	m56_m4n4_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_wsu_id = (data[1] << 8) + data[2];
+	p->host_rx_chanbusy = data[3];
+	p->host_rx_rss = (float)(0.1 * (data[4] << 8) + data[5]);
+	p->host_rx_pkt_pct = (float)(0.1 * (data[6] << 8) + data[7]);
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x435, for 2 cars ahead we get message number 0x445, and
+	// so forth until we get message number 0x475 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x485, for 2 cars behind we get message number 0x495, and
+	// so forth until we get message number 0x4C5 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//GPS latitude received from n cars ahead
+	float host_rx_gps_latitude;
+
+	//GPS heading received from n cars ahead
+	float host_rx_gps_heading;
+
+} m56_m4n5_t;
+    
+static inline void get_m56_m4n5(unsigned char *data, 
+	m56_m4n5_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_gps_latitude = (float)(((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] ) / 256.0 );
+	p->host_rx_gps_heading = (float)(0.1 * ((data[5] << 8) + data[6] ) );
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x436, for 2 cars ahead we get message number 0x446, and
+	// so forth until we get message number 0x476 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x486, for 2 cars behind we get message number 0x496, and
+	// so forth until we get message number 0x4C6 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//GPS longitude received from n cars ahead
+	float host_rx_gps_longitude;
+
+	//GPS speed received from n cars ahead
+	float host_rx_gps_speed;
+
+} m56_m4n6_t;
+    
+static inline void get_m56_m4n6(unsigned char *data, 
+	m56_m4n6_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_gps_longitude = (float)(((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] ) / 256.0 );
+	p->host_rx_gps_speed = (float)(0.1 * ((data[5] << 8) + data[6] ) );
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x437, for 2 cars ahead we get message number 0x447, and
+	// so forth until we get message number 0x477 for 5 cars ahead
+
+	//This also works for the n-th following vehicle, where n=8 for
+	//1 car behind, n=9 for 2 cars behind, etc., until n=C for
+	//5 cars behind. So for data from 1 car behind, we get message
+	// number 0x487, for 2 cars behind we get message number 0x497, and
+	// so forth until we get message number 0x4C7 for 5 cars behind 
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//GPS altitude received from n cars ahead
+	float host_rx_gps_altitude;
+} m56_m4n7_t;
+    
+static inline void get_m56_m4n7(unsigned char *data, 
+	m56_m4n7_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_gps_altitude = (float)(0.01 * ((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] ) );
+}
+
+typedef struct {
+
+	// Typedef for messages for n-th preceding vehicle, where n=3 for 
+	// 1 car ahead, n=4 for 2 cars ahead, etc. until n=7 for
+	// 5 cars ahead.  So for data from 1 car ahead, we get message
+	// number 0x438, for 2 cars ahead we get message number 0x448, and
+	// so forth until we get message number 0x478 for 5 cars ahead
+
+	int ts_ms;
+	unsigned char two_message_periods;
+	unsigned int message_timeout_counter;
+	unsigned char msgcnt_n;
+
+	//GPS timestamp milliseconds, received from n cars ahead
+	unsigned short host_rx_gps_ts_millisecond;
+
+	//GPS range to host vehicle received from n cars ahead
+	float host_rx_gps_range2host;
+
+	//Relative position to host vehicle received from n cars ahead
+	//0x00=unclassified, 0x01=ahead, 0x02=behind, 0x03=oncoming, 
+	//0x04=ahead left, 0x05=ahead right, 0x06=behind left, 
+	//0x07=behind right, 0x08=oncoming left, 0x09=oncoming right, 
+	//0x0A=ahead far left, 0X0B=ahead far right, 0x0C=behind far left, 
+	//0x0D=behind far right, 0x0E=oncoming far left, 
+	//0x0F=oncoming far right, 0x10=intersecting left
+	//0x11=intersecting right
+	unsigned char host_rx_gps_relpos2host;
+} m56_m4n8_t;
+    
+static inline void get_m56_m4n8(unsigned char *data, 
+	m56_m4n8_t *p) {
+	p->msgcnt_n = data[0];
+	p->host_rx_gps_ts_millisecond = (data[1] << 8) + data[2];
+	p->host_rx_gps_range2host = (float)(0.1 * ((data[3] << 8) + data[4]));
+	p->host_rx_gps_relpos2host = data[5];
+}
+
 //test
