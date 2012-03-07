@@ -6,6 +6,8 @@ ACTION=="add", KERNEL=="advdaq*", ATTRS{product}=="USB4761 DA&C Device(FS)", NAM
 #	in /dev, e.g. /dev/ttyUSB0
 #
 # 2. udevinfo -a -p $(udevinfo -q path -n /dev/ttyUSB0) >keyspan.udevinfo
+#	or
+#    udevadm info --attribute-walk -n /dev/ttyUSB0 >keyspan.udevadm.info
 #
 # 3. Look into keyspan.udevinfo and pick out two blocks (a parent and a child)
 # 	that have some characteristic information, e.g. under
@@ -57,3 +59,4 @@ ACTION=="add", KERNEL=="advdaq*", ATTRS{product}=="USB4761 DA&C Device(FS)", NAM
 #KERNEL=="ttyUSB?",SUBSYSTEMS=="usb",ATTRS{product}=="Keyspan USA-19H",NAME="Keyspan19H",RUN+="/bin/stty -F /dev/Keyspan19H raw 19200"
 #KERNEL=="ttyUSB?",SUBSYSTEMS=="usb-serial",DRIVERS=="pl2303",NAME="gps_prolific",GROUP="uucp",RUN+="/bin/stty -F /dev/gps_prolific raw 4800"
 SUBSYSTEM=="usb",ATTR{manufacturer}=="Total Phase, Inc.",ATTRS{product}=="Komodo CAN Duo Interface",NAME="Komodo_Duo",GROUP="plugdev"
+KERNEL=="sd?",SUBSYSTEMS=="usb",ATTRS{manufacturer}=="LaCie",ATTRS{product}=="LaCie Rugged FW/USB",NAME="LaCie_USB_drive",GROUP="plugdev"
