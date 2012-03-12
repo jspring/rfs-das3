@@ -919,7 +919,7 @@ static inline void get_m56_eng_tq_acc_and_brake_flags(unsigned char *data,
         p->control_autostop_flag = (data[4] & MASK_b7) >> 7;
         p->acc_active_flag_for_ecm = (data[4] & MASK_b6) >> 6;
         p->acc_cruise_flag = (data[4] & MASK_b5) >> 5;
-        p->virtual_accelerator_angle = ((signed char)(data[5])) * virtual_accelerator_angle_res;
+        p->virtual_accelerator_angle = ((unsigned char)(data[5])) * virtual_accelerator_angle_res;
         p->message_counter = (data[6] & MASK_b47) >> 4;
 }
 
