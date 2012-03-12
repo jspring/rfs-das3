@@ -406,7 +406,7 @@ typedef struct {
 static inline void get_m56_steering(unsigned char *data, m56_steering_t *p) {
 	p->steering_angle = ((signed short)((data[0] + (data[1] << 8)))) * 
 		steering_angle_res;
-	p->steering_velocity = ((signed char)data[2]) * steering_velocity_res;
+	p->steering_velocity = ((unsigned char)data[2]) * steering_velocity_res;
 	p->message_counter = data[4] & MASK_b03;
 }
 
@@ -466,7 +466,7 @@ typedef struct {
 
 static inline void get_m56_engine_rpm(unsigned char *data, m56_engine_rpm_t *p) {
 	p->engine_rpm = ((signed short)((data[0] << 8) + data[1])) * rpm_res;
-	p->mean_effective_torque = (((signed short)(((data[2] << 4) + ((data[3]& MASK_b47) >> 4)))) * mean_eff_tq_res) - mean_eff_tq_off;
+	p->mean_effective_torque = (((unsigned short)(((data[2] << 4) + ((data[3]& MASK_b47) >> 4)))) * mean_eff_tq_res) - mean_eff_tq_off;
 }
 
 /*******************************************************************************
@@ -507,7 +507,7 @@ typedef struct {
 } m56_its_alive_t;
 
 static inline void get_m56_its_alive(unsigned char *data, m56_its_alive_t *p) {
-        p->its_target_pressure = ((signed short)((data[0] << 3) + (data[1] * MASK_b02))) * its_target_pressure_res;
+        p->its_target_pressure = ((unsigned short)((data[0] << 3) + (data[1] * MASK_b02))) * its_target_pressure_res;
         p->its_alive_flag = (data[1] & MASK_b4) >> 4;
         p->acc_request_flag = (data[1] & MASK_b3) >> 3;
         p->message_counter = data[5] & MASK_b01;
@@ -600,7 +600,7 @@ typedef struct {
 } m56_pedal_position_t;
 
 static inline void get_m56_pedal_position(unsigned char *data, m56_pedal_position_t *p) {
-	p->pedal_position = data[0] * pedal_pos_res;
+	p->pedal_position = (unsigned char)data[0] * pedal_pos_res;
 	p->acc_inhibit = (data[2] & MASK_b7) >> 7;
 	p->acc_control_requested = (data[2] & MASK_b5) >> 5;
 	p->temporary_accel_flag = (data[2] & MASK_b2) >> 2;
@@ -652,9 +652,9 @@ typedef struct {
 } m56_wheel_speed_front_t;
 
 static inline void get_m56_wheel_speed_front(unsigned char *data, m56_wheel_speed_front_t *p) {
-	p->wheel_speed_front_right = ((signed short)(((data[0] << 8) + data[1]))) * wheel_speed_res;
-	p->wheel_speed_front_left = ((signed short)(((data[2] << 8) + data[3]))) * wheel_speed_res;
-	p->vehicle_speed_copy = ((signed short)(((data[4] << 8) + data[5]))) * vehicle_speed_res;
+	p->wheel_speed_front_right = ((unsigned short)(((data[0] << 8) + data[1]))) * wheel_speed_res;
+	p->wheel_speed_front_left = ((unsigned short)(((data[2] << 8) + data[3]))) * wheel_speed_res;
+	p->vehicle_speed_copy = ((unsigned short)(((data[4] << 8) + data[5]))) * vehicle_speed_res;
 	p->message_counter = data[6];
 }
 
@@ -689,8 +689,8 @@ typedef struct {
 } m56_wheel_speed_rear_t;
 
 static inline void get_m56_wheel_speed_rear(unsigned char *data, m56_wheel_speed_rear_t *p) {
-	p->wheel_speed_rear_right = ((signed short)((data[0] << 8) + data[1])) * wheel_speed_res;
-	p->wheel_speed_rear_left = ((signed short)((data[2] << 8) + data[3])) * wheel_speed_res;
+	p->wheel_speed_rear_right = ((unsigned short)((data[0] << 8) + data[1])) * wheel_speed_res;
+	p->wheel_speed_rear_left = ((unsigned short)((data[2] << 8) + data[3])) * wheel_speed_res;
 	p->message_counter = data[6];
 }
 
@@ -738,9 +738,9 @@ typedef struct {
 } m56_acceleration_t;
 
 static inline void get_m56_acceleration(unsigned char *data, m56_acceleration_t *p) {
-	p->long_accel_proc_02 = (((signed short)((data[0] << 4) + (data[1] >> 4))) * acceleration_res) + acceleration_offset;
-	p->transverse_accel_proc_02 = (((signed short)(((data[1] & MASK_b03) << 8) + data[2])) * acceleration_res) + acceleration_offset;
-	p->yaw_rate_02 = (((signed short)((data[3] << 4) + (data[4] >> 4))) * yaw_rate_res) + yaw_rate_offset;
+	p->long_accel_proc_02 = (((unsigned short)((data[0] << 4) + (data[1] >> 4))) * acceleration_res) + acceleration_offset;
+	p->transverse_accel_proc_02 = (((unsigned short)(((data[1] & MASK_b03) << 8) + data[2])) * acceleration_res) + acceleration_offset;
+	p->yaw_rate_02 = (((unsigned short)((data[3] << 4) + (data[4] >> 4))) * yaw_rate_res) + yaw_rate_offset;
 	p->pressure_sensor_02 = data[6];
 	p->message_counter = data[7] & MASK_b01;
 }
@@ -807,7 +807,7 @@ typedef struct {
 } m56_acc_status_t;
 
 static inline void get_m56_acc_status(unsigned char *data, m56_acc_status_t *p) {
-        p->estimated_pressure_value = ((signed short)(((data[0] << 3) + (data[1] & MASK_b02)))) * estimated_pressure_res;
+        p->estimated_pressure_value = ((unsigned short)(((data[0] << 3) + (data[1] & MASK_b02)))) * estimated_pressure_res;
         p->release_sw = (data[1] & MASK_b4) >> 4;
         p->pbfs_nc = (data[1] & MASK_b3) >> 3;
         p->pbfs_no = (data[1] & MASK_b2) >> 2;
@@ -1295,7 +1295,7 @@ typedef struct {
 static inline void get_m56_lidar_target(unsigned char *data, 
 	m56_lidar_target_t *p) {
 
-        p->distance_to_target = ((signed short)((data[0] + (data[1] << 8)))) * lidar_res;
+        p->distance_to_target = ((unsigned short)((data[0] + (data[1] << 8)))) * lidar_res;
         p->relative_speed_to_target = ((signed short)((data[2] + (data[3] << 8)))) * lidar_res;
         p->object_type = (data[4] & MASK_b1) >> 1;
         p->object_data_valid = data[4] & MASK_b0;
