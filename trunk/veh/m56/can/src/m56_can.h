@@ -1882,7 +1882,7 @@ typedef struct {
 static inline void get_m56_m650(unsigned char *data, 
 	m56_m650_t *p) {
 	p->hosttx_host_veh_ctr4 = data[0];
-	p->hosttx_gps_range_prev_veh = (float)(0.1 * (data[1]) + (data[2] << 8));
+	p->hosttx_gps_range_prev_veh = (float)(0.1 * ((signed short)((data[1]) + (data[2] << 8))));
 	p->hosttx_tracking_status = data[3] & MASK_b03;
 	p->hosttx_veh_position_type = (data[3] & MASK_b47) >> 4;
 	p->hosttx_veh_fwd_seq_num = data[4];
@@ -1906,8 +1906,8 @@ typedef struct {
 static inline void get_m56_m651(unsigned char *data, 
 	m56_m651_t *p) {
 	p->hosttx_host_gps_ctr6 = data[0];
-	p->hosttx_gps_latitude = ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )/256.0;
-	p->hosttx_gps_lat_accuracy = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+	p->hosttx_gps_latitude = ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ))/(3600*256.0);
+	p->hosttx_gps_lat_accuracy = (float)( 0.1 * ((signed short)( (data[5] << 8) + data[6] )));
 }
 
 typedef struct {
@@ -1927,8 +1927,8 @@ typedef struct {
 static inline void get_m56_m652(unsigned char *data, 
 	m56_m652_t *p) {
 	p->hosttx_host_gps_ctr7 = data[0];
-	p->hosttx_gps_longitude = ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )/256.0;
-	p->hosttx_gps_long_accuracy = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+	p->hosttx_gps_longitude = ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ))/(3600*256.0);
+	p->hosttx_gps_long_accuracy = (float)( 0.1 * ((signed short)( (data[5] << 8) + data[6] )));
 }
 
 typedef struct {
@@ -1948,8 +1948,8 @@ typedef struct {
 static inline void get_m56_m653(unsigned char *data, 
 	m56_m653_t *p) {
 	p->hosttx_host_gps_ctr8 = data[0];
-	p->hosttx_gps_altitude = (float)( 0.01 * ( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ));
-	p->hosttx_gps_alt_accuracy = (float)( 0.01 * ( (data[5] << 8) + data[6] ));
+	p->hosttx_gps_altitude = (float)( 0.01 * ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )));
+	p->hosttx_gps_alt_accuracy = (float)( 0.01 * ((signed short)( (data[5] << 8) + data[6] )));
 }
 
 typedef struct {
@@ -1971,8 +1971,8 @@ typedef struct {
 static inline void get_m56_m654(unsigned char *data, 
 	m56_m654_t *p) {
 	p->hosttx_host_gps_ctr9 = data[0];
-	p->hosttx_gps_heading = (float)( 0.1 * ( (data[1] << 8) + data[2] ));
-	p->hosttx_gps_heading_accuracy = (float)( 0.1 * ( (data[3] << 8) + data[4] ));
+	p->hosttx_gps_heading = (float)( 0.1 * ((signed short)( (data[1] << 8) + data[2] )));
+	p->hosttx_gps_heading_accuracy = (float)( 0.1 * ((signed short)( (data[3] << 8) + data[4] )));
 	p->hosttx_gps_speed = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
 }
 
@@ -2335,9 +2335,9 @@ typedef struct {
 static inline void get_m56_m4n5(unsigned char *data, 
 	m56_m4n5_t *p) {
 	p->msgcnt_n = data[0];
-	p->host_rx_gps_latitude = (float)(((data[1] << 24) + 
-		(data[2] << 16) + (data[3] << 8) + data[4] ) / 256.0 );
-	p->host_rx_gps_heading = (float)(0.1 * ((data[5] << 8) + data[6] ) );
+	p->host_rx_gps_latitude = ((float)((signed int)((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] ))) / (3600*256.0);
+	p->host_rx_gps_heading = (float)(0.1 * ((signed short)((data[5] << 8) + data[6] )) );
 }
 
 typedef struct {
@@ -2370,9 +2370,9 @@ typedef struct {
 static inline void get_m56_m4n6(unsigned char *data, 
 	m56_m4n6_t *p) {
 	p->msgcnt_n = data[0];
-	p->host_rx_gps_longitude = (float)(((data[1] << 24) + 
-		(data[2] << 16) + (data[3] << 8) + data[4] ) / 256.0 );
-	p->host_rx_gps_speed = (float)(0.1 * ((data[5] << 8) + data[6] ) );
+	p->host_rx_gps_longitude = ((float)((signed int)((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] ))) / (3600*256.0);
+	p->host_rx_gps_speed = (float)(0.1 * ((signed short)((data[5] << 8) + data[6] )) );
 }
 
 typedef struct {
@@ -2401,8 +2401,8 @@ typedef struct {
 static inline void get_m56_m4n7(unsigned char *data, 
 	m56_m4n7_t *p) {
 	p->msgcnt_n = data[0];
-	p->host_rx_gps_altitude = (float)(0.01 * ((data[1] << 24) + 
-		(data[2] << 16) + (data[3] << 8) + data[4] ) );
+	p->host_rx_gps_altitude = (float)(0.01 * ((signed int)((data[1] << 24) + 
+		(data[2] << 16) + (data[3] << 8) + data[4] )) );
 }
 
 typedef struct {
