@@ -200,6 +200,9 @@ int main(int argc, char *argv[]) {
         char *domain = DEFAULT_SERVICE; /// on Linux sets DB q-file directory
         db_clt_typ *pclt;               /// data server client pointer
         int xport = COMM_OS_XPORT;      /// value set correctly in sys_os.h
+	trig_info_typ trig_info;
+	int recv_type;
+
 	db_komodo_t db_kom;
 	timestamp_t ts;
 	int ts_ms;
@@ -1022,6 +1025,9 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_m4n7_t), &m56_m4C7); 
 
 	for(;;) {
+	   /* Now wait for a trigger. */
+	   recv_type= clt_ipc_receive(pclt, &trig_info, sizeof(trig_info));
+
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
 	   m56_ignition_status.ignition_status = db_kom.gpio & M56_IGNITION_MASK;
 	   db_clt_write(pclt, DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t), &m56_ignition_status);
