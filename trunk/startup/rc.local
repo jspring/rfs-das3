@@ -9,12 +9,22 @@
 #
 # California PATH DAS3 Vehicle List
 #
+# Dual Computer DAS3 Systems (Nissan Altimas & Audi A3s)
 # altima_silver
 # altima_grey
 # audi_silver
 # audi_red
 #
-# DAS3 Startup Command
+# Single Computer DAS3 Systems (Infiniti M56s)
+# m56_dnc304
+# m56_dn3491
+# m56_pro4
+# m56_dne596
 #
-# /home/das3/startup/startup.sh vehicle experiment
+# For California PATH Current Experiment List See...
+# /home/das3/startup/experiment_startup.sh
+#
+# California DAS3 Startup Command
+#
+# /home/das3/startup/vehicle_startup.sh vehicle experiment
 #
