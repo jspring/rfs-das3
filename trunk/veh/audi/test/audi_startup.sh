@@ -10,7 +10,7 @@ CARTYPE=$1
 EXPERIMENT=$2
 
 # Run this as root, or from rc.local
-/home/das3/veh/altima/test/setports.sh
+/home/das3/veh/audi/test/setports.sh
 sleep 2
 
 # Load digio driver and bind it to device
@@ -26,7 +26,7 @@ else
 fi
 
 # Kill Anything Running
-/home/das3/veh/altima/test/stop.sh
+/home/das3/veh/audi/test/stop.sh
 
 # Run Script to Set Clock Time to GPS Time Here
 
@@ -38,8 +38,8 @@ echo Starting db_slv...
 /home/path/db/lnx/db_slv &
 sleep 1
 
-echo Starting altima_cr...
-/home/das3/veh/altima/src/lnx/altima_cr >$TRIPDIR/altima_cr.log 2>&1 &
+echo Starting audi_cr...
+/home/das3/veh/audi/src/lnx/audi_cr >$TRIPDIR/audi_cr.log 2>&1 &
 sleep 2
 
 echo Starting uimu...
@@ -54,26 +54,19 @@ echo Starting gpsdb...
 /home/path/sens/gps/examples/lnx/gpsdb -d 1 < /dev/ttyS1 >$TRIPDIR/gpsdb.log 2>&1 &
 sleep 2
 
-# Start Altima CAN
-start_ctr=0
-	echo Starting altima_db_write...
-while [[ $start_ctr < 5 ]]
-do
-	/home/das3/veh/altima/can/lnx/altima_db_write </dev/pcan32 >$TRIPDIR/altima_db_write.log 2>&1 &
-	sleep 2
-	if [[ `ps -aef | grep altima_db_write | grep -v grep` == '' ]]
-	then
-		if [[ `/sbin/lsmod | grep pcan` == '' ]]
-		then
-			echo Loading pcan.ko module
-			/sbin/insmod /lib/modules/`uname -r`/misc/pcan.ko
-		fi
-		start_ctr=$(($start_ctr + 1))
-		echo Trying to start CAN client $start_ctr times
-	else
-		start_ctr=5
-	fi
-done
+# Start Audi Ignition Monitor
+echo Starting di_soft...
+/home/path/sens/digio/advdaq-1.06.0001/examples/console/di_soft/lnx/di_soft -d /dev/advdaq0 >$TRIPDIR/di_soft.log 2>$TRIPDIR/di_soft.err &
+sleep 2
+
+# Start Audi CAN
+echo Starting audi_can...
+/home/das3/veh/audi/src/lnx/audi_can -h 10.0.0.30 >$TRIPDIR/audi_can.log 2>$TRIPDIR/audi_can.err &
+sleep 2
+
+echo Starting canmemcheck.sh...
+/home/das3/veh/audi/test/canmemcheck.sh >>$TRIPDIR/audi_can.log 2>>$TRIPDIR/audi_can.err &
+sleep 2
 
 # On DAS3 Dual Computers -> Copy Engineering Data to Video Computer
 echo Starting cptripdirs.sh...
