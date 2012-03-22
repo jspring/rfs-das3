@@ -200,6 +200,8 @@ int main(int argc, char *argv[]) {
         char *domain = DEFAULT_SERVICE; /// on Linux sets DB q-file directory
         db_clt_typ *pclt;               /// data server client pointer
         int xport = COMM_OS_XPORT;      /// value set correctly in sys_os.h
+	posix_timer_typ *ptimer;
+	int ipc_message_error_ctr = 0;
 	trig_info_typ trig_info;
 	int recv_type;
 
@@ -395,10 +397,16 @@ int main(int argc, char *argv[]) {
 	}
         if (setjmp(exit_env) != 0) {
                 db_list_done(pclt, db_vars_list, num_db_variables, NULL, 0);
-                printf("%s: received %d CAN messages\n", argv[0], count);
+                printf("%s: received %d CAN messages %d IPC message errors\n", 
+			argv[0], count, ipc_message_error_ctr);
                 exit(EXIT_SUCCESS);
         } else
                sig_ign(sig_list, sig_hand);
+
+        if ((ptimer = timer_init( 1, ChannelCreate(0) )) == NULL) {
+                fprintf(stderr, "Unable to initialize delay timer\n");
+                exit(EXIT_FAILURE);
+        }
 
 	/* Zero data structures */
 	memset(&m56_steering, 0, sizeof(m56_steering_t));
@@ -1027,7 +1035,7 @@ int main(int argc, char *argv[]) {
 	for(;;) {
 	   /* Now wait for a trigger. */
 	   recv_type= clt_ipc_receive(pclt, &trig_info, sizeof(trig_info));
-
+	   if( DB_TRIG_VAR(&trig_info) == DB_KOMODO_VAR ) {
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
 	   m56_ignition_status.ignition_status = db_kom.gpio & M56_IGNITION_MASK;
 	   db_clt_write(pclt, DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t), &m56_ignition_status);
@@ -1879,6 +1887,11 @@ int main(int argc, char *argv[]) {
 		printmsg(&db_kom);
 	   if(verbose)
 		printcan(&db_kom);
+	    }	
+	    else {
+		TIMER_WAIT (ptimer);
+		ipc_message_error_ctr++;
+	   }
 	}
 	return 0;
 }
