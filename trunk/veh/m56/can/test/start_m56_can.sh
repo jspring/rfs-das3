@@ -12,7 +12,7 @@ killall komodo_db_write
 sleep 1
 cd /home/path/sens/can2usb/komodo/files/komodo-api-linux-i686-v1.00/c
 echo Starting komodo_db_write...
-lnx/komodo_db_write -v &
+lnx/komodo_db_write  &
 sleep 1
 if [[ `ps -ef | grep -v grep | grep komodo_db_write` == '' ]]
 then
@@ -20,4 +20,4 @@ then
 	exit 1
 fi
 sleep 1
-/home/das3/veh/m56/can/src/lnx/m56_can -c &
+/home/das3/veh/m56/can/src/lnx/m56_can -c -v &
