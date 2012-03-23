@@ -99,6 +99,7 @@ do
 					echo $mystr1
 				fi
 			fi
+			umount /mnt
 		else
 			mystr="widget_set 0 1 1 1 \"\""
 			mystr1="widget_set 0 2 1 1 \"\""
