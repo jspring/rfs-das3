@@ -11,6 +11,8 @@ then
 	sudo service udev restart
 fi
 
+sudo apt-get install lm-sensors
+
 # Create data directories
 sudo mkdir /big
 sudo mkdir /big/data
