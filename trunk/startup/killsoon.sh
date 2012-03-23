@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # killsoon.sh - waits for a time "time" for process "exe" to die.  
 # If this doesn't happen, kill x myself.
@@ -29,7 +29,7 @@ done
 if [[ `ps -aef |grep $exe |grep -v grep| grep -v $0` != "" ]] 
 then
 	echo "KILLSOON: $exe still running after $time seconds. Must kill...."
-	/bin/slay `ps -aef |grep $exe |grep -v grep| grep -v $0 | awk '{print $2}'`
+	/bin/kill `ps -aef |grep $exe |grep -v grep| grep -v $0 | awk '{print $2}'`
 else
 	echo "KILLSOON: $exe exited normally; did not have to kill it."
 fi
