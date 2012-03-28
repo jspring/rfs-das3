@@ -29,9 +29,12 @@ fi
 /home/das3/veh/audi/test/stop.sh
 
 # Run Script to Set Clock Time to GPS Time Here
+/home/path/sens/gps/examples/lnx/gpssetdate < /dev/ttyS0 &
+/home/das3/startup/killsoon.sh -x gpssetdate -t 120 >/big/data/gpssetdate_killsoon.log
 
-# Create Next Trip Directory in Big Data
+# Create Next Trip Directory in Big Data & Copy gpssetdate log
 TRIPDIR=/home/das3/startup/mknewtripdir.sh
+mv /big/data/gpssetdate_killsoon.log $TRIPDIR/gpssetdate_killsoon.log
 
 # Start DB Clients
 echo Starting db_slv...	

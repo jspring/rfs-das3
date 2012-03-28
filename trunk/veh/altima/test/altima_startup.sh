@@ -30,10 +30,11 @@ fi
 
 # Run Script to Set Clock Time to GPS Time Here
 /home/path/sens/gps/examples/lnx/gpssetdate < /dev/ttyS0 &
-/home/das3/startup/killsoon.sh -x gpssetdate 120
+/home/das3/startup/killsoon.sh -x gpssetdate -t 120 >/big/data/gpssetdate_killsoon.log
 
 # Create Next Trip Directory in Big Data
 TRIPDIR=/home/das3/startup/mknewtripdir.sh
+mv /big/data/gpssetdate_killsoon.log $TRIPDIR/gpssetdate_killsoon.log
 
 # Start DB Clients
 echo Starting db_slv...	
