@@ -1,1 +1,0 @@
-../veh/altima/system/eng-altima_startup.sh
