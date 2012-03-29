@@ -43,7 +43,7 @@
 		 
 		 export Tilcon=/usr/Tilcon
    		
-		 Thenâ€¦
+		 Thenâ
 		
 		 ln -s .bash_profile .bashrc
 

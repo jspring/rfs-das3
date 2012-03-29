@@ -7,4 +7,4 @@ ADVDAQ_DIR=$DISTRIB_DIR/path/sens/digio/advdaq-1.06.0001/examples/console/do_sof
 $ADVDAQ_DIR/do_soft /dev/advdaq0 1 $MUTE_DURATION & 
 sleep 1
 /usr/local/bin/mplayer -af volume=10 $WAV_FILE.wav 
-echo "Got alert! $MUTE_DURATION seconds duration, file $WAV_FILE"
+echo "Audio Request: Mute $MUTE_DURATION s and play file $WAV_FILE"
