@@ -8,15 +8,16 @@
 		
 2.  Edit /home/username/.bashrc to add the following commands:
 		umask 2
-		export SVNURL=svn+ssh://128.32.234.234/usr/local/sw/repo
+		export SVNURL=svn+ssh://username@gateway.path.berkeley.edu/var/svn/rfs
 		export SVN_EDITOR=/usr/bin/pico (or vi)
 		export CAPATH_MK_DEFS=/home/path/build/capath_lnx.mk
 		export Tilcon="/usr/Tilcon"
+		# alias svnpath2gateway='svn switch --relocate svn+ssh://128.32.234.234/usr/local/sw/repo svn+ssh://path.berkeley.edu/usr/local/sw/repo; svn switch --relocate svn+ssh://path.berkeley.edu/usr/local/sw/repo svn+ssh://gateway.path.berkeley.edu/var/svn/rfs'
 		
-3.  If you need to change the hostname on a vehicle, it's in /etc/HOSTNAME
+3.  addgroup chrisn sudo
 
-4.  If you need to edit an xorg.conf file, it's in /etc/X11
+4.  usermod -g users username
 
-5.  addgroup chrisn sudo
+5.  If you need to change the hostname on a vehicle, it's in /etc/HOSTNAME
 
-6.  usermod -g users username
+6.  If you need to edit an xorg.conf file, it's in /etc/X11
