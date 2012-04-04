@@ -21,8 +21,10 @@
 # m56_pro4
 # m56_dne596
 #
-# For California PATH Current Experiment List See...
-# /home/das3/startup/experiment_startup.sh
+# California PATH Experiment List
+# noexperiment
+# standalone
+# See /home/das3/startup/experiment_startup.sh
 #
 # California DAS3 Startup Command
 #
