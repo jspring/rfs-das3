@@ -21,7 +21,6 @@
  *
  */
 #include <db_include.h>
-#include <sys_buff.h>
 #include <db_utils.h>
 #include <path_gps_lib.h>
 #include <m56_can.h>
@@ -126,27 +125,6 @@ void do_buff_inits(int lines_to_save,
 	
 }
  
-/**
- *      This routine is used for saving any log file defined by
- *      specification in sv_tables.c
- */
-void save_to_spec (FILE *fout, timestamp_t timestamp,
-                        int use_memory, buff_typ *pbuff,
-                        int num_columns, data_log_column_spec_t *spec)
-{
-        int i;
-        int cnt = 0;
-        char char_buf[MAX_LOG_LINE_LEN];
-        for (i = 0; i < num_columns; i++)
-                cnt += (sprint_data_log_column_entry(
-                                char_buf + cnt, &spec[i]));
-        cnt += (sprintf(char_buf + cnt, "\n"));
-        if (use_memory)
-                buff_add(pbuff, char_buf, cnt);
-        else
-                fprintf(fout, "%s", char_buf);
-}
-
 int main(int argc, char *argv[])
 {
 	int option;

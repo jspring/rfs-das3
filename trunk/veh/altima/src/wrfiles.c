@@ -51,9 +51,10 @@ In the infinite while loop, the following tasks are performed:
 
 */
 #include <db_include.h>
-#include "wrfiles_lib.h"
 #include <path_gps_lib.h>
 #include <sys_ini.h>
+#include <data_log.h>
+#include <evt300.h>
 
 int sig_list[] = 
 {

@@ -10,7 +10,6 @@ include $(CAPATH_MK_DEFS)
 all:
 	./make_includes.sh
 	make -C veh
-	make -C src
 	make -C ui/src
 
 ui/src: 
@@ -19,9 +18,7 @@ ui/src:
 
 install:
 	make -C veh install
-	make -C src install
 	make -C ui/src install
 clean:
 	make -C veh clean
-	make -C src clean
 	make -C ui/src clean

@@ -53,6 +53,14 @@ fi
 
 if [[ `grep m56 $CARTYPE` != '' ]]
 then
+	if [[ -x /home/das3/veh/m56/test/.sh ]]
+	then
+		/home/das3/veh/audi/test/audi_startup.sh $CARTYPE $EXPERIMENT
+		exit 0
+	else
+		echo "$0: Unable to execute /home/das3/veh/audi/test/audi_startup.sh"
+		exit 1
+	fi
 	
 fi
 

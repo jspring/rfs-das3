@@ -14,7 +14,7 @@
 
 	13.0 cp /home/das3/ui/doc/xorg.conf-engineering /etc/X11/xorg.conf
 
-	13.1 If tilcon user does not exist, from root: adduser tilcon (lapidar1X)
+	13.1 If tilcon user does not exist, from root: adduser tilcon
 
 	13.2 Edit autologin.c to use the desired username (if not tilcon)
     		Compile autologin.c "gcc -o autologin autologin.c"

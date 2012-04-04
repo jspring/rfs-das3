@@ -6,19 +6,19 @@ then
         exit 1
 fi
 
-if [[ $1 == "dnc304" ]]
+if [[ $1 == "m56_dnc304" ]]
 then
         VEH="M56-1_DNC304"
 else
-if [[ $1 == "pro4" ]]
+if [[ $1 == "m56_pro4" ]]
 then
         VEH="M56-2_PRO4"
 else
-if [[ $1 == "dne491" ]]
+if [[ $1 == "m56_dne491" ]]
 then
         VEH="M56-3_DNE491"
 else
-if [[ $1 == "dne596" ]]
+if [[ $1 == "m56_dne596" ]]
 then
         VEH="M56-4_DNE596"
 else

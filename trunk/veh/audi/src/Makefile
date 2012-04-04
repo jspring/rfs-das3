@@ -20,9 +20,9 @@ PATH_CFLAGS += -I$(DAS3_INCLUDE_DIR)
 PATH_LDFLAGS += -L$(DAS3_DIR)/src/$(OBJDIR) -L$(SENS_LIB_DIR)/$(OBJDIR)
 PATH_LDFLAGS += -L$(DAS3_LIB_DIR)
 
-PATH_LIBS = -lwrfiles -levt300 -lpath_gps $(PATH_CORE_LIBS) -lsms 
+PATH_LIBS = -levt300 -lpath_gps $(PATH_CORE_LIBS) -lsms 
 
-EXEC = $(OBJDIR)/wrfiles $(OBJDIR)/audi_cr $(OBJDIR)/vid_enet_clt
+EXEC = $(OBJDIR)/wrfiles $(OBJDIR)/audi_cr
 
 all:    $(OBJDIR) $(PATH_OBJS) $(EXEC)
 

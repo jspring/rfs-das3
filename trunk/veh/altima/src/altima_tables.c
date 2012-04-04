@@ -7,12 +7,11 @@
 #include <db_utils.h>
 #include <path_gps_lib.h>
 #include <evt300.h>
-#include <wrfiles_lib.h>
 #include <data_log.h>
 #include <db_sync.h>
 #include <uimu.h>
 #include "altima.h"
-//#include "veh.h"
+#include "veh.h"
 
 /// All these global variables must have extern statements in wrfiles_nt.h
 /// They correspond to DB variables that are read.

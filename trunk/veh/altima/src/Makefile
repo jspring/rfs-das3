@@ -14,15 +14,13 @@ HDRS += vid_enet_srv.h
 PATH_OBJS += $(OBJDIR)/altima_tables.o
 
 PATH_CFLAGS += -I$(VIDEO_DIR)
-PATH_CFLAGS += -I$(DAS3_DIR)/src
 PATH_CFLAGS += -I$(DISTRIB_DIR)/path/sens/gyro/memsense/src
 PATH_CFLAGS += -I$(DAS3_INCLUDE_DIR)
-PATH_LDFLAGS += -L$(DAS3_DIR)/src/$(OBJDIR) -L$(SENS_LIB_DIR)/$(OBJDIR)
-PATH_LDFLAGS += -L$(DAS3_LIB_DIR)
+PATH_LDFLAGS += -L$(SENS_LIB_DIR)/$(OBJDIR)
 
-PATH_LIBS = -lwrfiles -levt300 -lpath_gps $(PATH_CORE_LIBS) -lsms 
+PATH_LIBS = -levt300 -lpath_gps $(PATH_CORE_LIBS)
 
-EXEC = $(OBJDIR)/wrfiles $(OBJDIR)/altima_cr $(OBJDIR)/vid_enet_clt
+EXEC = $(OBJDIR)/wrfiles $(OBJDIR)/altima_cr
 
 all:    $(OBJDIR) $(PATH_OBJS) $(EXEC)
 
