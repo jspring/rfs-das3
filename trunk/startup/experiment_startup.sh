@@ -25,3 +25,8 @@ then
 	echo Starting no experiment script or data logging...
 	exit 0
 fi
+
+# UNKNOWN EXPERIMENT
+echo "$0: Unknown experiment $EXPERIMENT"
+echo Starting no experiment script or data logging...
+exit 1
