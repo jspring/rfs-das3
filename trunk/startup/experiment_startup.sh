@@ -19,8 +19,8 @@ CARTYPE=$1
 EXPERIMENT=$2
 TRIPDIR=$3
 
-# NOEXPERIMENT starts no experiment script and no data logging
-if [[ `grep noexperiment $EXPERIMENT` != '' ]]
+# DRIVERSONLY starts no experiment script and no data logging
+if [[ `grep driversonly $EXPERIMENT` != '' ]]
 then
 	echo Starting no experiment script or data logging...
 	exit 0

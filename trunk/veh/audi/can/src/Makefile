@@ -14,6 +14,6 @@ all:    $(OBJDIR) $(EXEC)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 install:
-	cp -p $(EXEC) ../../../../test
+	cp -p $(EXEC) ../../test
 clean:
 	rm -f $(OBJDIR)/* *.err *.o
