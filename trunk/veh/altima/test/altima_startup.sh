@@ -37,10 +37,12 @@ fi
 /home/das3/veh/altima/test/stop.sh
 
 # Run Script to Set Clock Time to GPS Time Here
+echo Synchronizing System Clock to GPS Time...
 /home/path/sens/gps/examples/lnx/gpssetdate < /dev/ttyS0 &
-/home/das3/startup/killsoon.sh -x gpssetdate -t 120 >/big/data/gpssetdate_killsoon.log
+/home/das3/startup/killsoon.sh -x gpssetdate -t 60 >/big/data/gpssetdate_killsoon.log
 
 # Create Next Trip Directory in Big Data
+echo Creating Current Trip Directory...
 TRIPDIR=/home/das3/startup/mknewtripdir.sh
 mv /big/data/gpssetdate_killsoon.log $TRIPDIR/gpssetdate_killsoon.log
 
