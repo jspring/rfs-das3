@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# DAS3 audi_startup.sh
+#
+# STARTUP COMMANDS COMMON TO AUDI A3s
+#
+# This script is generally called by	/home/das3/startup/vehicle_startup.sh
+# This script always ends by calling	/home/das3/startup/experiment_startup.sh
+# CARTYPE & EXPERIMENT set in		/etc/rc.d/rc.local
+
 if [[ $# != 2 ]]
 then
 	echo "$0: Usage $0 <vehicle> <experiment>"

@@ -1,10 +1,11 @@
 #!/bin/sh
 
-# DAS3 startup.sh 
+# DAS3 vehicle_startup.sh 
 #
-# Script called from		/etc/rc.d/rc.local
-# CARTYPE & EXPERIMENT set by	/etc/rc.d/rc.local
+# STARTUP COMMANDS COMMON TO ALL DAS3 SYSTEMS
 #
+# This script called from	/etc/rc.d/rc.local
+# CARTYPE & EXPERIMENT set in	/etc/rc.d/rc.local
 
 if [[ $# != 2 ]]
 then
@@ -14,8 +15,6 @@ fi
 
 CARTYPE=$1
 EXPERIMENT=$2
-
-# STARTUP COMMANDS COMMON TO ALL VEHICLES
 
 # Create /big/data if it does not already exist
 if [[ ! -d /big/data ]]
@@ -27,42 +26,50 @@ then
 fi
 
 # SELECT VEHICLE-SPECIFIC STARTUP SCRIPT TO RUN
-if [[ `grep altima $CARTYPE` != '' ]]
+if [[ $CARTYPE =~ "altima" ]]
 then
 	if [[ -x /home/das3/veh/altima/test/altima_startup.sh ]]
 	then
+		echo "Starting Nissan Altima Drivers..."
 		/home/das3/veh/altima/test/altima_startup.sh $CARTYPE $EXPERIMENT
 		exit 0
 	else
 		echo "$0: Unable to execute /home/das3/veh/altima/test/altima_startup.sh"
+		sleep 20
 		exit 1
 	fi
 fi
 
-if [[ `grep audi $CARTYPE` != '' ]]
+if [[ $CARTYPE =~ "audi" ]]
 then
 	if [[ -x /home/das3/veh/audi/test/audi_startup.sh ]]
 	then
+		echo "Starting Audi A3 Drivers..."
 		/home/das3/veh/audi/test/audi_startup.sh $CARTYPE $EXPERIMENT
 		exit 0
 	else
 		echo "$0: Unable to execute /home/das3/veh/audi/test/audi_startup.sh"
+		sleep 20
 		exit 1
 	fi
 fi
 
-if [[ `grep m56 $CARTYPE` != '' ]]
+if [[ $CARTYPE =~ "m56" ]]
 then
-	if [[ -x /home/das3/veh/m56/test/.sh ]]
+	if [[ -x /home/das3/veh/m56/test/m56_startup.sh ]]
 	then
-		/home/das3/veh/audi/test/audi_startup.sh $CARTYPE $EXPERIMENT
+		echo "Starting Infiniti M56 Drivers..."
+		/home/das3/veh/m56/test/m56_startup.sh $CARTYPE $EXPERIMENT
 		exit 0
 	else
-		echo "$0: Unable to execute /home/das3/veh/audi/test/audi_startup.sh"
+		echo "$0: Unable to execute /home/das3/veh/m56/test/m56_startup.sh"
+		sleep 20
 		exit 1
 	fi
 	
 fi
 
-echo "$0: Unknown CARTYPE=$CARTYPE"
+# UNKNOWN VEHICLE STRING RECEIVED AS INPUT
+echo "$0: Detected Unknown CARTYPE=$CARTYPE"
+sleep 20
 exit 1
