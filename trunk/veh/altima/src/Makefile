@@ -26,5 +26,9 @@ all:    $(OBJDIR) $(PATH_OBJS) $(EXEC)
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
+
+install:
+	cp -p $(EXEC) ../test
+
 clean:
 	\rm -f $(OBJDIR)/*.o *.*~ $(EXEC) *.err *.out *.log
