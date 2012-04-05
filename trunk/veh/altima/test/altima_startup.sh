@@ -43,7 +43,7 @@ echo Synchronizing System Clock to GPS Time...
 
 # Create Next Trip Directory in Big Data
 echo Creating Current Trip Directory...
-TRIPDIR=/home/das3/startup/mknewtripdir.sh
+TRIPDIR=`/home/das3/startup/mknewtripdir.sh`
 mv /big/data/gpssetdate_killsoon.log $TRIPDIR/gpssetdate_killsoon.log
 
 # Start DB Clients
