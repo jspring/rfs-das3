@@ -1,4 +1,4 @@
-# Makefile for Data Acquistion System v3 
+# Makefile for Data Acquisition System v3 
 #
 # Do the build in the "path" directory for those libraries first.
 #

@@ -38,7 +38,7 @@ fi
 
 # Run Script to Set Clock Time to GPS Time Here
 echo Synchronizing System Clock to GPS Time...
-/home/path/sens/gps/examples/lnx/gpssetdate < /dev/ttyS0 &
+/home/path/sens/gps/examples/lnx/gpssetdate < /dev/ttyS1 &
 /home/das3/startup/killsoon.sh -x gpssetdate -t 60 >/big/data/gpssetdate_killsoon.log
 
 # Create Next Trip Directory in Big Data
