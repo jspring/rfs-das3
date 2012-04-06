@@ -1,26 +1,27 @@
 #!/bin/sh
 
-echo "CPTRIPDIRS: Starting cptripdirs.sh" `date`
 if [ ! $1 ] ; then
 	echo Usage: $0 '<altima_silver, altima_grey, audi_silver, or audi_red>'
 	exit
 fi
 
+CARTYPE=$1
+echo "CPTRIPDIRS: Starting cptripdirs.sh for $CARTYPE" `date`
+
 cd /big/data
-if [[ -a lasttripcopied.dat ]] ; then
-        lasttripcopied=$((10#`cat lasttripcopied.dat`))
+if [[ -a lasttripcopied.txt ]] ; then
+        lasttripcopied=$((10#`cat lasttripcopied.txt`))
 else
-	echo CPTRIPDIRS.SH: No readable file /big/data/lasttripcopied.dat
+	echo CPTRIPDIRS.SH: No readable file /big/data/lasttripcopied.txt
 	lasttripcopied=0
-	echo $lasttripcopied >lasttripcopied.dat
+	echo $lasttripcopied >lasttripcopied.txt
 fi
 echo lasttripcopied $lasttripcopied
 lasttripnum=`echo $lasttripcopied`
 nexttripnum=$lasttripnum
-if [[ -a lasttripdir.dat ]] ; then
-	# Subtract 1 from lasttripdir.dat because cptripdirs.sh is started 
-	# after wrfiles_nt, which has already incremented lasttripdir.dat
-	savetripnum=$((10#`cat lasttripdir.dat`-1))
+if [[ -a lasttripdir.txt ]] ; then
+	# Do not copy current trip so subtract 1 from lasttripdir.txt
+	savetripnum=$((10#`cat lasttripdir.txt`-1))
 else
 	savetripnum=$(($lasttripnum+100))
 fi
@@ -45,16 +46,16 @@ while [[ nexttripnum -lt $savetripnum ]] ; do
 	if [[ -d $nexttripdir ]] ; then
 		echo nexttripdir $nexttripdir
 		echo nexttripnum $nexttripnum
-		scp -rp *$nexttripdir viduser@$videohost:/home/viduser/$1/e$nexttripdir/
-		ssh root@$videohost mv /big/data/v$nexttripdir /home/viduser/$1/e$nexttripdir
-		echo $nexttripnum > lasttripcopied.dat
+		scp -rp *$nexttripdir viduser@$videohost:/home/viduser/$CARTYPE/nexttripdir/
+		ssh root@$videohost mv /big/data/v${TRIPDIR:1:${#TRIPDIR}-1}/home/viduser/$CARTYPE/$nexttripdir
+		echo $nexttripnum > lasttripcopied.txt
 		lasttripcopied=$nexttripdir
 		echo trip directory $lasttripcopied copied to $videohost
 	fi
 done
 ssh root@$videohost chown -R viduser /big/data
 ssh root@$videohost chgrp -R users /big/data
-ssh root@$videohost chown -R viduser /home/viduser/$1
-ssh root@$videohost chgrp -R users /home/viduser/$1
+ssh root@$videohost chown -R viduser /home/viduser/$CARTYPE
+ssh root@$videohost chgrp -R users /home/viduser/$CARTYPE
 
 echo "CPTRIPDIRS: Finished with cptripdirs.sh" `date`
