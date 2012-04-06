@@ -40,14 +40,12 @@ while [[ nexttripnum -lt $savetripnum ]] ; do
 	
 	nexttripnum=$(($nexttripnum+1))
 	nexttripdir=`echo $nexttripnum |awk '{printf("%04d", $nexttripnum)}'` 
-#	nexttripdir=`echo $nexttripnum |awk '{printf("%04d", $nexttripnum)}' 2>/dev/null`
-#	nexttripdir=`ls -d *$nexttripnum 2>/dev/null`
 	nexttripdir=`ls -d *$nexttripnum`
 	if [[ -d $nexttripdir ]] ; then
 		echo nexttripdir $nexttripdir
 		echo nexttripnum $nexttripnum
-		scp -rp *$nexttripdir viduser@$videohost:/home/viduser/$CARTYPE/nexttripdir/
-		ssh root@$videohost mv /big/data/v${TRIPDIR:1:${#TRIPDIR}-1}/home/viduser/$CARTYPE/$nexttripdir
+		scp -rp *$nexttripdir viduser@$videohost:/home/viduser/$CARTYPE/$nexttripdir
+		ssh root@$videohost mv /big/data/v${nexttripdir:1:${#nexttripdir}} /home/viduser/$CARTYPE/$nexttripdir
 		echo $nexttripnum > lasttripcopied.txt
 		lasttripcopied=$nexttripdir
 		echo trip directory $lasttripcopied copied to $videohost
