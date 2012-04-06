@@ -49,6 +49,10 @@ while [[ nexttripnum -lt $savetripnum ]] ; do
 		echo $nexttripnum > lasttripcopied.txt
 		lasttripcopied=$nexttripdir
 		echo trip directory $lasttripcopied copied to $videohost
+		chown -R tilcon /big/data/$lasttripcopied
+		chgrp -R users /big/data/$lasttripcopied
+		chmod 775 /big/data/$lasttripcopied
+		chmod 664 /big/data/$lasttripcopied/*
 	fi
 done
 ssh root@$videohost chown -R viduser /big/data
