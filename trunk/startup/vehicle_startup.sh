@@ -35,7 +35,7 @@ then
 		exit 0
 	else
 		echo "$0: Unable to execute /home/das3/veh/altima/test/altima_startup.sh"
-		sleep 20
+		sleep 5
 		exit 1
 	fi
 fi
@@ -49,7 +49,7 @@ then
 		exit 0
 	else
 		echo "$0: Unable to execute /home/das3/veh/audi/test/audi_startup.sh"
-		sleep 20
+		sleep 5
 		exit 1
 	fi
 fi
@@ -63,7 +63,7 @@ then
 		exit 0
 	else
 		echo "$0: Unable to execute /home/das3/veh/m56/test/m56_startup.sh"
-		sleep 20
+		sleep 5
 		exit 1
 	fi
 	
@@ -71,5 +71,5 @@ fi
 
 # UNKNOWN VEHICLE STRING RECEIVED AS INPUT
 echo "$0: Detected Unknown CARTYPE=$CARTYPE"
-sleep 20
+sleep 5
 exit 1

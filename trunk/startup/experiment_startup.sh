@@ -23,7 +23,7 @@ if [[ $EXPERIMENT =~ "driversonly" ]]
 then
 	echo "Finished starting $CARTYPE drivers..."
 	echo "No experiment script or data logging requested..."
-	sleep 20
+	sleep 5
 	exit 0
 fi
 
@@ -51,7 +51,7 @@ then
 		# UNKNOWN CARTYPE
 		echo "Finished starting $CARTYPE drivers..."
 		echo "$0: No Standalone Data Logging Script Specified for CARTYPE=$CARTYPE"
-		sleep 20
+		sleep 5
 		exit 1
 	fi
 
@@ -69,5 +69,5 @@ fi
 # UNKNOWN EXPERIMENT
 echo "$0: Detected Unknown EXPERIMENT=$EXPERIMENT"
 echo "No Experiment Script or Data Logging Started..."
-sleep 20
+sleep 5
 exit 1
