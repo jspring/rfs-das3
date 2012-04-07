@@ -22,7 +22,7 @@ TRIPDIR=$3
 if [[ $EXPERIMENT =~ "driversonly" ]]
 then
 	echo "Finished starting $CARTYPE drivers..."
-	echo "No experiment script or data logging requested"
+	echo "No experiment script or data logging requested..."
 	sleep 20
 	exit 0
 fi

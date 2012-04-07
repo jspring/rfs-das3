@@ -12,12 +12,29 @@
 		export SVN_EDITOR=/usr/bin/pico (or vi)
 		export CAPATH_MK_DEFS=/home/path/build/capath_lnx.mk
 		export Tilcon="/usr/Tilcon"
-		# alias svnpath2gateway='svn switch --relocate svn+ssh://128.32.234.234/usr/local/sw/repo svn+ssh://path.berkeley.edu/usr/local/sw/repo; svn switch --relocate svn+ssh://path.berkeley.edu/usr/local/sw/repo svn+ssh://gateway.path.berkeley.edu/var/svn/rfs'
-		
-3.  addgroup chrisn sudo
 
-4.  usermod -g users username
+3.  usermod -g users username
 
-5.  If you need to change the hostname on a vehicle, it's in /etc/HOSTNAME
+/* Linux Networking (As Root)
 
-6.  If you need to edit an xorg.conf file, it's in /etc/X11
+Command:
+ifconfig - shows IP address
+route - shows default gateway
+route del default
+route add default gw NEWIP
+
+Files:
+Default DNS			/etc/resolv.conf
+Default Hostname		/etc/HOSTNAME
+Known Host Aliases		/etc/hosts
+Change IP/Route Permanently 	/etc/rc.d/rc.inet1.conf
+
+/* Linux Enable sudo
+Edit /etc/sudoers
+
+# Uncomment to allow people in group wheel to run all commands
+# %wheel	ALL=(ALL)	ALL
+%users	ALL=(ALL)	ALL
+
+/* Display Settings
+xorg.conf			/etc/X11

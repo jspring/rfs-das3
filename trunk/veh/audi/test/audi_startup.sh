@@ -86,4 +86,4 @@ echo Starting cptripdirs.sh...
 /home/das3/startup/cptripdirs.sh $CARTYPE >$TRIPDIR/cptripdirs.log 2>&1 &
 
 # Start Experiment Script
-/home/das3/exp/experiment_startup.sh $CARTYPE $EXPERIMENT $TRIPDIR
+/home/das3/startup/experiment_startup.sh $CARTYPE $EXPERIMENT $TRIPDIR
