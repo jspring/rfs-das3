@@ -1,0 +1,35 @@
+** WiFi Backhaul (B167 & Tent) **
+
+AP/Router: Linksys/CISCO WRT160NL
+SSID: PATH VEHICLE WiFi
+Channel: 10
+PWD: path!vehicle!net
+
+LAN IP: 192.168.1.1 (DHCP .2 - .254)
+User/PWD: <Blank>/<Linux Root Password>
+Default LAN IP After Reset: 192.168.1.1
+Default User/PWD After Reset: <blank>/admin
+
+WAN IP B167: 128.32.234.161
+WAN IP Tent: 128.32.234.139
+
+
+** PATH DAS3 In-Vehicle Network Setup **
+
+WiFi Bridge: TrendNet-TEW-654TR
+Note: Switch on bottom of device should be set to AP Client Mode
+Note: New devices need a firmware upgrade
+Devices Named: tn-ap-client-X
+IP: <DHCP From Linksys> (Should Get Reserved IP .10X Corresponding to Device Name)
+User/PWD: admin/admin
+Default IP After Reset: 192.168.10.1
+
+In-Vehicle Router: TrendNet-TW100
+WAN IP: <DHCP From LInksys or Cell Modem>
+LAN IP: 10.0.0.1
+Default LAN IP After Reset: 192.168.10.1
+User/PWD: admin/admin
+DHCP Range: 10.0.0.2 - 10.0.0.99
+
+Engineering Computer: 	10.0.0.141
+Video Computer:		10.0.0.140
