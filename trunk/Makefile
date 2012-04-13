@@ -20,5 +20,6 @@ install:
 	make -C veh install
 	make -C ui/src install
 clean:
+	rm -rf include
 	make -C veh clean
 	make -C ui/src clean
