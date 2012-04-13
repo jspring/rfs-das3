@@ -8,13 +8,21 @@
 # in all valid directory names, and incrementing the
 # highest number by 1.
 
+if [[ $# != 1 || $1 != [mnop] ]]
+then
+        echo "Usage $0 <m, n, o, or p>"
+        exit 1
+fi
+
+VEH=$1
+
 if [[ ! -e /big/data/lasttripdir.txt ]]
 then
 	y=0
 	z=-1
 	for x in /big/data/*
 	do 
-		if [[ $x == /big/data/e?????????? ]]
+		if [[ $x == /big/data/$VEH?????????? ]]
 		then
 			y=`echo $x | cut -c 18-`
 			q=$((10#$y))
@@ -31,7 +39,7 @@ else
 	z=$((10#`cat /big/data/lasttripdir.txt`))
 fi
 s=$( printf "%04d" $((10#$z+1)) )
-tripdir=/big/data/e$(date +%y%m%d)$s
+tripdir=/big/data/$VEH$(date +%y%m%d)$s
 mkdir $tripdir
 echo $tripdir
 echo $s >/big/data/lasttripdir.txt

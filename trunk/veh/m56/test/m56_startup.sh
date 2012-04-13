@@ -40,7 +40,7 @@ else
 	EXP=$2
 fi
 
-tripdir=$(/home/das3/veh/m56/test/mknewtripdir.sh)
+tripdir=$(/home/das3/veh/m56/test/mknewtripdir.sh $VEH)
 echo "VEH $VEH tripdir $tripdir"
 
 /home/das3/veh/m56/test/setports.sh
