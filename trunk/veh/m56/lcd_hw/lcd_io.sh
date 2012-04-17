@@ -2,27 +2,31 @@
 
 if [[ $# != 1 ]]
 then
-        echo "Usage $0 <dnc304, dne491, pro4, dne596>"
+        echo "Usage $0 <m56_dnc304, m56_dne491, m56_pro4, m56_dne596>"
         exit 1
 fi
 
 if [[ $1 == "m56_dnc304" ]]
 then
         VEH="M56-1_DNC304"
+        FP="m"
 else
 if [[ $1 == "m56_pro4" ]]
 then
         VEH="M56-2_PRO4"
+        FP="n"
 else
 if [[ $1 == "m56_dne491" ]]
 then
         VEH="M56-3_DNE491"
+        FP="o"
 else
 if [[ $1 == "m56_dne596" ]]
 then
         VEH="M56-4_DNE596"
+        FP="p"
 else
-        echo "Usage $0 <dnc304, dne491, pro4, dne596>"
+        echo "Usage $0 <m56_dnc304, m56_dne491, m56_pro4, m56_dne596>"
         exit 1
 fi
 fi
@@ -36,7 +40,7 @@ echo 'widget_add 0 0 string'
 echo 'widget_add 0 2 string'
 echo 'widget_add 0 1 scroller'
 echo 'client_add_key -exclusively {F5}+'
-mystr="widget_set 0 0 1 1 \"Starting lcd_io.sh\""
+mystr='widget_set 0 0 1 1 "Starting lcd_io.sh"'
 echo $mystr
 
 while [ 1 ]
@@ -56,7 +60,7 @@ do
 				echo $mystr
 				echo $mystr1
 			else	
-				numdirs=`ls -d /big/data/e* | wc -l`
+				numdirs=`ls -d /big/data/$FP'1'* | wc -l`
 				numdirs=$(($numdirs-1))
 				counter=0
 				mystr="widget_set 0 0 1 1 \"\""
@@ -64,7 +68,7 @@ do
 				mystr1="widget_set 0 0 1 2 \"\""
 				echo $mystr1
 				lastdir=`cat /big/data/lasttripdir.txt`
-				for x in `ls -d /big/data/e* | grep -v $lastdir$`
+				for x in `ls -d /big/data/$FP'1'* | grep -v $lastdir$`
 				do
 					counter=$(($counter+1))
 					mystr="widget_set 0 0 1 1 \"Copying $counter/$numdirs\""
