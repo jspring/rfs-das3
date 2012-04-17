@@ -22,8 +22,10 @@ PATH_OBJS += $(OBJDIR)/vs_altima_db_read.o $(OBJDIR)/vs_audi_db_read.o
 
 EXEC =	$(OBJDIR)/vehicle_status
 
-#all: $(OBJDIR) $(PATH_OBJS) $(EXEC)
-all: $(OBJDIR) $(PATH_OBJS)
+all: $(OBJDIR) $(PATH_OBJS) $(EXEC) 
+
+.o:
+	$(PATH_LINKPP) $(LDFLAGS) $(PATH_LDFLAGS) -o $@ $@.o $(PATH_LIBS) $(PATH_OBJS)
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
