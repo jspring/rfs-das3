@@ -11,7 +11,17 @@
 #include <db_sync.h>
 #include <uimu.h>
 #include "altima.h"
-#include "veh.h"
+
+/// These variables require processing other than DB reads done by wrfiles_nt.c
+double seconds_since_midnight = 0.0;    // from hh:mm.ss.sss in column 1
+double seconds_since_start = 0.0;       // local time since start of run
+double seconds_last_curl = 0.0;         // seconds since midnight, last curl 
+double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
+double clock_gps_read_seconds = 0.0;    // gps read time, seconds since midnight
+double local_clock_seconds = 0.0;       // local time seconds since midnight
+
+
+float gps_formatted_utc_time = 0.0;    // hhmmss.ss 
 
 /// All these global variables must have extern statements in wrfiles_nt.h
 /// They correspond to DB variables that are read.
@@ -25,6 +35,7 @@ alt_turn_signal_ignition_t alt_tsi;
 uimu_typ uimu;
 sync_record_typ video;
 path_gps_point_t gps_point; // on-vehicle GPS
+char * not_implemented = "9999";
 
 /** Add lines here when new DB variables are referenced in the tables.
  */
@@ -53,33 +64,31 @@ data_log_column_spec_t altima_data_spec[] =
 {
         {"%.3lf ", &seconds_since_midnight, BASE_DOUBLE, REPLAY_NO},    // 2
         {"%.3lf ", &seconds_since_start, BASE_DOUBLE, REPLAY_TIME},
-        {"%6.3lf ", &alt_vs.vehicle_speed, BASE_DOUBLE, REPLAY_USE},	
-        {"%hhd ", &alt_tsi.turn_signal, BASE_INT, REPLAY_USE},		//5
-        {"%9.2f ", &gps_utc_seconds, BASE_DOUBLE, REPLAY_USE},           
-        {"%06d ", &gps_point.date, BASE_INT, REPLAY_USE},
-        {"%13.8lf ", &gps_point.longitude, BASE_DOUBLE, REPLAY_USE},
-        {"%13.8lf ", &gps_point.latitude, BASE_DOUBLE, REPLAY_USE},	
-        {"%6.3lf ", &gps_point.speed, BASE_DOUBLE, REPLAY_USE}, 	//10
-        {"%6.3f ", &gps_point.heading, BASE_FLOAT, REPLAY_USE},                 
-        {"%6.2f ", &gps_point.altitude, BASE_FLOAT, REPLAY_USE},
-        {"%d ", &gps_point.num_sats, BASE_INT, REPLAY_USE},
-        {"%d ", &gps_point.pos, BASE_INT, REPLAY_USE},		
-        {"%6.3f ", &gps_point.hdop, BASE_FLOAT, REPLAY_USE},		//15
         {"%hhd ", &alt_tsi.ignition, BASE_INT, REPLAY_USE},
-        {"%hhd ", &alt_fwbs.brake_switch, BASE_INT, REPLAY_USE},	
+        {"%hhd ", &alt_fwbs.brake_switch, BASE_INT, REPLAY_USE},	//5
         {"%6.3lf ", &alt_eng.pct_throttle, BASE_DOUBLE, REPLAY_USE},	
+        {"%hhd ", &ccftm.code, BASE_INT, REPLAY_USE},	
+        {"%6.3lf ", &alt_vs.vehicle_speed, BASE_DOUBLE, REPLAY_USE},	
+        {"%hhd ", &alt_gi.code, BASE_INT, REPLAY_USE},	
+        {"%6.3lf ", &alt_eng.rpm, BASE_DOUBLE, REPLAY_USE},		//10
+        {"%hhd ", &alt_tsi.turn_signal, BASE_INT, REPLAY_USE},	
+        {"%hhd ", &alt_fwbs.front_wiping, BASE_INT, REPLAY_USE},	
         {"%hd ", &uimu.xaccel, BASE_INT, REPLAY_USE},          
-        {"%hd ", &uimu.yaccel, BASE_INT, REPLAY_USE},			//20    
-        {"%hd ", &uimu.zaccel, BASE_INT, REPLAY_USE}, 
+        {"%hd ", &uimu.yaccel, BASE_INT, REPLAY_USE},          
+        {"%hd ", &uimu.zaccel, BASE_INT, REPLAY_USE}, 			//15    
         {"%hd ", &uimu.xgyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.ygyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.zgyro, BASE_INT, REPLAY_USE}, 			    
-        {"%hhd ", &alt_fwbs.front_wiping, BASE_INT, REPLAY_USE},	//25
-        {"%hhd ", &ccftm.code, BASE_INT, REPLAY_USE},	
-
-// The following inputs are on the Altima but not the Audi
-//        {"%hhd ", &alt_gi.code, BASE_INT, REPLAY_USE},	
-//        {"%6.3lf ", &alt_eng.rpm, BASE_DOUBLE, REPLAY_USE},
+        {"%9.2f ", &gps_utc_seconds, BASE_DOUBLE, REPLAY_USE},           
+        {"%06d ", &gps_point.date, BASE_INT, REPLAY_USE},		//20
+        {"%13.8lf ", &gps_point.longitude, BASE_DOUBLE, REPLAY_USE},
+        {"%13.8lf ", &gps_point.latitude, BASE_DOUBLE, REPLAY_USE},	
+        {"%6.3lf ", &gps_point.speed, BASE_DOUBLE, REPLAY_USE},                 
+        {"%6.3f ", &gps_point.heading, BASE_FLOAT, REPLAY_USE},                 
+        {"%6.2f ", &gps_point.altitude, BASE_FLOAT, REPLAY_USE},	//25
+        {"%d ", &gps_point.num_sats, BASE_INT, REPLAY_USE},
+        {"%d ", &gps_point.pos, BASE_INT, REPLAY_USE},		
+        {"%6.3f ", &gps_point.hdop, BASE_FLOAT, REPLAY_USE},                    
 };
 
 int num_gdfile_col = sizeof(altima_data_spec)/sizeof(data_log_column_spec_t);
