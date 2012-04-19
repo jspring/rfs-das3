@@ -1,4 +1,4 @@
-/* Documentation on how to add a user in linux and configure SVN
+/* Documentation on how to add a user in linux and configure SVN */
 
 1.	From a root prompt:
 	adduser username
@@ -15,9 +15,44 @@
 
 3.  usermod -g users username
 
-/* Linux Networking (As Root)
 
-Command:
+/* Linux Enable sudo */
+Edit /etc/sudoers
+
+# Uncomment to allow people in group wheel to run all commands
+# %wheel	ALL=(ALL)	ALL
+%users	ALL=(ALL)	ALL
+
+
+/* Linux SSH Configuration */
+
+From Joel - Edit /home/username/.ssh/config
+
+Host *
+ StrictHostKeyChecking no
+ ControlMaster auto
+ ControlPath /tmp/.ssh/%r@%h:%p
+
+You have to make sure /tmp/.ssh exists, or set it to some other dir.
+
+What this does is:
+
+1. the first connection opens a master socket to the destination (which takes the usual 2-10 seconds)
+2. subsequent connections reuse the same master socket (connect time close to 0)
+
+However: when all connections close, the master closes. So to make this work effectively, I use at least two terminal windows. In one window, I invoke ssh and leave that running. In the other windows I use ssh, sftp, svn, or whatever.
+
+From John - Edit /home/username/.subversion/config
+
+[tunnels]
+...
+# ssh = $SVN_SSH ssh -q -o ControlMaster=no
+ssh = $SVN_SSH ssh -o ControlMaster=auto
+
+
+/* Linux Networking (As Root) */
+
+Commands:
 ifconfig - shows IP address
 route - shows default gateway
 route del default
@@ -29,12 +64,8 @@ Default Hostname		/etc/HOSTNAME
 Known Host Aliases		/etc/hosts
 Change IP/Route Permanently 	/etc/rc.d/rc.inet1.conf
 
-/* Linux Enable sudo
-Edit /etc/sudoers
 
-# Uncomment to allow people in group wheel to run all commands
-# %wheel	ALL=(ALL)	ALL
-%users	ALL=(ALL)	ALL
+/* Linux Display Settings */
 
-/* Display Settings
+Files:
 xorg.conf			/etc/X11
