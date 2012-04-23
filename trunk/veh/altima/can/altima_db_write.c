@@ -41,6 +41,9 @@ void altima_db_write(db_clt_typ *pclt, unsigned long id, unsigned char *data)
 	alt_vehicle_speed_t alt_vs;
 	alt_front_wiping_brake_switch_t alt_fwbs;
 	alt_turn_signal_ignition_t alt_tsi;
+	timestamp_t turn_signal_ts;
+	int curr_ms;
+
 	switch (id) {
 	case ALT_CCFTM_MSG_ID:
 		get_alt_ccftm(data, &alt_ccftm);
@@ -74,6 +77,21 @@ void altima_db_write(db_clt_typ *pclt, unsigned long id, unsigned char *data)
 		break;
 	case ALT_TSI_MSG_ID:
 		get_alt_tsi(data, &alt_tsi);
+
+		// Do the turn signal filtering here
+		// Wait for 750 ms after an OFF signal before reporting OFF
+		// to the filtered turn signal db var
+		get_current_timestamp(&turn_signal_ts);
+		curr_ms = TS_TO_MS(&turn_signal_ts);
+		if(alt_tsi.turn_signal) {
+			alt_tsi.turn_signal_filt = alt_tsi.turn_signal;
+			alt_tsi.ms_since_last_on = curr_ms;
+		}
+		else {
+			if( (curr_ms - alt_tsi.ms_since_last_on) > TURNSIG_TIMEOUT)
+				alt_tsi.turn_signal_filt = alt_tsi.turn_signal;
+		}
+				
 		db_clt_write(pclt, DB_ALT_TSI_VAR, 
 			sizeof(alt_tsi), (void *) &alt_tsi);
 		break;

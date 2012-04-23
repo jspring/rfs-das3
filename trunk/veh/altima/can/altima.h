@@ -244,10 +244,15 @@ static inline void get_alt_fwbs(unsigned char *data,
  */
 typedef struct {
 	timestamp_t ts;
-	unsigned char turn_signal;	/// Byte 1, bits 7-5
+	unsigned char turn_signal;	// Byte 1, bits 7-5
+	unsigned char turn_signal_filt;	// Filtered turn signal. ("turn_signal" 
+				        // blinks ON/OFF with the state of the relay;
+					// This signal filters out that blinking.)
+	int ms_since_last_on;			
 	unsigned char ignition;	/// Byte 1, bit 2 
 } alt_turn_signal_ignition_t;
 
+#define TURNSIG_TIMEOUT 750
 #define TS_LR_OFF	0	/// left and right flashing indicators off
 #define TS_LON_ROFF	1	/// left flashing indicator on and right off 
 #define TS_LOFF_RON	2	/// left flashing indicator off and right ON 
