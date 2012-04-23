@@ -22,6 +22,7 @@ m56_m4n4_t m56_m484;
 m56_m4n5_t m56_m485;
 m56_m4n6_t m56_m486;
 m56_m4n7_t m56_m487;
+m56_m4n8_t m56_m488;
 
 timestamp_t timestamp;
 
@@ -253,6 +254,25 @@ data_log_column_spec_t comm_specb[] =
 
         //GPS altitude received from n cars behind
         {"%.2f ",   &m56_m487.host_rx_gps_altitude, BASE_FLOAT, REPLAY_USE},	//###84
+//m56_m488_t
+        {"%u ",   &m56_m488.message_timeout_counter, BASE_INT, REPLAY_USE},	//###85
+        {"%hhu ",   &m56_m488.msgcnt_n, BASE_CHAR, REPLAY_USE},			//###86
+
+        //GPS timestamp milliseconds, received from n cars behind
+        {"%hu ",   &m56_m488.host_rx_gps_ts_millisecond, BASE_SHORT, REPLAY_USE},//###87
+
+        //GPS range to host vehicle received from n cars behind
+        {"%.1f ",   &m56_m488.host_rx_gps_range2host, BASE_FLOAT, REPLAY_USE},	//###88
+
+        //Relative position to host vehicle received from n cars behind
+        //0x00=unclassified, 0x01=ahead, 0x02=behind, 0x03=oncoming,
+        //0x04=ahead left, 0x05=ahead right, 0x06=behind left,
+        //0x07=behind right, 0x08=oncoming left, 0x09=oncoming right,
+        //0x0A=ahead far left, 0X0B=ahead far right, 0x0C=behind far left,
+        //0x0D=behind far right, 0x0E=oncoming far left,
+        //0x0F=oncoming far right, 0x10=intersecting left
+        //0x11=intersecting right
+        {"%hhu ",   &m56_m488.host_rx_gps_relpos2host, BASE_CHAR, REPLAY_USE},	//###89
 };
 
 #define NUM_BFILE_COLUMNS sizeof(comm_specb)/sizeof(data_log_column_spec_t)

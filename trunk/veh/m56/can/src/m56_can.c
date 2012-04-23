@@ -180,6 +180,12 @@ db_id_t db_vars_list[] =  {
         {DB_M56_ITSCAN_MSG4B7_VAR, sizeof(m56_m4n7_t)},
         {DB_M56_ITSCAN_MSG4C7_VAR, sizeof(m56_m4n7_t)},
 
+        {DB_M56_ITSCAN_MSG488_VAR, sizeof(m56_m4n8_t)},
+        {DB_M56_ITSCAN_MSG498_VAR, sizeof(m56_m4n8_t)},
+        {DB_M56_ITSCAN_MSG4A8_VAR, sizeof(m56_m4n8_t)},
+        {DB_M56_ITSCAN_MSG4B8_VAR, sizeof(m56_m4n8_t)},
+        {DB_M56_ITSCAN_MSG4C8_VAR, sizeof(m56_m4n8_t)},
+
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -367,6 +373,12 @@ int main(int argc, char *argv[]) {
 	m56_m4n7_t m56_m4A7;
 	m56_m4n7_t m56_m4B7;
 	m56_m4n7_t m56_m4C7;
+
+	m56_m4n8_t m56_m488;
+	m56_m4n8_t m56_m498;
+	m56_m4n8_t m56_m4A8;
+	m56_m4n8_t m56_m4B8;
+	m56_m4n8_t m56_m4C8;
 
         while ((option = getopt(argc, argv, "vc")) != EOF) {
                 switch(option) {
@@ -574,6 +586,12 @@ int main(int argc, char *argv[]) {
 	memset(&m56_m4B7, 0, sizeof(m56_m4n7_t));
 	memset(&m56_m4C7, 0, sizeof(m56_m4n7_t));
 
+	memset(&m56_m488, 0, sizeof(m56_m4n8_t));
+	memset(&m56_m498, 0, sizeof(m56_m4n8_t));
+	memset(&m56_m4A8, 0, sizeof(m56_m4n8_t));
+	memset(&m56_m4B8, 0, sizeof(m56_m4n8_t));
+	memset(&m56_m4C8, 0, sizeof(m56_m4n8_t));
+
 	m56_steering.two_message_periods = 20; 		// 2*10 msec
 	m56_gear.two_message_periods = 20; 		// 2*10 msec
 	m56_engine_rpm.two_message_periods = 20; 	// 2*10 msec
@@ -731,6 +749,12 @@ int main(int argc, char *argv[]) {
 	m56_m4A7.two_message_periods = 200; 	// 2*100 msec
 	m56_m4B7.two_message_periods = 200; 	// 2*100 msec
 	m56_m4C7.two_message_periods = 200; 	// 2*100 msec
+
+	m56_m488.two_message_periods = 200; 	// 2*100 msec
+	m56_m498.two_message_periods = 200; 	// 2*100 msec
+	m56_m4A8.two_message_periods = 200; 	// 2*100 msec
+	m56_m4B8.two_message_periods = 200; 	// 2*100 msec
+	m56_m4C8.two_message_periods = 200; 	// 2*100 msec
 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG002_VAR, 
 		sizeof(m56_steering_t), &m56_steering); 
@@ -1035,6 +1059,17 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_m4n7_t), &m56_m4B7); 
 	db_clt_write(pclt,DB_M56_ITSCAN_MSG4C7_VAR, 
 		sizeof(m56_m4n7_t), &m56_m4C7); 
+
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG488_VAR, 
+		sizeof(m56_m4n8_t), &m56_m488); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG498_VAR, 
+		sizeof(m56_m4n8_t), &m56_m498); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG4A8_VAR, 
+		sizeof(m56_m4n8_t), &m56_m4A8); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG4B8_VAR, 
+		sizeof(m56_m4n8_t), &m56_m4B8); 
+	db_clt_write(pclt,DB_M56_ITSCAN_MSG4C8_VAR, 
+		sizeof(m56_m4n8_t), &m56_m4C8); 
 
 	for(;;) {
 	   /* Now wait for a trigger. */
@@ -1695,6 +1730,37 @@ int main(int argc, char *argv[]) {
 		    check_msg_timeout(ts_ms, &m56_m4C7.ts_ms, &m56_m4C7.two_message_periods, &m56_m4C7.message_timeout_counter); 
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG4C7_VAR, 
 			sizeof(m56_m4C7), &m56_m4C7); 
+		    break;
+
+		case 0x488:
+		    get_m56_m4n8(db_kom.msg, &m56_m488);
+		    check_msg_timeout(ts_ms, &m56_m488.ts_ms, &m56_m488.two_message_periods, &m56_m488.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG488_VAR, 
+			sizeof(m56_m488), &m56_m488); 
+		    break;
+		case 0x498:
+		    get_m56_m4n8(db_kom.msg, &m56_m498);
+		    check_msg_timeout(ts_ms, &m56_m498.ts_ms, &m56_m498.two_message_periods, &m56_m498.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG498_VAR, 
+			sizeof(m56_m498), &m56_m498); 
+		    break;
+		case 0x4A8:
+		    get_m56_m4n8(db_kom.msg, &m56_m4A8);
+		    check_msg_timeout(ts_ms, &m56_m4A8.ts_ms, &m56_m4A8.two_message_periods, &m56_m4A8.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG4A8_VAR, 
+			sizeof(m56_m4A8), &m56_m4A8); 
+		    break;
+		case 0x4B8:
+		    get_m56_m4n8(db_kom.msg, &m56_m4B8);
+		    check_msg_timeout(ts_ms, &m56_m4B8.ts_ms, &m56_m4B8.two_message_periods, &m56_m4B8.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG4B8_VAR, 
+			sizeof(m56_m4B8), &m56_m4B8); 
+		    break;
+		case 0x4C8:
+		    get_m56_m4n8(db_kom.msg, &m56_m4C8);
+		    check_msg_timeout(ts_ms, &m56_m4C8.ts_ms, &m56_m4C8.two_message_periods, &m56_m4C8.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG4C8_VAR, 
+			sizeof(m56_m4C8), &m56_m4C8); 
 		    break;
 
 		case 0x5b0:
