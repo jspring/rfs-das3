@@ -47,6 +47,7 @@ static void sig_hand(int code)
 }
 
 #define IGNITION_OFF 255
+#define IGN_CTR_MAX 100
 
 /// Codes used in synchronization record sent to video recorder
 #define VIDEO_STOP_RECORD	1
@@ -155,6 +156,7 @@ int main(int argc, char *argv[])
 	int do_video = TRUE;		// command flag will turn off
 	int use_memory = FALSE;		// to save in memory, set to 1
 	int use_ignition_status = FALSE;
+	int ign_ctr = IGN_CTR_MAX;
 	FILE *first_file = NULL;
 	char *first_file_str;
 	char tripdir[80];
@@ -572,9 +574,14 @@ int main(int argc, char *argv[])
 					&pbuff_self,  &pbuff_comme,  &pbuff_commf,  
 					&pbuff_commg);
 		if((m56_ignition_status.ignition_status == 1) && use_ignition_status) {
-			printf("Exiting due to ignition off\n");
-			longjmp(exit_env, IGNITION_OFF);
+			ign_ctr--;
+			if(ign_ctr == 0) {
+				printf("Exiting due to ignition off\n");
+				longjmp(exit_env, IGNITION_OFF);
+			}
 		}
+		else
+			ign_ctr = IGN_CTR_MAX;
 
 		TIMER_WAIT(ptimer);
 	}
