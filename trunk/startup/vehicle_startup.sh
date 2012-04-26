@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # DAS3 vehicle_startup.sh 
 #
