@@ -1799,9 +1799,9 @@ typedef struct {
 static inline void get_m56_m200(unsigned char *data, 
 	m56_m200_t *p) {
 	p->hosttx_msgcnt_id200 = data[0];
-	p->hosttx_curr_spd_vsp_491 = (float)(0.1 * (data[1]) + (data[2] << 8));
-	p->hosttx_target_spd_vspcomn_491 = (float)(0.1 * (data[3]) + (data[4] << 8));
-	p->hosttx_dist_ctl_target_spd_acvcomo_491 = (float)(0.1 * (data[5]) + (data[6] << 8));
+	p->hosttx_curr_spd_vsp_491 = (float)(0.1 * ((data[1]) + (data[2] << 8)));
+	p->hosttx_target_spd_vspcomn_491 = (float)(0.1 * ((data[3]) + (data[4] << 8)));
+	p->hosttx_dist_ctl_target_spd_acvcomo_491 = (float)(0.1 * ((data[5]) + (data[6] << 8)));
 	p->hosttx_acceleration_xg_491 = (float)(0.1 * data[7]);
 }
 
@@ -1831,11 +1831,11 @@ typedef struct {
 static inline void get_m56_m201(unsigned char *data, 
 	m56_m201_t *p) {
 	p->hosttx_msgcnt_id201 = data[0];
-	p->hosttx_prev_spd_mdistance_491 = (float)(0.1 * (data[1]) + (data[2] << 8));
-	p->hosttx_relative_spd_vr_491 = (float)(0.1 * (data[3]) + (data[4] << 8));
+	p->hosttx_prev_spd_mdistance_491 = (float)(0.1 * ((data[1]) + (data[2] << 8)));
+	p->hosttx_relative_spd_vr_491 = (float)(0.1 * ((data[3]) + (data[4] << 8)));
 	p->hosttx_brake_sw_491 = data[5] & MASK_b0;
 	p->hosttx_accel_sw_491 = (data[5] & MASK_b1) >> 1;
-	p->hosttx_setvsp_491 = (float)(0.1 * (data[6]) + (data[7] << 8));
+	p->hosttx_setvsp_491 = (float)(0.1 * ((data[6]) + (data[7] << 8)));
 }
 
 typedef struct {
@@ -1861,7 +1861,7 @@ typedef struct {
     
 static inline void get_m56_m203(unsigned char *data, 
 	m56_m203_t *p) {
-	p->yaw_rate = (float)(0.1 * (data[0]) + (data[1] << 8));
+	p->yaw_rate = (float)(0.1 * ((data[0]) + (data[1] << 8)));
 	p->couple_prec_veh = (data[2] & MASK_b47) >> 4;
 	p->couple_follow_veh = data[2] & MASK_b03;
 }
@@ -2313,8 +2313,8 @@ static inline void get_m56_m4n4(unsigned char *data,
 	p->msgcnt_n = data[0];
 	p->host_rx_wsu_id = (data[1] << 8) + data[2];
 	p->host_rx_chanbusy = data[3];
-	p->host_rx_rss = (float)(0.1 * (data[4] << 8) + data[5]);
-	p->host_rx_pkt_pct = (float)(0.1 * (data[6] << 8) + data[7]);
+	p->host_rx_rss = (float)(0.1 * ((data[4] << 8) + data[5]));
+	p->host_rx_pkt_pct = (float)(0.1 * ((data[6] << 8) + data[7]));
 }
 
 typedef struct {
