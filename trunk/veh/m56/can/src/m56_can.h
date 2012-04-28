@@ -1802,7 +1802,7 @@ static inline void get_m56_m200(unsigned char *data,
 	p->hosttx_curr_spd_vsp_491 = (float)(0.1 * ((data[1]) + (data[2] << 8)));
 	p->hosttx_target_spd_vspcomn_491 = (float)(0.1 * ((data[3]) + (data[4] << 8)));
 	p->hosttx_dist_ctl_target_spd_acvcomo_491 = (float)(0.1 * ((data[5]) + (data[6] << 8)));
-	p->hosttx_acceleration_xg_491 = (float)(0.01 * data[7]);
+	p->hosttx_acceleration_xg_491 = (float)(0.01 * (signed char)data[7]);
 }
 
 typedef struct {
