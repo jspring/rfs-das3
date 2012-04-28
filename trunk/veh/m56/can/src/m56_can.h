@@ -384,6 +384,8 @@
 #define MASK_b67 0xC0
 #define MASK_b7	 0x80
 #define M56_IGNITION_MASK 0X01
+#define SHORT2FLOAT(low,high)	((float)((signed short)((low) + (high << 8))))
+#define CHAR2FLOAT(low)	((float)((signed char)(low)))
 
 /*******************************************************************************
  *      m56_steering
@@ -1799,10 +1801,10 @@ typedef struct {
 static inline void get_m56_m200(unsigned char *data, 
 	m56_m200_t *p) {
 	p->hosttx_msgcnt_id200 = data[0];
-	p->hosttx_curr_spd_vsp_491 = (float)(0.1 * ((data[1]) + (data[2] << 8)));
-	p->hosttx_target_spd_vspcomn_491 = (float)(0.1 * ((data[3]) + (data[4] << 8)));
-	p->hosttx_dist_ctl_target_spd_acvcomo_491 = (float)(0.1 * ((data[5]) + (data[6] << 8)));
-	p->hosttx_acceleration_xg_491 = (float)(0.01 * (signed char)data[7]);
+	p->hosttx_curr_spd_vsp_491 = 0.1 * SHORT2FLOAT(data[1], data[2]);
+	p->hosttx_target_spd_vspcomn_491 = 0.1 * SHORT2FLOAT(data[3], data[4]);
+	p->hosttx_dist_ctl_target_spd_acvcomo_491 = 0.1 * SHORT2FLOAT(data[5], data[6]);
+	p->hosttx_acceleration_xg_491 = 0.01 * CHAR2FLOAT(data[7]);
 }
 
 typedef struct {
@@ -1831,11 +1833,11 @@ typedef struct {
 static inline void get_m56_m201(unsigned char *data, 
 	m56_m201_t *p) {
 	p->hosttx_msgcnt_id201 = data[0];
-	p->hosttx_prev_spd_mdistance_491 = (float)(0.1 * ((data[1]) + (data[2] << 8)));
-	p->hosttx_relative_spd_vr_491 = (float)(0.1 * ((data[3]) + (data[4] << 8)));
+	p->hosttx_prev_spd_mdistance_491 = 0.1 * SHORT2FLOAT(data[1], data[2]);
+	p->hosttx_relative_spd_vr_491 = 0.1 * SHORT2FLOAT(data[3], data[4]);
 	p->hosttx_brake_sw_491 = data[5] & MASK_b0;
 	p->hosttx_accel_sw_491 = (data[5] & MASK_b1) >> 1;
-	p->hosttx_setvsp_491 = (float)(0.1 * ((data[6]) + (data[7] << 8)));
+	p->hosttx_setvsp_491 = 0.1 * SHORT2FLOAT(data[6], data[7]);
 }
 
 typedef struct {
@@ -1894,7 +1896,7 @@ typedef struct {
 static inline void get_m56_m650(unsigned char *data, 
 	m56_m650_t *p) {
 	p->hosttx_host_veh_ctr4 = data[0];
-	p->hosttx_gps_range_prev_veh = (float)(0.1 * ((signed short)((data[1]) + (data[2] << 8))));
+	p->hosttx_gps_range_prev_veh =  0.1 * SHORT2FLOAT(data[1], data[2]);
 	p->hosttx_tracking_status = data[3] & MASK_b03;
 	p->hosttx_veh_position_type = (data[3] & MASK_b47) >> 4;
 	p->hosttx_veh_fwd_seq_num = data[4];
@@ -1919,7 +1921,7 @@ static inline void get_m56_m651(unsigned char *data,
 	m56_m651_t *p) {
 	p->hosttx_host_gps_ctr6 = data[0];
 	p->hosttx_gps_latitude = ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ))/(3600*256.0);
-	p->hosttx_gps_lat_accuracy = (float)( 0.1 * ((signed short)( (data[5] << 8) + data[6] )));
+	p->hosttx_gps_lat_accuracy = 0.1 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -1940,7 +1942,7 @@ static inline void get_m56_m652(unsigned char *data,
 	m56_m652_t *p) {
 	p->hosttx_host_gps_ctr7 = data[0];
 	p->hosttx_gps_longitude = ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] ))/(3600*256.0);
-	p->hosttx_gps_long_accuracy = (float)( 0.1 * ((signed short)( (data[5] << 8) + data[6] )));
+	p->hosttx_gps_long_accuracy = 0.1 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -1961,7 +1963,7 @@ static inline void get_m56_m653(unsigned char *data,
 	m56_m653_t *p) {
 	p->hosttx_host_gps_ctr8 = data[0];
 	p->hosttx_gps_altitude = (float)( 0.01 * ((signed int)( (data[1] << 24)+ (data[2] << 16) + (data[3] << 8) + data[4] )));
-	p->hosttx_gps_alt_accuracy = (float)( 0.01 * ((signed short)( (data[5] << 8) + data[6] )));
+	p->hosttx_gps_alt_accuracy = 0.01 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -1983,9 +1985,9 @@ typedef struct {
 static inline void get_m56_m654(unsigned char *data, 
 	m56_m654_t *p) {
 	p->hosttx_host_gps_ctr9 = data[0];
-	p->hosttx_gps_heading = (float)( 0.1 * ((signed short)( (data[1] << 8) + data[2] )));
-	p->hosttx_gps_heading_accuracy = (float)( 0.1 * ((signed short)( (data[3] << 8) + data[4] )));
-	p->hosttx_gps_speed = (float)( 0.1 * ( (data[5] << 8) + data[6] ));
+	p->hosttx_gps_heading = 0.1 * SHORT2FLOAT(data[2], data[1]);
+	p->hosttx_gps_heading_accuracy = 0.1 * SHORT2FLOAT(data[4], data[3]);
+	p->hosttx_gps_speed = 0.1 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -2144,10 +2146,10 @@ typedef struct {
 static inline void get_m56_m4n0(unsigned char *data, 
 	m56_m4n0_t *p) {
 	p->msgcnt_id200 = data[0];
-	p->host_rx_vsp_491 = (float)(0.1 * ((data[2] << 8) + data[1]));
-	p->host_rx_vspcomn_491 = (float)(0.1 * ((data[4] << 8) + data[3]));
-	p->host_rx_acvcomo_491 = (float)(0.1 * ((data[6] << 8) + data[5]));
-	p->host_rx_xg_491 = (float)(0.01 * data[7]);
+	p->host_rx_vsp_491 = 0.1 * SHORT2FLOAT(data[1], data[2]);
+	p->host_rx_vspcomn_491 = 0.1 * SHORT2FLOAT(data[3], data[4]);
+	p->host_rx_acvcomo_491 = 0.1 * SHORT2FLOAT(data[5], data[6]);
+	p->host_rx_xg_491 = 0.01 * CHAR2FLOAT(data[7]);
 }
 
 typedef struct {
@@ -2189,11 +2191,11 @@ typedef struct {
 static inline void get_m56_m4n1(unsigned char *data, 
 	m56_m4n1_t *p) {
 	p->msgcnt_id201 = data[0];
-	p->host_rx_mdistance_491 = (float)(0.1 * ((data[2] << 8) + data[1]));
-	p->host_rx_vr_491 = (float)(0.1 * ((data[4] << 8) + data[3]));
+	p->host_rx_mdistance_491 = 0.1 * SHORT2FLOAT(data[1], data[2]);
+	p->host_rx_vr_491 = 0.1 * SHORT2FLOAT(data[3], data[4]);
 	p->host_rx_brake_sw_491 = data[5] & MASK_b0;
 	p->host_rx_accel_sw_491 = (data[5] & MASK_b1) >> 1;
-	p->host_rx_setvsp_491 = (float)(0.1 * ((data[7] << 8) + data[6]));
+	p->host_rx_setvsp_491 = 0.1 * SHORT2FLOAT(data[6], data[7]);
 }
 
 typedef struct {
@@ -2268,7 +2270,7 @@ typedef struct {
 static inline void get_m56_m4n3(unsigned char *data, 
 	m56_m4n3_t *p) {
 	p->msgcnt_n = data[0];
-	p->host_rx_gps_range = (float)(0.1 * ((data[1] << 8) + data[2]));
+	p->host_rx_gps_range = 0.1 * SHORT2FLOAT(data[2], data[1]);
 	p->host_rx_gps_tracking_status = data[3] & MASK_b03;
 	p->host_rx_gps_veh_pos_type = (data[3] & MASK_b47) >> 4;
 	p->host_rx_fwd_seq_num = data[4];
@@ -2313,8 +2315,8 @@ static inline void get_m56_m4n4(unsigned char *data,
 	p->msgcnt_n = data[0];
 	p->host_rx_wsu_id = (data[1] << 8) + data[2];
 	p->host_rx_chanbusy = data[3];
-	p->host_rx_rss = (float)(0.1 * ((data[4] << 8) + data[5]));
-	p->host_rx_pkt_pct = (float)(0.1 * ((data[6] << 8) + data[7]));
+	p->host_rx_rss = 0.1 * SHORT2FLOAT(data[5], data[4]);
+	p->host_rx_pkt_pct = 0.1 * SHORT2FLOAT(data[7], data[6]);
 }
 
 typedef struct {
@@ -2349,7 +2351,7 @@ static inline void get_m56_m4n5(unsigned char *data,
 	p->msgcnt_n = data[0];
 	p->host_rx_gps_latitude = ((float)((signed int)((data[1] << 24) + 
 		(data[2] << 16) + (data[3] << 8) + data[4] ))) / (3600*256.0);
-	p->host_rx_gps_heading = (float)(0.1 * ((signed short)((data[5] << 8) + data[6] )) );
+	p->host_rx_gps_heading = 0.1 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -2384,7 +2386,7 @@ static inline void get_m56_m4n6(unsigned char *data,
 	p->msgcnt_n = data[0];
 	p->host_rx_gps_longitude = ((float)((signed int)((data[1] << 24) + 
 		(data[2] << 16) + (data[3] << 8) + data[4] ))) / (3600*256.0);
-	p->host_rx_gps_speed = (float)(0.1 * ((signed short)((data[5] << 8) + data[6] )) );
+	p->host_rx_gps_speed = 0.1 * SHORT2FLOAT(data[6], data[5]);
 }
 
 typedef struct {
@@ -2451,7 +2453,7 @@ static inline void get_m56_m4n8(unsigned char *data,
 	m56_m4n8_t *p) {
 	p->msgcnt_n = data[0];
 	p->host_rx_gps_ts_millisecond = (data[1] << 8) + data[2];
-	p->host_rx_gps_range2host = (float)(0.1 * ((data[3] << 8) + data[4]));
+	p->host_rx_gps_range2host = 0.1 * SHORT2FLOAT(data[4], data[3]);
 	p->host_rx_gps_relpos2host = data[5];
 }
 
