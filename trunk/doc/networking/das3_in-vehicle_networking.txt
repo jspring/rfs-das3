@@ -1,4 +1,4 @@
-** WiFi Backhaul (B167 & Tent) **
+/** WiFi Backhaul (B167 & Tent) **
 
 AP/Router: Linksys/CISCO WRT160NL
 SSID: PATH VEHICLE WiFi
@@ -14,7 +14,13 @@ WAN IP B167: 128.32.234.161
 WAN IP Tent: 128.32.234.139
 
 
-** PATH DAS3 In-Vehicle Network Setup **
+/** LandCell Cell Modem Backhaul **
+Altima  LAN IP: 192.168.2.1 (DHCP .2 - .99)
+Audi A3 LAN IP: 10.0.0.50 (DHCP Enabled)
+User/PWD: admin/password
+
+
+/** PATH DAS3 In-Vehicle Network Setup **
 
 WiFi Bridge: TrendNet-TEW-654TR
 Note: Switch on bottom of device should be set to AP Client Mode
@@ -22,7 +28,7 @@ Note: New devices need a firmware upgrade
 Devices Named: tn-ap-client-X
 IP: <DHCP From Linksys> (Should Get Reserved IP .10X Corresponding to Device Name)
 User/PWD: admin/admin
-Default IP After Reset: 192.168.10.1
+Default IP If Unable To Connect to Wireless or Reset: 192.168.10.1
 
 In-Vehicle Router: TrendNet-TW100
 WAN IP: <DHCP From LInksys or Cell Modem>
@@ -33,3 +39,44 @@ DHCP Range: 10.0.0.2 - 10.0.0.99
 
 Engineering Computer: 	10.0.0.141
 Video Computer:		10.0.0.140
+
+/** Linux Networking (As Root) **
+
+Commands:
+ifconfig - shows IP address
+/sbin/route - shows default gateway
+route del default
+route add default gw NEWIP
+
+Files:
+Default DNS			/etc/resolv.conf
+Default Hostname		/etc/HOSTNAME
+Known Host Aliases		/etc/hosts
+Change IP/Route Permanently 	/etc/rc.d/rc.inet1.conf
+
+
+/** Linux SSH Configuration **
+
+From Joel - Edit /home/username/.ssh/config
+
+Host *
+ StrictHostKeyChecking no
+ ControlMaster auto
+ ControlPath /tmp/.ssh/%r@%h:%p
+
+You have to make sure /tmp/.ssh exists, or set it to some other dir.
+
+What this does is:
+
+1. the first connection opens a master socket to the destination (which takes the usual 2-10 seconds)
+2. subsequent connections reuse the same master socket (connect time close to 0)
+
+However: when all connections close, the master closes. So to make this work effectively, I use at least two terminal windows. In one window, I invoke ssh and leave that running. In the other windows I use ssh, sftp, svn, or whatever.
+
+From John - Edit /home/username/.subversion/config
+
+[tunnels]
+...
+# ssh = $SVN_SSH ssh -q -o ControlMaster=no
+ssh = $SVN_SSH ssh -o ControlMaster=auto
+

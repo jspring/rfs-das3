@@ -54,7 +54,7 @@ ssh = $SVN_SSH ssh -o ControlMaster=auto
 
 Commands:
 ifconfig - shows IP address
-route - shows default gateway
+/sbin/route - shows default gateway
 route del default
 route add default gw NEWIP
 
