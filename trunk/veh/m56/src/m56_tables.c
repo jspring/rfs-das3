@@ -365,7 +365,7 @@ int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
 
 /** This array is used to specify the output format of the "[mnop]d" file.
  */
-data_log_column_spec_t self_spec[] = 
+data_log_column_spec_t file_specd[] = 
 {
 	{"HH:MM:SS.SSS ", &timestamp, BASE_TIMESTAMP, REPLAY_TIME},                            //###1
 	{"%.1f ", &m56_steering.steering_angle, BASE_FLOAT, REPLAY_USE},                        //###2
@@ -494,14 +494,14 @@ data_log_column_spec_t self_spec[] =
 	{"%hhu ", &m56_pedal_position.acc_control_requested, BASE_CHAR, REPLAY_USE},            //###125
 };
 
-#define NUM_DFILE_COLUMNS sizeof(self_spec)/sizeof(data_log_column_spec_t)
-int num_dfile_columns = sizeof(self_spec)/sizeof(data_log_column_spec_t);
+#define NUM_DFILE_COLUMNS sizeof(file_specd)/sizeof(data_log_column_spec_t)
+int num_dfile_columns = sizeof(file_specd)/sizeof(data_log_column_spec_t);
 
 
 
 /** This array is used to specify the output format of the "[mnop]c" file.
  */
-data_log_column_spec_t comm_speca[] = 
+data_log_column_spec_t file_speca[] = 
 {
 //m56_m200_t
         {"%u ",   &m56_m200.message_timeout_counter, BASE_INT, REPLAY_USE},	//###1
@@ -647,5 +647,5 @@ data_log_column_spec_t comm_speca[] =
         {"%hhu ",   &m56_m711.keepalive_echo_wsu2mabx_6, BASE_CHAR, REPLAY_USE},	//###75
 };
 
-#define NUM_AFILE_COLUMNS sizeof(comm_speca)/sizeof(data_log_column_spec_t)
-int num_afile_columns = sizeof(comm_speca)/sizeof(data_log_column_spec_t);
+#define NUM_AFILE_COLUMNS sizeof(file_speca)/sizeof(data_log_column_spec_t)
+int num_afile_columns = sizeof(file_speca)/sizeof(data_log_column_spec_t);
