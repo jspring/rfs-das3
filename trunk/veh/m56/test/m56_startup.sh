@@ -74,12 +74,22 @@ echo Starting gpsdb...
 /home/path/sens/gps/examples/lnx/gpsdb -d 1 < /dev/ttyS0 >$tripdir/gpsdb.log 2>&1 &
 sleep 1
 
+if [[ ! -h /home/das3/src/home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 || \
+	! -h /home/das3/src/home/cacc3/veh/lnx/libcacc3_tables.so.1.0 ]]
+then
+	ln -sf /home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 /home/das3/src/libveh_tables.so
+	ln -sf /home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 /home/das3/src/libveh_tables.so.1
+	ln -sf /home/cacc3/veh/lnx/libcacc3_tables.so.1.0 /home/das3/src/libexpt_tables.so
+	ln -sf /home/cacc3/veh/lnx/libcacc3_tables.so.1.0 /home/das3/src/libexpt_tables.so.1
+	sudo ldconfig
+fi
+
 echo Starting wrfiles_m56 with tripdir $tripdir vehicle prefix $VEH and experiment $EXP...
 if [[ $EXP == "cacc3" ]]
 then
-	/home/das3/veh/m56/src/lnx/wrfiles_m56 -m 2 -t 50 -d $tripdir -c $VEH -i 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
+	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $tripdir -c $VEH -i 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
 else
-	/home/das3/veh/m56/src/lnx/wrfiles_m56 -m 2 -t 50 -d $tripdir -c $VEH -i -BCEFG 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
+	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $tripdir -c $VEH -i -BCEFG 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
 fi
 
 sleep 2

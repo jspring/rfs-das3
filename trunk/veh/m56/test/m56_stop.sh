@@ -3,7 +3,7 @@
 killall video
 if [[ $1 != "ignorewrfiles" ]]
 then
-	killall wrfiles_m56
+	killall wrfiles_das3
 fi
 killall lcd_io.sh 
 killall getstats.sh 
