@@ -91,6 +91,7 @@ if [[ $EXPERIMENT =~ "ntmm" ]]
 then
 
 	echo "Starting NTMM Experiment & Data Logging..."
+	/home/ntmm/test/start.sh $CARTYPE $EXPERIMENT $TRIPDIR
 	exit 0
 
 fi
