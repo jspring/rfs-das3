@@ -249,10 +249,9 @@ int main(int argc, char *argv[])
                 fprintf(stderr, "Unable to initialize delay timer\n");
                 exit(EXIT_FAILURE);
         }
-printf("NUM_DB_VARS %d\n", (int)NUM_DB_VARS);
 	// Create and initialize additional variables  to 0
         for (i = 0; i < NUM_DB_VARS; i++) {
-printf("i %d db_vars_list[i].id %d\n", i, db_vars_list[i].id);
+		printf("db_vars_list[%d].id %d\n", i, db_vars_list[i].id);
                 id = db_vars_list[i].id;
 		size = db_vars_list[i].size;
 		clt_create(pclt, id, id, size);

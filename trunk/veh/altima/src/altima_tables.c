@@ -39,7 +39,7 @@ char * not_implemented = "9999";
 
 /** Add lines here when new DB variables are referenced in the tables.
  */
-db_var_spec_t altima_db_vars[] =
+db_var_spec_t db_vars[] =
 {
         {DB_EVT300_RADAR1_VAR, sizeof(evt300_radar_typ), &evt300a},
         {DB_GPS_PT_LCL_VAR, sizeof(path_gps_point_t), &gps_point},
@@ -53,14 +53,14 @@ db_var_spec_t altima_db_vars[] =
         {DB_UIMU_VAR, sizeof(uimu_typ), &uimu},
 };
 
-int num_altima_db_vars = (sizeof(altima_db_vars)/sizeof(db_var_spec_t));
+int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
 
 /** The following array is used to specify the output format of the "d" file
  *  for the Nissan Altima  -- vehicle code "g".
  *  The first column of the file is always an hh:mm:ss.sss timestamp,
  *  the table begins with the second column.
  */
-data_log_column_spec_t altima_data_spec[] =
+data_log_column_spec_t file_specd[] =
 {
         {"%.3lf ", &seconds_since_midnight, BASE_DOUBLE, REPLAY_NO},    // 2
         {"%.3lf ", &seconds_since_start, BASE_DOUBLE, REPLAY_TIME},
@@ -91,11 +91,11 @@ data_log_column_spec_t altima_data_spec[] =
         {"%6.3f ", &gps_point.hdop, BASE_FLOAT, REPLAY_USE},                    
 };
 
-int num_gdfile_col = sizeof(altima_data_spec)/sizeof(data_log_column_spec_t);
+int num_dfile_columns = sizeof(file_specd)/sizeof(data_log_column_spec_t);
 
 void save_altima(FILE *fout, timestamp_t timestamp,
                         int use_memory, buff_typ *pbuff) {
 
-        save_to_spec (fout, timestamp, use_memory, pbuff, num_gdfile_col,
-                &altima_data_spec[0]);
+        save_to_spec (fout, timestamp, use_memory, pbuff, num_dfile_columns,
+                &file_specd[0]);
 }

@@ -24,6 +24,7 @@
 #include <db_utils.h>
 #include <path_gps_lib.h>
 #include <m56_can.h>
+#include <evt300.h>
 #include "data_log.h"
 #include "db_sync.h"
 
@@ -65,6 +66,7 @@ FILE *f_d = NULL;
 FILE *f_e = NULL;
 FILE *f_f = NULL;
 FILE *f_g = NULL;
+FILE *f_evt300 = NULL;
 
 buff_typ *pfirst_buff;
 buff_typ *pbuff_a;
@@ -74,6 +76,7 @@ buff_typ *pbuff_d;
 buff_typ *pbuff_e;
 buff_typ *pbuff_f;
 buff_typ *pbuff_g;
+buff_typ *pbuff_evt300;
 
 extern timestamp_t timestamp;                 // used when reading back in
 extern double utc_seconds_since_midnight;    // UTC seconds since midnight
@@ -83,6 +86,7 @@ extern db_var_spec_t db_vars[];
 extern int num_db_vars;
 extern path_gps_point_t my_gps;
 extern m56_ignition_status_t m56_ignition_status;
+evt300_radar_typ evt300a;
 
 extern data_log_column_spec_t file_speca[];
 extern int num_afile_columns;
@@ -103,11 +107,11 @@ path_gps_point_t cabinet_gps; 		// GPS in cabinet
 
 void do_buff_inits(int lines_to_save,
                 int do_filea, int do_fileb, int do_filec, int do_filed,
-                int do_filee, int do_filef, int do_fileg,
+                int do_filee, int do_filef, int do_fileg, int do_evt300,
                 buff_typ **ppbuff_a, buff_typ **ppbuff_b, 
 		buff_typ **ppbuff_c, buff_typ **ppbuff_d, 
 		buff_typ **ppbuff_e, buff_typ **ppbuff_f, 
-		buff_typ **ppbuff_g)
+		buff_typ **ppbuff_g, buff_typ **ppbuff_evt300)
 {
         if (do_filed)
                 *ppbuff_d = buff_init(f_d, lines_to_save);
@@ -123,6 +127,8 @@ void do_buff_inits(int lines_to_save,
                 *ppbuff_f = buff_init(f_f, lines_to_save);
         if (do_fileg)
                 *ppbuff_g = buff_init(f_g, lines_to_save);
+        if (do_evt300)
+                *ppbuff_evt300 = buff_init(f_evt300, lines_to_save);
 	
 }
  
@@ -153,6 +159,7 @@ int main(int argc, char *argv[])
 	int do_filee = TRUE;		// command flag will turn off
 	int do_filef = TRUE;		// command flag will turn off
 	int do_fileg = TRUE;		// command flag will turn off
+	int do_evt300= TRUE;		// command flag will turn off
 	int do_video = TRUE;		// command flag will turn off
 	int use_memory = FALSE;		// to save in memory, set to 1
 	int use_ignition_status = FALSE;
@@ -168,6 +175,7 @@ int main(int argc, char *argv[])
 	char epre[80];
 	char fpre[80];
 	char gpre[80];
+	char rpre[80];
 	int i;
 
 	memset(id_string, 0, sizeof(id_string));
@@ -182,9 +190,10 @@ int main(int argc, char *argv[])
 	memset(epre, 0, sizeof(epre));
 	memset(fpre, 0, sizeof(fpre));
 	memset(gpre, 0, sizeof(gpre));
+	memset(rpre, 0, sizeof(rpre));
 
 	/* Read and interpret any user switches. */
-	while ((option = getopt(argc, argv, "d:l:m:ABCDEFGt:uic:v")) != EOF) {
+	while ((option = getopt(argc, argv, "d:l:m:ABCDEFGt:uic:rv")) != EOF) {
 		switch(option) {
 		case 'd':
 			strcpy(tripdir, optarg);
@@ -230,6 +239,9 @@ int main(int argc, char *argv[])
 	        case 'c':
 			vehicle_prefix = strdup(optarg);
 			break;
+	        case 'r':
+			do_evt300 = TRUE;
+			break;
 	        case 'v':
 			do_video = FALSE; 
 			break;
@@ -240,6 +252,7 @@ int main(int argc, char *argv[])
 			printf("    -m <file time in minutes> \n");
 			printf("    -i (use ignition status to stop file writing) \n");
 			printf("    -v (don't save video) \n");
+			printf("    -r (save EVT300 radar data) \n");
 			printf("    -l <no. lines to save to file> \n");
 			printf("    -t <loop time in ms> \n");
 			printf("    -u (use memory to log data, then write to file at end)\n");
@@ -251,7 +264,22 @@ int main(int argc, char *argv[])
 	printf("tripdir %s\n", tripdir);
 	printf("tripstr as string %s as decimal %d\n", tripstr, atoi(tripstr));
 	printf("vehicle_prefix %s\n", vehicle_prefix);
-	printf("%s:  do_filea %d  do_fileb %d do_filec %d do_filed %d do_filee %d do_filef %d do_fileg %d do_video %d",
+	printf(" afile columns %d\n", num_afile_columns);
+	printf(" bfile columns %d\n", num_bfile_columns);
+	printf(" cfile columns %d\n", num_cfile_columns);
+	printf(" dfile columns %d\n", num_dfile_columns);
+	printf(" efile columns %d\n", num_efile_columns);
+	printf(" ffile columns %d\n", num_ffile_columns);
+	printf(" gfile columns %d\n", num_gfile_columns);
+
+	if(num_afile_columns == 0) do_filea = 0; else do_filea = 1;
+	if(num_bfile_columns == 0) do_fileb = 0; else do_fileb = 1;
+	if(num_cfile_columns == 0) do_filec = 0; else do_filec = 1;
+	if(num_dfile_columns == 0) do_filed = 0; else do_filed = 1;
+	if(num_efile_columns == 0) do_filee = 0; else do_filee = 1;
+	if(num_ffile_columns == 0) do_filef = 0; else do_filef = 1;
+	if(num_gfile_columns == 0) do_fileg = 0; else do_fileg = 1;
+	printf("%s:  do_filea %d  do_fileb %d do_filec %d do_filed %d do_filee %d do_filef %d do_fileg %d do_evt300 %d do_video %d\n",
 		 argv[0],
 		do_filea,
 		do_fileb,
@@ -260,14 +288,8 @@ int main(int argc, char *argv[])
 		do_filee,
 		do_filef,
 		do_fileg,
+		do_evt300,
 		do_video);
-	printf(" afile columns %d\n", num_afile_columns);
-	printf(" bfile columns %d\n", num_bfile_columns);
-	printf(" cfile columns %d\n", num_cfile_columns);
-	printf(" dfile columns %d\n", num_dfile_columns);
-	printf(" efile columns %d\n", num_efile_columns);
-	printf(" ffile columns %d\n", num_ffile_columns);
-	printf(" gfile columns %d\n", num_gfile_columns);
 
 	/* Log in to the database (shared global memory).  Default to the
 	 * the current host. Assumes other processes that create variables
@@ -413,11 +435,30 @@ int main(int argc, char *argv[])
                                   id_string, ".dat");
                 }
         }
+
+        if (do_evt300) {
+		strcpy(rpre, tripdir);
+		strcat(rpre, "/");
+		strcat(rpre, vehicle_prefix);
+		strcat(rpre, "r");
+                if (first_file == NULL) {
+                        open_data_log_infix(&f_evt300, rpre, ".dat",
+                         &start_time, &old_fileday, &serial_num, monthday, serialnum, tripstr);
+                        first_file = f_evt300;
+                        first_file_str = rpre;
+			pfirst_buff = pbuff_evt300;
+			sprintf(id_string, "%s%s%s", monthday, tripstr, serialnum);
+                } else {
+                        open_another_file(&f_evt300, rpre,
+                                  id_string, ".dat");
+                }
+        }
         if (use_memory)
                 do_buff_inits(lines_to_save,
-			do_filea, do_fileb, do_filec, do_filed, do_filee, do_filef, do_fileg, 
+			do_filea, do_fileb, do_filec, do_filed, do_filee, 
+			do_filef, do_fileg, do_evt300,
 			&pbuff_a, &pbuff_b, &pbuff_c, &pbuff_d, &pbuff_e, 
-			&pbuff_f, &pbuff_g);
+			&pbuff_f, &pbuff_g, &pbuff_evt300);
 
 
 	if(( exitsig = setjmp(exit_env)) != 0) {
@@ -436,6 +477,8 @@ int main(int argc, char *argv[])
 				buff_done(pbuff_f);
 			if (do_fileg) 
 				buff_done(pbuff_g);
+			if (do_evt300) 
+				buff_done(pbuff_evt300);
 		}
 		if (f_a)
 			fclose(f_a);
@@ -451,6 +494,8 @@ int main(int argc, char *argv[])
 			fclose(f_f);
 		if (f_g)
 			fclose(f_g);
+		if (f_evt300)
+			fclose(f_evt300);
 
 		db_list_done(pclt, NULL, 0, NULL, 0);
 	    if(exitsig == IGNITION_OFF) {
@@ -516,6 +561,10 @@ int main(int argc, char *argv[])
                         save_to_spec(f_g, timestamp, use_memory,
                                 pbuff_g, num_gfile_columns,
                                 &file_specg[0]);
+                if (do_evt300) {
+                        save_evt300(f_evt300, &evt300a, timestamp, use_memory,
+                                pbuff_evt300);
+                }
 
 		/** Check if time to close and reopen data logs 
 		  */
@@ -564,15 +613,18 @@ int main(int argc, char *argv[])
                         if (do_fileg)
                                 reopen_another_file(&f_g, gpre,
                                         id_string, ".dat", pbuff_g);
+                        if (do_evt300)
+                                reopen_another_file(&f_evt300, rpre,
+                                        id_string, ".dat", pbuff_evt300);
 
                         }
                         if (use_memory)
                                 do_buff_inits(lines_to_save,
                                         do_filea, do_fileb, do_filec, do_filed,
-					do_filee, do_filef, do_fileg,
+					do_filee, do_filef, do_fileg, do_evt300,
                                         &pbuff_a, &pbuff_b,  &pbuff_c, 
 					&pbuff_d,  &pbuff_e,  &pbuff_f,  
-					&pbuff_g);
+					&pbuff_g,  &pbuff_evt300);
 		if((m56_ignition_status.ignition_status == 1) && use_ignition_status) {
 			ign_ctr--;
 			if(ign_ctr == 0) {

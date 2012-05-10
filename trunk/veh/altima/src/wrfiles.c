@@ -82,8 +82,8 @@ FILE *f_evt300A = NULL;
 FILE *f_altima = NULL;
 buff_typ *pbuff_evt300A;
 buff_typ *pbuff_altima;
-extern db_var_spec_t altima_db_vars[];
-extern int num_altima_db_vars;
+extern db_var_spec_t db_vars[];
+extern int num_db_vars;
 extern void save_altima(FILE *fout, timestamp_t timestamp, 
 	int use_memory, buff_typ *pbuff);
 extern evt300_radar_typ evt300a;
@@ -240,11 +240,11 @@ int main(int argc, char *argv[])
                 /* Read in all DB vars, whether or not the associated files
                  * are being written
                  */
-                for (i = 0; i < num_altima_db_vars; i++)
+                for (i = 0; i < num_db_vars; i++)
                         db_clt_read(pclt,
-                                altima_db_vars[i].db_id_num,
-                                altima_db_vars[i].size,
-                                altima_db_vars[i].var_pointer);
+                                db_vars[i].db_id_num,
+                                db_vars[i].size,
+                                db_vars[i].var_pointer);
 
                 if (do_evt300) {
                         save_evt300(f_evt300A, &evt300a, timestamp, use_memory,

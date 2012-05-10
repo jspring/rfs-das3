@@ -53,7 +53,7 @@ echo Starting db_slv...
 /home/path/db/lnx/db_slv &
 sleep 1
 echo Starting m56_create...
-/home/das3/veh/m56/src/lnx/m56_create &
+/home/das3/veh/m56/src/lnx/m56_create >$tripdir/m56_create.log &
 sleep 1 
 
 cd /home/path/sens/can2usb/komodo/files/komodo-api-linux-i686-v1.00/c
@@ -97,3 +97,6 @@ echo Starting video with tripdir $tripdir vehicle prefix $VID...
 /home/capath/video/videorecorder/video -0 $VID -qt -f "/big/data" -p $tripdir -b 2000000 -c >$tripdir/video.log 2>$tripdir/video.err &
 /home/das3/veh/m56/test/getstats.sh >$tripdir/stats.log &
 /home/das3/veh/m56/lcd_hw/lcd_io.sh $1 &
+
+# Start Experiment Script
+/home/das3/startup/experiment_startup.sh $1 $EXP $tripdir
