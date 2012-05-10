@@ -10,6 +10,7 @@ include $(CAPATH_MK_DEFS)
 all:
 	./make_includes.sh
 	make -C veh
+	make -C src
 	make -C ui/src
 
 ui/src: 
@@ -22,4 +23,5 @@ install:
 clean:
 	rm -rf include
 	make -C veh clean
+	make -C src clean
 	make -C ui/src clean

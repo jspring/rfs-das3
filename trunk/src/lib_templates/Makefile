@@ -16,16 +16,16 @@ PATH_CFLAGS += -pg
 PATH_CFLAGS += -fPIC
 PATH_CFLAGS += -I$(M56_DIR) -I$(VIDEO_DIR)/videorecorder
 
-all: $(OBJDIR) $(PATH_OBJS) $(LIB).1.0  $(LIB2).1.0
+all: $(OBJDIR) $(PATH_OBJS) $(OBJDIR)/$(LIB).1.0  $(OBJDIR)/$(LIB2).1.0
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(LIB).1.0:
+$(OBJDIR)/$(LIB).1.0:
 	gcc -shared -Wl,-soname,veh_tables.so.1 -o $(OBJDIR)/$(LIB).1.0 $(OBJDIR)/*.o
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB)
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB).1
-$(LIB2).1.0:
+$(OBJDIR)/$(LIB2).1.0:
 	gcc -shared -Wl,-soname,expt_tables.so.1 -o $(OBJDIR)/$(LIB2).1.0 $(OBJDIR)/*.o
 	ln -sf $(LIB2).1.0 $(OBJDIR)/$(LIB2)
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB).1
