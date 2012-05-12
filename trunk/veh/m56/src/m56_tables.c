@@ -649,3 +649,163 @@ data_log_column_spec_t file_speca[] =
 
 #define NUM_AFILE_COLUMNS sizeof(file_speca)/sizeof(data_log_column_spec_t)
 int num_afile_columns = sizeof(file_speca)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]h" file.
+ */
+data_log_column_spec_t file_spech[] = 
+{
+};
+
+int num_hfile_columns = sizeof(file_spech)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]i" file.
+ */
+data_log_column_spec_t file_speci[] = 
+{
+};
+
+int num_ifile_columns = sizeof(file_speci)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]j" file.
+ */
+data_log_column_spec_t file_specj[] = 
+{
+};
+
+int num_jfile_columns = sizeof(file_specj)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]k" file.
+ */
+data_log_column_spec_t file_speck[] = 
+{
+};
+
+int num_kfile_columns = sizeof(file_speck)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]l" file.
+ */
+data_log_column_spec_t file_specl[] = 
+{
+};
+
+int num_lfile_columns = sizeof(file_specl)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]m" file.
+ */
+data_log_column_spec_t file_specm[] = 
+{
+};
+
+int num_mfile_columns = sizeof(file_specm)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]n" file.
+ */
+data_log_column_spec_t file_specn[] = 
+{
+};
+
+int num_nfile_columns = sizeof(file_specn)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]o" file.
+ */
+data_log_column_spec_t file_speco[] = 
+{
+};
+
+int num_ofile_columns = sizeof(file_speco)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]p" file.
+ */
+data_log_column_spec_t file_specp[] = 
+{
+};
+
+int num_pfile_columns = sizeof(file_specp)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]q" file.
+ */
+data_log_column_spec_t file_specq[] = 
+{
+};
+
+int num_qfile_columns = sizeof(file_specq)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]r" file.
+ */
+data_log_column_spec_t file_specr[] = 
+{
+};
+
+int num_rfile_columns = sizeof(file_specr)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]s" file.
+ */
+data_log_column_spec_t file_specs[] = 
+{
+};
+
+int num_sfile_columns = sizeof(file_specs)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]t" file.
+ */
+data_log_column_spec_t file_spect[] = 
+{
+};
+
+int num_tfile_columns = sizeof(file_spect)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]u" file.
+ */
+data_log_column_spec_t file_specu[] = 
+{
+};
+
+int num_ufile_columns = sizeof(file_specu)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]v" file.
+ */
+data_log_column_spec_t file_specv[] = 
+{
+};
+
+int num_vfile_columns = sizeof(file_specv)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]w" file.
+ */
+data_log_column_spec_t file_specw[] = 
+{
+};
+
+int num_wfile_columns = sizeof(file_specw)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]x" file.
+ */
+data_log_column_spec_t file_specx[] = 
+{
+};
+
+int num_xfile_columns = sizeof(file_specx)/sizeof(data_log_column_spec_t);
+
+
+/** This array is used to specify the output format of the "[mnop]y" file.
+ */
+data_log_column_spec_t file_specy[] = 
+{
+};
+
+int num_yfile_columns = sizeof(file_specy)/sizeof(data_log_column_spec_t);
+
+/** This array is used to specify the output format of the "[mnop]z" file.
+ */
+data_log_column_spec_t file_specz[] = 
+{
+};
+
+int num_zfile_columns = sizeof(file_specz)/sizeof(data_log_column_spec_t);
