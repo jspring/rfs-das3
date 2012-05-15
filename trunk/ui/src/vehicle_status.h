@@ -15,14 +15,15 @@
 
 // Vehicle Dependent Data Formatted for Widget Display
 typedef struct {
-	double throttle;		// 0 to 100%
+	float throttle;		// 0 to 100%
 	unsigned char cc;		// 0 UNK | 1 Off | 2 On
 	unsigned char ign;		// 0 UNK | 1 On  | 2 Off
 	unsigned char left_turn_sig;	// 0 Off | 1 On
 	unsigned char right_turn_sig;	// 0 Off | 1 On
-	double speed;			// mph
-	char gear;			// 1 Character to Display
-	unsigned char brake;		// 0 UNK | 1 Off | 2 On
+	unsigned char hazard;			// 0 Off | 1 On
+	float speed;					// mph
+	char gear;						// 1 Character to Display
+	unsigned char brake;			// 0 UNK | 1 Off | 2 On
 } tilcon_veh_status_t;
 
 

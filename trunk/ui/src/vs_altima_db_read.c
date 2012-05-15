@@ -94,7 +94,12 @@ tilcon_veh_status_t get_altima_vehicle_status(db_clt_typ *pclt)
 			veh.right_turn_sig = 0;
 			break;
 	}
-	
+	if (db_tsi.turn_signal_filt == 3) {
+		veh.hazard = 1;
+	} else {
+		veh.hazard = 0;
+	}
+		
 	// Speed
 	veh.speed = KPH2MPH(db_vs.vehicle_speed);
 	if (veh.speed > 100) {
