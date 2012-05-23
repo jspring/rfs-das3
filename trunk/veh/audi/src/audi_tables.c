@@ -28,7 +28,7 @@ float gps_formatted_utc_time = 0.0;    // hhmmss.ss
 evt300_radar_typ evt300a;
 uimu_typ uimu;
 sync_record_typ video;
-path_gps_point_t gps_point; // on-vehicle GPS
+path_gps_point_t my_gps; // on-vehicle GPS
 char * not_implemented = "9999";
 audi_t	audi;
 
@@ -37,7 +37,7 @@ audi_t	audi;
 db_var_spec_t audi_db_vars[] =
 {
         {DB_EVT300_RADAR1_VAR, sizeof(evt300_radar_typ), &evt300a},
-        {DB_GPS_PT_LCL_VAR, sizeof(path_gps_point_t), &gps_point},
+        {DB_GPS_PT_LCL_VAR, sizeof(path_gps_point_t), &my_gps},
         {DB_SYNC_RECORD_VAR, sizeof(sync_record_typ), &video},
         {DB_UIMU_VAR, sizeof(uimu_typ), &uimu},
         {DB_AUDI_VAR, sizeof(audi_t), &audi},
@@ -75,15 +75,15 @@ data_log_column_spec_t audi_data_spec[] =
         {"%hd ", &uimu.ygyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.zgyro, BASE_INT, REPLAY_USE}, 			    
         {"%9.2f ", &gps_utc_seconds, BASE_DOUBLE, REPLAY_USE},           
-        {"%06d ", &gps_point.date, BASE_INT, REPLAY_USE},		//25
-        {"%13.8lf ", &gps_point.longitude, BASE_DOUBLE, REPLAY_USE},
-        {"%13.8lf ", &gps_point.latitude, BASE_DOUBLE, REPLAY_USE},	
-        {"%6.3lf ", &gps_point.speed, BASE_DOUBLE, REPLAY_USE},                 
-        {"%6.3f ", &gps_point.heading, BASE_FLOAT, REPLAY_USE},                 
-        {"%6.2f ", &gps_point.altitude, BASE_FLOAT, REPLAY_USE},	//30
-        {"%d ", &gps_point.num_sats, BASE_INT, REPLAY_USE},
-        {"%d ", &gps_point.pos, BASE_INT, REPLAY_USE},		
-        {"%6.3f ", &gps_point.hdop, BASE_FLOAT, REPLAY_USE},                    
+        {"%06d ", &my_gps.date, BASE_INT, REPLAY_USE},		//25
+        {"%13.8lf ", &my_gps.longitude, BASE_DOUBLE, REPLAY_USE},
+        {"%13.8lf ", &my_gps.latitude, BASE_DOUBLE, REPLAY_USE},	
+        {"%6.3lf ", &my_gps.speed, BASE_DOUBLE, REPLAY_USE},                 
+        {"%6.3f ", &my_gps.heading, BASE_FLOAT, REPLAY_USE},                 
+        {"%6.2f ", &my_gps.altitude, BASE_FLOAT, REPLAY_USE},	//30
+        {"%d ", &my_gps.num_sats, BASE_INT, REPLAY_USE},
+        {"%d ", &my_gps.pos, BASE_INT, REPLAY_USE},		
+        {"%6.3f ", &my_gps.hdop, BASE_FLOAT, REPLAY_USE},                    
 };
 
 int num_jdfile_col = sizeof(audi_data_spec)/sizeof(data_log_column_spec_t);
