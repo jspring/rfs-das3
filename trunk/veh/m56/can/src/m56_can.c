@@ -1854,6 +1854,18 @@ int main(int argc, char *argv[]) {
 	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG658_VAR, 
 			sizeof(m56_m658), &m56_m658); 
 		    break;
+		case 0x710:
+		    get_m56_m710(db_kom.msg, &m56_m710);
+		    check_msg_timeout(ts_ms, &m56_m710.ts_ms, &m56_m710.two_message_periods, &m56_m710.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG710_VAR, 
+			sizeof(m56_m710), &m56_m710); 
+		    break;
+		case 0x711:
+		    get_m56_m711(db_kom.msg, &m56_m711);
+		    check_msg_timeout(ts_ms, &m56_m711.ts_ms, &m56_m711.two_message_periods, &m56_m711.message_timeout_counter); 
+	   	    db_clt_write(pclt,DB_M56_ITSCAN_MSG711_VAR, 
+			sizeof(m56_m711), &m56_m711); 
+		    break;
 
 	}
 	   if(print_msg)
@@ -1872,8 +1884,8 @@ int main(int argc, char *argv[]) {
 void check_msg_timeout(int curr_ts_ms, int *prev_ts_ms, 
 	unsigned char *two_message_periods, 
 	unsigned int *message_timeout_counter) {
-	if( (curr_ts_ms - *prev_ts_ms) > *two_message_periods ) {
+//	if( (curr_ts_ms - *prev_ts_ms) > *two_message_periods ) {
 	   ++*message_timeout_counter;
-	   *prev_ts_ms = curr_ts_ms;
-	}
+//	   *prev_ts_ms = curr_ts_ms;
+//	}
 }
