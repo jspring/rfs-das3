@@ -83,16 +83,8 @@ then
 	ln -sf /home/cacc3/veh/lnx/libcacc3_tables.so.1.0 /home/das3/src/libexpt_tables.so.1
 	sudo ldconfig
 fi
+sleep 1
 
-echo Starting wrfiles_m56 with tripdir $tripdir vehicle prefix $VEH and experiment $EXP...
-if [[ $EXP == "cacc3" ]]
-then
-	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $tripdir -c $VEH -i 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
-else
-	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $tripdir -c $VEH -i -BCEFG 1>$tripdir/wrfiles_m56.log 2>$tripdir/wrfiles_m56.err &
-fi
-
-sleep 2
 echo Starting video with tripdir $tripdir vehicle prefix $VID...
 /home/capath/video/videorecorder/video -0 $VID -qt -f "/big/data" -p $tripdir -b 2000000 -c >$tripdir/video.log 2>$tripdir/video.err &
 /home/das3/veh/m56/test/getstats.sh >$tripdir/stats.log &
