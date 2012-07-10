@@ -33,6 +33,8 @@ fi
 fi
 fi
 
+rm /tmp/lcdtemp
+
 (echo hello
 echo 'screen_add 0'
 echo 'screen_set 0 -priority foreground'
