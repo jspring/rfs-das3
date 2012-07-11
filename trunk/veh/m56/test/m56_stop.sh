@@ -6,6 +6,7 @@ then
 	killall wrfiles_das3
 fi
 killall lcd_io.sh 
+killall crystalfontz_CFA635
 killall getstats.sh 
 killall gpsdb
 killall m56_can

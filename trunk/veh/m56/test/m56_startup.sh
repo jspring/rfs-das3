@@ -89,6 +89,6 @@ echo Starting video with tripdir $tripdir vehicle prefix $VID...
 /home/video/videorecorder/video -0 $VID -qt -f "/big/data" -p $tripdir -b 2000000 -c >$tripdir/video.log 2>$tripdir/video.err &
 /home/das3/veh/m56/test/getstats.sh >$tripdir/stats.log &
 #/home/das3/veh/m56/lcd_hw/lcd_io.sh $1 &
-/home/path/sens/lcd/crystalfontz/src/lnx/crystalfontz_CFA635 -c -V $1
+/home/path/sens/lcd/crystalfontz/src/lnx/crystalfontz_CFA635 -c -V $1 &
 # Start Experiment Script
 /home/das3/startup/experiment_startup.sh $1 $EXP $tripdir
