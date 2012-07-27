@@ -89,6 +89,8 @@ sudo cp rc.local.das3 /etc/rc.local && \
 sudo cp interfaces.das3 /etc/network/interfaces && \
 sudo cp 10-usbdevs.rules /etc/udev/rules.d/10-usbdevs.rules && \
 sudo cp resolv.conf.das3 /etc/resolv.conf && \
+sudo cp das3.conf /etc/ld.so.conf.d && \
+sudo ldconfig && \
 cd /home/das3 && \
 make clean && \
 make && \
