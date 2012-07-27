@@ -22,7 +22,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 $(OBJDIR)/$(LIB).1.0:
-	gcc -shared -Wl,-soname,veh_tables.so.1 -o $(OBJDIR)/$(LIB).1.0 $(OBJDIR)/*.o
+	gcc -shared -Wl,-soname,libveh_tables.so.1 -o $(OBJDIR)/$(LIB).1.0 $(OBJDIR)/*.o
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB)
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB).1
 $(OBJDIR)/$(LIB2).1.0:
