@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
 	int do_filee = TRUE;		// command flag will turn off
 	int do_filef = TRUE;		// command flag will turn off
 	int do_fileg = TRUE;		// command flag will turn off
-	int do_evt300= TRUE;		// command flag will turn off
+	int do_evt300= FALSE;		// command flag will turn on
 	int do_video = TRUE;		// command flag will turn off
 	int use_memory = FALSE;		// to save in memory, set to 1
 	int use_ignition_status = FALSE;
@@ -272,7 +272,13 @@ int main(int argc, char *argv[])
 	printf(" ffile columns %d\n", num_ffile_columns);
 	printf(" gfile columns %d\n", num_gfile_columns);
 
-	if(num_afile_columns == 0) do_filea = 0; else do_filea = 1;
+	if(do_filea) { //This bit of nonsense is in case both radar and filea
+	               // have been selected
+		if(num_afile_columns == 0) 
+			do_filea = 0; 
+		else 
+			do_filea = 1;
+	}
 	if(num_bfile_columns == 0) do_fileb = 0; else do_fileb = 1;
 	if(num_cfile_columns == 0) do_filec = 0; else do_filec = 1;
 	if(num_dfile_columns == 0) do_filed = 0; else do_filed = 1;
@@ -290,6 +296,14 @@ int main(int argc, char *argv[])
 		do_fileg,
 		do_evt300,
 		do_video);
+
+        if(do_evt300 && do_filea) {
+                printf("Error in file prefix choice: You cannot choose ");
+                printf("to collect both evt300 data (file prefix \"a\" ");
+                printf("and file_speca), and another file with prefix \"a\"\n");
+                printf("Exiting wrfiles_das3\n");
+                exit(EXIT_FAILURE);
+        }
 
 	/* Log in to the database (shared global memory).  Default to the
 	 * the current host. Assumes other processes that create variables
@@ -440,7 +454,7 @@ int main(int argc, char *argv[])
 		strcpy(rpre, tripdir);
 		strcat(rpre, "/");
 		strcat(rpre, vehicle_prefix);
-		strcat(rpre, "r");
+		strcat(rpre, "a");
                 if (first_file == NULL) {
                         open_data_log_infix(&f_evt300, rpre, ".dat",
                          &start_time, &old_fileday, &serial_num, monthday, serialnum, tripstr);
@@ -634,7 +648,6 @@ int main(int argc, char *argv[])
 		}
 		else
 			ign_ctr = IGN_CTR_MAX;
-
 		TIMER_WAIT(ptimer);
 	}
 }
