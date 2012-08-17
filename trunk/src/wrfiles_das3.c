@@ -152,13 +152,13 @@ int main(int argc, char *argv[])
 	posix_timer_typ *ptimer;       /* Timing proxy */
 	char *domain = DEFAULT_SERVICE; // usually no need to change this 
 	int xport = COMM_OS_XPORT;	// set correct for OS in sys_os.h 
-	int do_filed = TRUE;		// command flag will turn off
-	int do_filea = TRUE;		// command flag will turn off
-	int do_fileb = TRUE;		// command flag will turn off
-	int do_filec = TRUE;		// command flag will turn off
-	int do_filee = TRUE;		// command flag will turn off
-	int do_filef = TRUE;		// command flag will turn off
-	int do_fileg = TRUE;		// command flag will turn off
+	int do_filea = FALSE;		// command flag will turn on
+	int do_fileb = FALSE;		// command flag will turn on
+	int do_filec = FALSE;		// command flag will turn on
+	int do_filed = FALSE;		// command flag will turn on
+	int do_filee = FALSE;		// command flag will turn on
+	int do_filef = FALSE;		// command flag will turn on
+	int do_fileg = FALSE;		// command flag will turn on
 	int do_evt300= FALSE;		// command flag will turn on
 	int do_video = TRUE;		// command flag will turn off
 	int use_memory = FALSE;		// to save in memory, set to 1
@@ -177,6 +177,17 @@ int main(int argc, char *argv[])
 	char gpre[80];
 	char rpre[80];
 	int i;
+	printf("%s:  do_filea %d  do_fileb %d do_filec %d do_filed %d do_filee %d do_filef %d do_fileg %d do_evt300 %d do_video %d\n",
+		 argv[0],
+		do_filea,
+		do_fileb,
+		do_filec,
+		do_filed, 
+		do_filee,
+		do_filef,
+		do_fileg,
+		do_evt300,
+		do_video);
 
 	memset(id_string, 0, sizeof(id_string));
 	memset(monthday, 0, sizeof(monthday));
@@ -207,25 +218,25 @@ int main(int argc, char *argv[])
 			    file_time = 10000;
 			break;
 	        case 'A':
-			do_filea = FALSE; 
+			do_filea = TRUE; 
 			break;
 	        case 'B':
-			do_fileb = FALSE; 
+			do_fileb = TRUE; 
 			break;
 	        case 'C':
-			do_filec = FALSE; 
+			do_filec = TRUE; 
 			break;
 	        case 'D':
-			do_filed = FALSE; 
+			do_filed = TRUE; 
 			break;
 	        case 'E':
-			do_filee = FALSE; 
+			do_filee = TRUE; 
 			break;
 	        case 'F':
-			do_filef = FALSE; 
+			do_filef = TRUE; 
 			break;
 	        case 'G':
-			do_fileg = FALSE; 
+			do_fileg = TRUE; 
 			break;
 	        case 't':
 			interval = atoi(optarg); 
@@ -279,12 +290,12 @@ int main(int argc, char *argv[])
 		else 
 			do_filea = 1;
 	}
-	if(num_bfile_columns == 0) do_fileb = 0; else do_fileb = 1;
-	if(num_cfile_columns == 0) do_filec = 0; else do_filec = 1;
-	if(num_dfile_columns == 0) do_filed = 0; else do_filed = 1;
-	if(num_efile_columns == 0) do_filee = 0; else do_filee = 1;
-	if(num_ffile_columns == 0) do_filef = 0; else do_filef = 1;
-	if(num_gfile_columns == 0) do_fileg = 0; else do_fileg = 1;
+	if(num_bfile_columns == 0) do_fileb = 0; 
+	if(num_cfile_columns == 0) do_filec = 0;
+	if(num_dfile_columns == 0) do_filed = 0;
+	if(num_efile_columns == 0) do_filee = 0;
+	if(num_ffile_columns == 0) do_filef = 0;
+	if(num_gfile_columns == 0) do_fileg = 0;
 	printf("%s:  do_filea %d  do_fileb %d do_filec %d do_filed %d do_filee %d do_filef %d do_fileg %d do_evt300 %d do_video %d\n",
 		 argv[0],
 		do_filea,

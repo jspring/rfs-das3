@@ -4,6 +4,9 @@
 
 #include <db_include.h>
 #include <komodo.h>
+#include <m56_can.h>
+
+m56_ignition_status_t m56_ignition_status;
 
 int printmsg(db_komodo_t *db_kom) {
 	int i;

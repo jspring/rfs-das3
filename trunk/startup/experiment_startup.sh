@@ -117,7 +117,7 @@ if [[ $EXPERIMENT =~ "cacc3" ]]
 then
 	echo "Starting CACC3 Experiment & Data Logging..."
 	cd /home/das3/src
-	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $TRIPDIR -c $VEH -i 1>$TRIPDIR/wrfiles_m56.log 2>$TRIPDIR/wrfiles_m56.err &
+	/home/das3/src/lnx/wrfiles_das3 -m 2 -t 50 -d $TRIPDIR -c $VEH -ABCDEFG -i 1>$TRIPDIR/wrfiles_m56.log 2>$TRIPDIR/wrfiles_m56.err &
 	exit 0
 fi
 
