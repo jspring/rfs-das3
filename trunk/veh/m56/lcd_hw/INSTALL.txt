@@ -1,2 +1,0 @@
-sudo dpkg -i ./lcdproc_0.5.3-1_i386.deb
-sudo ./lcd_io.sh
