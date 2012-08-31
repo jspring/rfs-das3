@@ -74,21 +74,11 @@ echo Starting gpsdb...
 /home/path/sens/gps/examples/lnx/gpsdb -d 1 < /dev/ttyS0 >$tripdir/gpsdb.log 2>&1 &
 sleep 1
 
-if [[ ! -h /home/das3/src/home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 || \
-	! -h /home/das3/src/home/cacc3/veh/lnx/libcacc3_tables.so.1.0 ]]
-then
-	ln -sf /home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 /home/das3/src/libveh_tables.so
-	ln -sf /home/das3/veh/m56/src/lnx/libm56_tables.so.1.0 /home/das3/src/libveh_tables.so.1
-	ln -sf /home/cacc3/veh/lnx/libcacc3_tables.so.1.0 /home/das3/src/libexpt_tables.so
-	ln -sf /home/cacc3/veh/lnx/libcacc3_tables.so.1.0 /home/das3/src/libexpt_tables.so.1
-	sudo ldconfig
-fi
-sleep 1
-
 echo Starting video with tripdir $tripdir vehicle prefix $VID...
-/home/video/videorecorder/video -0 $VID -qt -f "/big/data" -p $tripdir -b 2000000 -c >$tripdir/video.log 2>$tripdir/video.err &
+/home/capath/video/videorecorder/video -0 $VID -qt -f "/big/data" -p $tripdir -b 2000000 -c >$tripdir/video.log 2>$tripdir/video.err &
 /home/das3/veh/m56/test/getstats.sh >$tripdir/stats.log &
 #/home/das3/veh/m56/lcd_hw/lcd_io.sh $1 &
 /home/path/sens/lcd/crystalfontz/src/lnx/crystalfontz_CFA635 -c -V $1 &
+
 # Start Experiment Script
 /home/das3/startup/experiment_startup.sh $1 $EXP $tripdir

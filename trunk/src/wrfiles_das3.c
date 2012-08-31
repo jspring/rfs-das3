@@ -84,6 +84,8 @@ extern double seconds_since_start;       // seconds since start of run
 
 extern db_var_spec_t db_vars[];
 extern int num_db_vars;
+extern db_var_spec_t expt_db_vars[];
+extern int num_expt_db_vars;
 extern path_gps_point_t my_gps;
 extern m56_ignition_status_t m56_ignition_status;
 evt300_radar_typ evt300a;
@@ -549,6 +551,12 @@ int main(int argc, char *argv[])
                                 db_vars[i].db_id_num,
                                 db_vars[i].size,
                                 db_vars[i].var_pointer);
+		}
+                for (i = 0; i < num_expt_db_vars; i++){
+                        db_clt_read(pclt,
+                                expt_db_vars[i].db_id_num,
+                                expt_db_vars[i].size,
+                                expt_db_vars[i].var_pointer);
 		}
 
         	utc_seconds_since_midnight = TS_TO_SEC(&my_gps.utc_time);

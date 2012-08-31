@@ -26,7 +26,7 @@ $(OBJDIR)/$(LIB).1.0:
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB)
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB).1
 $(OBJDIR)/$(LIB2).1.0:
-	gcc -shared -Wl,-soname,expt_tables.so.1 -o $(OBJDIR)/$(LIB2).1.0 $(OBJDIR)/*.o
+	gcc -shared -Wl,-soname,libexpt_tables.so.1 -o $(OBJDIR)/$(LIB2).1.0 $(OBJDIR)/*.o
 	ln -sf $(LIB2).1.0 $(OBJDIR)/$(LIB2)
 	ln -sf $(LIB).1.0 $(OBJDIR)/$(LIB).1
 

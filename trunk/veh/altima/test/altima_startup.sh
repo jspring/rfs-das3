@@ -93,19 +93,8 @@ do
 done
 
 # On DAS3 Dual Computers -> Copy Engineering Data to Video Computer
-#echo Starting cptripdirs.sh...
-#/home/das3/startup/cptripdirs.sh $CARTYPE >$TRIPDIR/cptripdirs.log 2>&1 &
-
-if [[ ! -h /home/das3/src/home/das3/veh/altima/src/lnx/libaltima_tables.so.1.0 || \
-        ! -h /home/das3/src/home/ntmm/src/lnx/libalert_tables.so.1.0 ]]
-then
-	rm /home/das3/src/lib*
-        ln -sf /home/das3/veh/altima/src/lnx/libaltima_tables.so.1.0 /home/das3/src/libveh_tables.so
-        ln -sf /home/das3/veh/altima/src/lnx/libaltima_tables.so.1.0 /home/das3/src/libveh_tables.so.1
-        ln -sf /home/ntmm/src/lnx/libalert_tables.so.1.0 /home/das3/src/libexpt_tables.so
-        ln -sf /home/ntmm/src/lnx/libalert_tables.so.1.0 /home/das3/src/libexpt_tables.so.1
-        ldconfig -n /home/das3/src
-fi
+echo Starting cptripdirs.sh...
+/home/das3/startup/cptripdirs.sh $CARTYPE >$TRIPDIR/cptripdirs.log 2>&1 &
 
 # Start Experiment Script
 /home/das3/startup/experiment_startup.sh $CARTYPE $EXPERIMENT $TRIPDIR

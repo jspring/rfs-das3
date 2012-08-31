@@ -36,9 +36,13 @@ double veh3_utc_seconds = 0.0;
  */
 db_var_spec_t db_vars[] =
 {
-
 };
 int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
+
+db_var_spec_t expt_db_vars[] =
+{
+};
+int num_expt_db_vars = (sizeof(expt_db_vars)/sizeof(db_var_spec_t));
 
 /** This array is used to specify the output format of the "[mnop]a" file.
  */
