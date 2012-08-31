@@ -23,7 +23,7 @@
 #include <db_include.h>
 #include <db_utils.h>
 #include <path_gps_lib.h>
-#include <m56_can.h>
+//#include <m56_can.h>
 #include <evt300.h>
 #include "data_log.h"
 #include "db_sync.h"
@@ -87,7 +87,7 @@ extern int num_db_vars;
 extern db_var_spec_t expt_db_vars[];
 extern int num_expt_db_vars;
 extern path_gps_point_t my_gps;
-extern m56_ignition_status_t m56_ignition_status;
+//extern m56_ignition_status_t m56_ignition_status;
 evt300_radar_typ evt300a;
 
 extern data_log_column_spec_t file_speca[];
