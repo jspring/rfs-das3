@@ -59,10 +59,6 @@ echo Starting uimu...
 /home/path/sens/gyro/memsense/src/lnx/uimu -d </dev/ttyUSB0 >$TRIPDIR/uimu.log 2>&1 &
 sleep 2
 
-echo Starting video ethernet server...
-/home/capath/video/videorecorder/vid_enet_srv -a 10.0.0.140 -v >$TRIPDIR/vid_enet_srv.log 2>&1 &
-sleep 2
-
 echo Starting evt300a...
 /home/path/sens/radar/lnx/evt300 -s "/dev/ttyS0" -r a -o 2 >$TRIPDIR/evt300a.log 2>&1 &
 sleep 2
