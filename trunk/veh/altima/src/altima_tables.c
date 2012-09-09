@@ -13,7 +13,6 @@
 #include "altima.h"
 
 /// These variables require processing other than DB reads done by wrfiles_nt.c
-double seconds_since_midnight = 0.0;    // from hh:mm.ss.sss in column 1
 double seconds_since_start = 0.0;       // local time since start of run
 double seconds_last_curl = 0.0;         // seconds since midnight, last curl 
 double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
@@ -62,7 +61,7 @@ int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
  */
 data_log_column_spec_t file_specd[] =
 {
-        {"%.3lf ", &seconds_since_midnight, BASE_DOUBLE, REPLAY_NO},    // 2
+        {"%.3lf ", &my_gps.utc_seconds_since_midnight, BASE_DOUBLE, REPLAY_USE}, //2
         {"%.3lf ", &seconds_since_start, BASE_DOUBLE, REPLAY_TIME},
         {"%hhd ", &alt_tsi.ignition, BASE_INT, REPLAY_USE},
         {"%hhd ", &alt_fwbs.brake_switch, BASE_INT, REPLAY_USE},	//5
