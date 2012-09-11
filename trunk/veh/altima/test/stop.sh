@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+killall -s TERM wrfiles_das3
+killall -s TERM vid_enet_srv
 killall -s TERM evt300
 killall -s TERM uimu
 killall -s TERM gpsdb
