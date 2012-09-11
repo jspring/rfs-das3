@@ -1,6 +1,7 @@
 #include "db_include.h"
 #include "komodo.h"
 #include "m56_can.h"
+#include "das3.h"
 
 static jmp_buf exit_env;
 static int sig_list[] = {
@@ -41,6 +42,7 @@ db_id_t db_vars_list[] =  {
         {DB_M56_ITSCAN_MSG52c_VAR, sizeof(m56_yaw_rate_t)},
         {DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t)},
 	{DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t)},
+	{DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t)},
         {DB_M56_VCAN2_MSG210_VAR, sizeof(m56_vdne491_m210_t)},
         {DB_M56_VCAN2_MSG211_VAR, sizeof(m56_vdne491_m211_t)},
         {DB_M56_VCAN2_MSG212_VAR, sizeof(m56_vdne491_m212_t)},
@@ -235,6 +237,7 @@ int main(int argc, char *argv[]) {
 	m56_yaw_rate_t m56_yaw_rate;
 	m56_lidar_status_t m56_lidar_status;
 	m56_ignition_status_t m56_ignition_status;
+	das3_ignition_status_t das3_ignition_status;
 	m56_vdne491_m210_t m56_vdne491_m210;
 	m56_vdne491_m211_t m56_vdne491_m211;
 	m56_vdne491_m212_t m56_vdne491_m212;
@@ -447,6 +450,7 @@ int main(int argc, char *argv[]) {
 	memset(&m56_yaw_rate, 0, sizeof(m56_yaw_rate_t));
 	memset(&m56_lidar_status, 0, sizeof(m56_lidar_status_t));
 	memset(&m56_ignition_status, 0, sizeof(m56_ignition_status_t));
+	memset(&das3_ignition_status, 0, sizeof(das3_ignition_status_t));
 	memset(&m56_vdne491_m210, 0, sizeof(m56_vdne491_m210_t));
 	memset(&m56_vdne491_m211, 0, sizeof(m56_vdne491_m211_t));
 	memset(&m56_vdne491_m212, 0, sizeof(m56_vdne491_m212_t));
@@ -797,6 +801,8 @@ int main(int argc, char *argv[]) {
 		sizeof(m56_lidar_status_t), &m56_lidar_status); 
     	db_clt_write(pclt,DB_M56_IGNITION_VAR, 
 		sizeof(m56_ignition_status_t), &m56_ignition_status); 
+    	db_clt_write(pclt,DB_DAS3_IGNITION_VAR, 
+		sizeof(das3_ignition_status_t), &das3_ignition_status); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG210_VAR, 
 		sizeof(m56_vdne491_m210_t), &m56_vdne491_m210); 
 	db_clt_write(pclt,DB_M56_VCAN2_MSG211_VAR, 
@@ -1078,7 +1084,9 @@ int main(int argc, char *argv[]) {
 	   count++;
 	   db_clt_read(pclt, DB_KOMODO_VAR, sizeof(db_komodo_t), &db_kom);
 	   m56_ignition_status.ignition_status = db_kom.gpio & M56_IGNITION_MASK;
+	   das3_ignition_status.ignition_status = m56_ignition_status.ignition_status;
 	   db_clt_write(pclt, DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t), &m56_ignition_status);
+	   db_clt_write(pclt, DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t), &das3_ignition_status);
 	   get_current_timestamp(&ts);
 	   ts_ms = TS_TO_MS(&ts);
 	   switch(db_kom.id) {

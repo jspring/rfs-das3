@@ -9,6 +9,7 @@
 #include <path_gps_lib.h>
 #include <db_sync.h>
 #include <m56_can.h>
+#include "das3.h"
 
 path_gps_point_t local_gps;              // on-vehicle GPS
 sync_record_typ video;
@@ -37,6 +38,7 @@ static db_id_t db_vars_list[] = {
         {DB_M56_ITSCAN_MSG52c_VAR, sizeof(m56_yaw_rate_t)},
         {DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t)},
         {DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t)},
+        {DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t)},
         {DB_M56_VCAN2_MSG210_VAR, sizeof(m56_vdne491_m210_t)},
         {DB_M56_VCAN2_MSG211_VAR, sizeof(m56_vdne491_m211_t)},
         {DB_M56_VCAN2_MSG212_VAR, sizeof(m56_vdne491_m212_t)},

@@ -10,6 +10,7 @@
 #include "nt_peak_can.h"
 #include "timestamp.h"
 #include "altima.h"
+#include "das3.h"
 
 static jmp_buf exit_env;
 static int sig_list[] = {
@@ -41,6 +42,7 @@ void altima_db_write(db_clt_typ *pclt, unsigned long id, unsigned char *data)
 	alt_vehicle_speed_t alt_vs;
 	alt_front_wiping_brake_switch_t alt_fwbs;
 	alt_turn_signal_ignition_t alt_tsi;
+	das3_ignition_status_t das3_ignition_status;
 	timestamp_t turn_signal_ts;
 	int curr_ms;
 
@@ -91,9 +93,11 @@ void altima_db_write(db_clt_typ *pclt, unsigned long id, unsigned char *data)
 			if( (curr_ms - alt_tsi.ms_since_last_on) > TURNSIG_TIMEOUT)
 				alt_tsi.turn_signal_filt = alt_tsi.turn_signal;
 		}
-				
+		das3_ignition_status.ignition_status = alt_tsi.ignition;
 		db_clt_write(pclt, DB_ALT_TSI_VAR, 
 			sizeof(alt_tsi), (void *) &alt_tsi);
+		db_clt_write(pclt, DB_DAS3_IGNITION_VAR, 
+			sizeof(das3_ignition_status_t), (void *) &das3_ignition_status);
 		break;
 	default:	// do nothing for unknown CAN IDs
 		break;
@@ -113,6 +117,7 @@ db_id_t db_vars_list[] =  {
 	{DB_ALT_VS_VAR, sizeof(alt_vehicle_speed_t)},
 	{DB_ALT_FWBS_VAR, sizeof(alt_front_wiping_brake_switch_t)},
 	{DB_ALT_TSI_VAR, sizeof(alt_turn_signal_ignition_t)},
+	{DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t)},
 };
 
 int num_db_variables = sizeof(db_vars_list)/sizeof(db_id_t);
@@ -163,13 +168,12 @@ int main(int argc, char **argv)
 	}
         get_local_name(hostname, MAXHOSTNAMELEN);
         if ((pclt = db_list_init(argv[0], hostname, domain, xport,
-			db_vars_list, num_db_variables, NULL, 0)) == NULL) {
+			NULL, 0, NULL, 0)) == NULL) {
                 printf("Database initialization error in %s\n", argv[0]);
                 exit(EXIT_FAILURE);
         }
 
         if (setjmp(exit_env) != 0) {
-		db_list_done(pclt, db_vars_list, num_db_variables, NULL, 0);
 		printf("%s: received %d CAN messages\n", argv[0], count);
                 exit(EXIT_SUCCESS);
         } else

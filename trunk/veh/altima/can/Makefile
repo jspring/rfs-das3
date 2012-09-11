@@ -9,6 +9,7 @@ HDRS=nt_peak_can.h altima.h
 include $(CAPATH_MK_DEFS)
 
 PATH_OBJS = $(OBJDIR)/nt_peak_can.o
+PATH_CFLAGS += -I/home/das3/src
 
 EXEC = $(OBJDIR)/nt_peak_can_test \
 	$(OBJDIR)/altima_db_read \

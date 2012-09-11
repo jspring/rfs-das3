@@ -19,7 +19,7 @@ double seconds_last_curl = 0.0;         // seconds since midnight, last curl
 double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
 double clock_gps_read_seconds = 0.0;    // gps read time, seconds since midnight
 double local_clock_seconds = 0.0;       // local time seconds since midnight
-
+timestamp_t timestamp;
 
 float gps_formatted_utc_time = 0.0;    // hhmmss.ss 
 
@@ -52,6 +52,7 @@ int num_audi_db_vars = (sizeof(audi_db_vars)/sizeof(db_var_spec_t));
  */
 data_log_column_spec_t audi_data_spec[] =
 {
+        {"HH:MM:SS.SSS ", &timestamp, BASE_TIMESTAMP, REPLAY_TIME},                            //###1
         {"%.3lf ", &seconds_since_midnight, BASE_DOUBLE, REPLAY_NO},    // 2
         {"%.3lf ", &seconds_since_start, BASE_DOUBLE, REPLAY_TIME},
         {"%hhd ", &audi.brake, BASE_INT, REPLAY_USE},          
@@ -74,7 +75,7 @@ data_log_column_spec_t audi_data_spec[] =
         {"%hd ", &uimu.xgyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.ygyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.zgyro, BASE_INT, REPLAY_USE}, 			    
-        {"%9.2f ", &gps_utc_seconds, BASE_DOUBLE, REPLAY_USE},           
+        {"%9.2f ", &my_gps.utc_seconds_since_midnight, BASE_DOUBLE, REPLAY_USE},           
         {"%06d ", &my_gps.date, BASE_INT, REPLAY_USE},		//25
         {"%13.8lf ", &my_gps.longitude, BASE_DOUBLE, REPLAY_USE},
         {"%13.8lf ", &my_gps.latitude, BASE_DOUBLE, REPLAY_USE},	

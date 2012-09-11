@@ -27,6 +27,7 @@
 #include <evt300.h>
 #include "data_log.h"
 #include "db_sync.h"
+#include "das3.h"
 
 static int sig_list[] = 
 {
@@ -164,6 +165,7 @@ int main(int argc, char *argv[])
 	int do_evt300= FALSE;		// command flag will turn on
 	int do_video = TRUE;		// command flag will turn off
 	int use_memory = FALSE;		// to save in memory, set to 1
+	das3_ignition_status_t das3_ignition_status;
 	int use_ignition_status = FALSE;
 	int ign_ctr = IGN_CTR_MAX;
 	FILE *first_file = NULL;
@@ -658,7 +660,7 @@ int main(int argc, char *argv[])
                                         &pbuff_a, &pbuff_b,  &pbuff_c, 
 					&pbuff_d,  &pbuff_e,  &pbuff_f,  
 					&pbuff_g,  &pbuff_evt300);
-		if((m56_ignition_status.ignition_status == 1) && use_ignition_status) {
+		if((das3_ignition_status.ignition_status == 1) && use_ignition_status) {
 			ign_ctr--;
 			if(ign_ctr == 0) {
 				printf("Exiting due to ignition off\n");

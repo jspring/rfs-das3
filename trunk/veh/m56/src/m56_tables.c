@@ -8,6 +8,7 @@
 #include <path_gps_lib.h>
 #include "data_log.h"
 #include "m56_can.h"
+#include "das3.h"
 
 /**  DB VARs read, declared global so that the variable addresses will
  *   be available to initialize the DB variable and column specification arrays.
@@ -39,6 +40,7 @@ m56_lidar_target_t m56_lidar_target;
 m56_yaw_rate_t m56_yaw_rate;
 m56_lidar_status_t m56_lidar_status;
 m56_ignition_status_t m56_ignition_status;
+das3_ignition_status_t das3_ignition_status;
 
 // Comm variables
 m56_vdne491_m210_t m56_vdne491_m210;
@@ -220,6 +222,7 @@ db_var_spec_t db_vars[] =
 	{DB_M56_ITSCAN_MSG52d_VAR, sizeof(m56_lidar_status_t), &m56_lidar_status},
 	{DB_GPS_PT_LCL_VAR, sizeof(path_gps_point_t), &my_gps},
 	{DB_M56_IGNITION_VAR, sizeof(m56_ignition_status_t), &m56_ignition_status},
+	{DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t), &das3_ignition_status},
 	{DB_M56_VCAN2_MSG210_VAR, sizeof(m56_vdne491_m210_t), &m56_vdne491_m210},
 	{DB_M56_VCAN2_MSG211_VAR, sizeof(m56_vdne491_m211_t), &m56_vdne491_m211},
 	{DB_M56_VCAN2_MSG212_VAR, sizeof(m56_vdne491_m212_t), &m56_vdne491_m212},
@@ -492,6 +495,7 @@ data_log_column_spec_t file_specd[] =
 	{"%hhu ", &m56_atcvt.virtual_gear, BASE_CHAR, REPLAY_USE},                 		//###123
 	{"%hhu ", &m56_pedal_position.temporary_accel_flag, BASE_CHAR, REPLAY_USE},		//###124
 	{"%hhu ", &m56_pedal_position.acc_control_requested, BASE_CHAR, REPLAY_USE},            //###125
+	{"%hhu ", &das3_ignition_status.ignition_status, BASE_CHAR, REPLAY_USE},                 //###120
 };
 
 #define NUM_DFILE_COLUMNS sizeof(file_specd)/sizeof(data_log_column_spec_t)

@@ -13,11 +13,13 @@
 #include "altima.h"
 
 /// These variables require processing other than DB reads done by wrfiles_nt.c
+double seconds_since_midnight = 0.0;    // from hh:mm.ss.sss in column 1
 double seconds_since_start = 0.0;       // local time since start of run
 double seconds_last_curl = 0.0;         // seconds since midnight, last curl 
 double gps_utc_seconds = 0.0;           // local UTC seconds since midnight
 double clock_gps_read_seconds = 0.0;    // gps read time, seconds since midnight
 double local_clock_seconds = 0.0;       // local time seconds since midnight
+timestamp_t timestamp;
 
 
 float gps_formatted_utc_time = 0.0;    // hhmmss.ss 
@@ -61,7 +63,8 @@ int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
  */
 data_log_column_spec_t file_specd[] =
 {
-        {"%.3lf ", &my_gps.utc_seconds_since_midnight, BASE_DOUBLE, REPLAY_USE}, //2
+        {"HH:MM:SS.SSS ", &timestamp, BASE_TIMESTAMP, REPLAY_TIME},                            //###1
+        {"%.3lf ", &seconds_since_midnight, BASE_DOUBLE, REPLAY_NO},    // 2
         {"%.3lf ", &seconds_since_start, BASE_DOUBLE, REPLAY_TIME},
         {"%hhd ", &alt_tsi.ignition, BASE_INT, REPLAY_USE},
         {"%hhd ", &alt_fwbs.brake_switch, BASE_INT, REPLAY_USE},	//5
@@ -78,7 +81,7 @@ data_log_column_spec_t file_specd[] =
         {"%hd ", &uimu.xgyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.ygyro, BASE_INT, REPLAY_USE},          
         {"%hd ", &uimu.zgyro, BASE_INT, REPLAY_USE}, 			    
-        {"%9.2f ", &gps_utc_seconds, BASE_DOUBLE, REPLAY_USE},           
+        {"%9.2f ", &my_gps.utc_seconds_since_midnight, BASE_DOUBLE, REPLAY_USE}, //19
         {"%06d ", &my_gps.date, BASE_INT, REPLAY_USE},		//20
         {"%13.8lf ", &my_gps.longitude, BASE_DOUBLE, REPLAY_USE},
         {"%13.8lf ", &my_gps.latitude, BASE_DOUBLE, REPLAY_USE},	

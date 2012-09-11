@@ -11,6 +11,7 @@
 #include <db_sync.h>
 #include "uimu.h"
 #include "altima.h"
+#include "das3.h"
 
 
 /** Why are these variables global?
@@ -20,6 +21,7 @@ path_gps_point_t local_gps;              // on-vehicle GPS
 uimu_typ uimu;
 sync_record_typ video;
 alt_turn_signal_ignition_t alt_tsi;
+das3_ignition_status_t das3_ignition_status;
 
 /** Output variables for the long_trk process are created with this list. 
  */
@@ -35,6 +37,7 @@ static db_id_t db_vars_list[] = {
         {DB_ALT_VS_VAR, sizeof(alt_vehicle_speed_t)},
         {DB_ALT_FWBS_VAR, sizeof(alt_front_wiping_brake_switch_t)},
         {DB_ALT_TSI_VAR, sizeof(alt_turn_signal_ignition_t)},
+        {DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t)},
 };
 #define NUM_DB_VARS	sizeof(db_vars_list)/sizeof(db_id_t)
 
@@ -123,7 +126,9 @@ int main(int argc, char *argv[])
 	/** Do special initializations
 	 */
 	alt_tsi.ignition = 1;	// assume on unless set off by driver
+	das3_ignition_status.ignition_status = alt_tsi.ignition;
 	db_clt_write(pclt, DB_ALT_TSI_VAR, sizeof(alt_tsi), (void *) &alt_tsi); 
+	db_clt_write(pclt, DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t), (void *) &das3_ignition_status); 
 	if (verbose)
 		printf("Initializing alt_tsi.ignition and audi.ignition.digin to 1\n");
 

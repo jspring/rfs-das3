@@ -23,7 +23,7 @@ LIB = libm56_tables.so
 PATH_LIBS += -ldl
 PATH_CFLAGS += -pg
 PATH_CFLAGS += -fPIC
-PATH_CFLAGS += -I$(M56_DIR) -I$(VIDEO_DIR)/videorecorder
+PATH_CFLAGS += -I$(M56_DIR) -I$(VIDEO_DIR)/videorecorder -I/home/das3/src
 
 EXEC = $(OBJDIR)/m56_create
 
