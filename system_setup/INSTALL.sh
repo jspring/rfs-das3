@@ -75,6 +75,8 @@ sudo cp licensex.til /usr/Tilcon && \
 cd /home/path/tilcon && \
 make clean && \
 make && \
+sudo adduser viduser && \
+sudo cp start_tilcon.sh /home/viduser/.kde/Autostart && \
 
 cd /home/vision/zulibsrc && \
 mkdir build
