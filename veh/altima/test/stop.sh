@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+killall -s TERM vehicle_status
+killall -s TERM trtkrnlx
 killall -s TERM wrfiles_das3
 killall -s TERM vid_enet_srv
 killall -s TERM evt300

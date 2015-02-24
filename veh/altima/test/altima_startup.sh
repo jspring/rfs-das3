@@ -72,7 +72,7 @@ start_ctr=0
 	echo Starting altima_db_write...
 while [[ $start_ctr < 5 ]]
 do
-	/home/das3/veh/altima/can/lnx/altima_db_write </dev/pcan32 >$TRIPDIR/altima_db_write.log 2>&1 &
+	/home/das3/veh/altima/can/lnx/altima_db_write >$TRIPDIR/altima_db_write.log 2>&1 &
 	sleep 2
 	if [[ `ps -aef | grep altima_db_write | grep -v grep` == '' ]]
 	then
