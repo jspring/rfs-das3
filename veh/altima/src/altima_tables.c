@@ -37,6 +37,8 @@ uimu_typ uimu;
 sync_record_typ video;
 path_gps_point_t my_gps; // on-vehicle GPS
 char * not_implemented = "9999";
+obd2_cer_t obd2_cer;
+obd2_maf_t obd2_maf;
 
 /** Add lines here when new DB variables are referenced in the tables.
  */
@@ -52,6 +54,8 @@ db_var_spec_t db_vars[] =
 	{DB_ALT_FWBS_VAR, sizeof(alt_front_wiping_brake_switch_t), &alt_fwbs},
 	{DB_ALT_TSI_VAR, sizeof(alt_turn_signal_ignition_t), &alt_tsi},
         {DB_UIMU_VAR, sizeof(uimu_typ), &uimu},
+        {DB_OBD2_MAF_VAR, sizeof(obd2_maf_t), &obd2_maf},
+        {DB_OBD2_CER_VAR, sizeof(obd2_cer_t), &obd2_cer},
 };
 
 int num_db_vars = (sizeof(db_vars)/sizeof(db_var_spec_t));
@@ -90,7 +94,12 @@ data_log_column_spec_t file_specd[] =
         {"%6.2f ", &my_gps.altitude, BASE_FLOAT, REPLAY_USE},	//25
         {"%d ", &my_gps.num_sats, BASE_INT, REPLAY_USE},
         {"%d ", &my_gps.pos, BASE_INT, REPLAY_USE},		
-        {"%6.3f ", &my_gps.hdop, BASE_FLOAT, REPLAY_USE},                    
+	{"%6.3f ", &my_gps.hdop, BASE_FLOAT, REPLAY_USE},                    
+        {"%#hhx ", &obd2_maf.maf_pid, BASE_CHAR, REPLAY_USE},	//29	
+        {"%6.3f ", &obd2_maf.maf, BASE_FLOAT, REPLAY_USE},	//30                    
+        {"%#hhx ", &obd2_cer.cer_pid, BASE_CHAR, REPLAY_USE},	//31	
+        {"%6.3f ", &obd2_cer.cer, BASE_FLOAT, REPLAY_USE},	//32                    
+        {"%6.3f ", &obd2_maf.fuel_rate, BASE_FLOAT, REPLAY_USE},	//30                    
 };
 
 int num_dfile_columns = sizeof(file_specd)/sizeof(data_log_column_spec_t);

@@ -37,6 +37,8 @@ static db_id_t db_vars_list[] = {
         {DB_ALT_VS_VAR, sizeof(alt_vehicle_speed_t)},
         {DB_ALT_FWBS_VAR, sizeof(alt_front_wiping_brake_switch_t)},
         {DB_ALT_TSI_VAR, sizeof(alt_turn_signal_ignition_t)},
+        {DB_OBD2_MAF_VAR, sizeof(obd2_maf_t)},
+        {DB_OBD2_CER_VAR, sizeof(obd2_cer_t)},
         {DB_DAS3_IGNITION_VAR, sizeof(das3_ignition_status_t)},
 };
 #define NUM_DB_VARS	sizeof(db_vars_list)/sizeof(db_id_t)
