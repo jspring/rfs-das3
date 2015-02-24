@@ -43,6 +43,8 @@ extern void peak_can_print_line(FILE *fp, unsigned long id,
         unsigned char extended, unsigned char *data,
         int ts_sec, int ts_msec, int num_bytes, int do_hex);
 
+extern int peak_can_send_obd2_poll(FILE *fp, unsigned char obd2_msg_id, int verbose);
+
 /** Interpret and print the error codes returned by peak_can_read_line
  */
 extern void peak_can_print_error (int val);

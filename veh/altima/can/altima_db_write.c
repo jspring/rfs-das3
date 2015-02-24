@@ -43,10 +43,31 @@ void altima_db_write(db_clt_typ *pclt, unsigned long id, unsigned char *data)
 	alt_front_wiping_brake_switch_t alt_fwbs;
 	alt_turn_signal_ignition_t alt_tsi;
 	das3_ignition_status_t das3_ignition_status;
+	obd2_maf_t obd2_maf; 
+	obd2_cer_t obd2_cer; 
 	timestamp_t turn_signal_ts;
 	int curr_ms;
 
+#define OBD2_POLL_TIMEOUT	100
+
 	switch (id) {
+	case OBD2_ECM_MSG_ID:
+		switch(data[2]) {
+			case OBD2_MAF_MSG_ID:
+				get_obd_maf(data, &obd2_maf);
+				obd2_maf.fuel_rate = obd2_maf.maf / obd2_cer.cer;
+				db_clt_write(pclt, DB_OBD2_MAF_VAR, 
+					sizeof(obd2_maf), (void *) &obd2_maf);
+				break;
+			case OBD2_CER_MSG_ID:
+				get_obd_cer(data, &obd2_cer);
+				db_clt_write(pclt, DB_OBD2_CER_VAR, 
+					sizeof(obd2_cer), (void *) &obd2_cer);
+				break;
+			default:	// do nothing for unknown ECM OBD2 IDs
+				break;
+		}
+		break;
 	case ALT_CCFTM_MSG_ID:
 		get_alt_ccftm(data, &alt_ccftm);
 		db_clt_write(pclt, DB_ALT_CCFTM_VAR, 
@@ -132,14 +153,22 @@ int main(int argc, char **argv)
 	unsigned char can_data[8];	/// CAN data bytes, up to 8
 	int peak_ts_msec;	/// millisec timestamp from Peak CAN input line
 	int peak_ts_usec;	/// microseconds? not sure, not using 
+	int ms_since_last_obd2_poll = 0;
+	timestamp_t obd2_poll_ts;
+	int curr_ms;
+
 	int verbose = 0;	/// use to generate output, else just counts
 	int do_hex = 0;		/// print CAN data using hexadecimal numbers
+	FILE *fpout;
+	int ret;
 
 	/// variables for use with PATA data server
         char hostname[MAXHOSTNAMELEN];
         char *domain = DEFAULT_SERVICE; /// on Linux sets DB q-file directory
         db_clt_typ *pclt;       	/// data server client pointer
         int xport = COMM_OS_XPORT;      /// value set correctly in sys_os.h 
+	int no_db = 0;
+	int toggle = 0;
 
 	/// when desk checking, may want to simulate delays
 	/// simple method (when arrival assumed much slower than read from
@@ -149,7 +178,7 @@ int main(int argc, char **argv)
 	int last_ts_msec = 0;
 
 
-        while ((option = getopt(argc, argv, "svw")) != EOF) {
+        while ((option = getopt(argc, argv, "svwn")) != EOF) {
                 switch(option) {
                 case 's':
 			simulate_delay = 1;
@@ -160,27 +189,57 @@ int main(int argc, char **argv)
 		case 'w':
                         peak_can_verbose = 1;  // in nt_peak_can.c 
                         break;
+                case 'n':
+			no_db = 1;
+			break;
 		default:
-			printf("Usage: %s -v (verbose)\n", argv[0]);
+			printf("Usage: %s -v (verbose) -s (simulate delay) -w (peak_can_verbose) -n (no database)\n", argv[0]);
 			exit(EXIT_FAILURE);
 			break;
 		}
 	}
-        get_local_name(hostname, MAXHOSTNAMELEN);
-        if ((pclt = db_list_init(argv[0], hostname, domain, xport,
-			NULL, 0, NULL, 0)) == NULL) {
-                printf("Database initialization error in %s\n", argv[0]);
-                exit(EXIT_FAILURE);
-        }
+	if( !no_db) {
+	        get_local_name(hostname, MAXHOSTNAMELEN);
+	        if ((pclt = db_list_init(argv[0], hostname, domain, xport,
+	                        db_vars_list, num_db_variables, NULL, 0)) == NULL) {
+	                printf("Database initialization error in %s\n", argv[0]);
+	                exit(EXIT_FAILURE);
+	        }
+	}
 
         if (setjmp(exit_env) != 0) {
+		if( !no_db) 
+	                db_list_done(pclt, db_vars_list, num_db_variables, NULL, 0);
 		printf("%s: received %d CAN messages\n", argv[0], count);
                 exit(EXIT_SUCCESS);
         } else
                sig_ign(sig_list, sig_hand);
 
+	fpout = fopen("/dev/pcan32", "w+");
+	if( fpout == NULL)
+		perror("fopen /dev/pcan32");
 	while (1) {
-                num_bytes = peak_can_read_line(stdin, &can_id,
+		get_current_timestamp(&obd2_poll_ts);
+		curr_ms = TS_TO_MS(&obd2_poll_ts);
+
+		if( (curr_ms - ms_since_last_obd2_poll) > OBD2_POLL_TIMEOUT) {
+		    if(toggle == 0) {
+			ret = peak_can_send_obd2_poll(fpout, OBD2_MAF_MSG_ID, verbose);
+			if(ret < 0)
+				printf("peak_can_send_obd2_poll: Error in MAF fwrite to pcan32\n");
+			toggle = 1;
+		    }
+		    else {
+			ret = peak_can_send_obd2_poll(fpout, OBD2_CER_MSG_ID, verbose);
+			if(ret < 0)
+				printf("peak_can_send_obd2_poll: Error in CER fwrite to pcan32\n");
+			toggle = 0;
+		    }
+			ms_since_last_obd2_poll = curr_ms;
+		}
+
+
+                num_bytes = peak_can_read_line(fpout, &can_id,
 			&can_extended, can_data, &peak_ts_msec, &peak_ts_usec);
 		if (num_bytes < 0) {
 			if (num_bytes == PEAK_CAN_EOF) longjmp(exit_env, 1);
@@ -204,7 +263,8 @@ int main(int argc, char **argv)
 					longjmp(exit_env, 1);
 				last_ts_msec = peak_ts_msec;
 			}	
-			altima_db_write(pclt, can_id, can_data);
+			if( !no_db) 
+				altima_db_write(pclt, can_id, can_data);
 			count++;
 		}
 	}

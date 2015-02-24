@@ -15,6 +15,10 @@
 #define ALT_VS_MSG_ID		0x355	/// VehicleSpeed
 #define ALT_FWBS_MSG_ID		0x35D	/// FrontWiping, BrakeSwitch	
 #define ALT_TSI_MSG_ID		0x60D	/// TurnSignal, Ignition 
+#define OBD2_ECM_MSG_ID		0x07E8	/// On-Board Diagnostic, version 2 (OBD2)
+					/// response from Engine Control Module (ECM)
+#define OBD2_MAF_MSG_ID		0x010	/// OBD2 message ID from Mass AirFlow sensor (MAF)
+#define OBD2_CER_MSG_ID		0x044	/// OBD2 message ID for Commanded Equivalence Ratio (CER)
 
 /** Corresponding DB variables for use with PATH's DB server.
  *  Check to make sure DB_ALTIMA_BASE does not overlap the number space
@@ -28,6 +32,8 @@
 #define DB_ALT_VS_VAR		905
 #define DB_ALT_FWBS_VAR		906
 #define DB_ALT_TSI_VAR		907
+#define DB_OBD2_MAF_VAR		908
+#define DB_OBD2_CER_VAR		909
 
 #define DB_ALT_CCFTM_TYPE	DB_ALT_CCFTM_VAR
 #define DB_ALT_CCFD_TYPE	DB_ALT_CCFD_VAR
@@ -36,6 +42,8 @@
 #define DB_ALT_VS_TYPE		DB_ALT_VS_VAR
 #define DB_ALT_FWBS_TYPE	DB_ALT_FWBS_VAR
 #define DB_ALT_TSI_TYPE		DB_ALT_TSI_VAR
+#define DB_OBD2_MAF_TYPE	DB_OBD2_MAF_VAR	
+#define DB_OBD2_CER_TYPE	DB_OBD2_CER_VAR
 
 /**
  *	ALT CruiseControl_ForTM
@@ -274,3 +282,104 @@ static inline void get_alt_tsi(unsigned char *data,
 	p->ignition = ((data[1] & 0x04) >> 2) & 0x01; 
 }
 
+
+/**
+ *	OBD2 Commanded Equivalence Ratio poll
+ *	ECM OBD message poll ID 0x07DF 
+ *	Message ID (byte 2) 0x044
+ *	Polled 
+ */
+typedef struct {
+	unsigned short obd2_poll_id;// =0x07DF
+	unsigned char num_more_bytes;// =0x02
+	unsigned char mode;	// =0x01, current data
+	unsigned char cer_pid;	// =0x44
+	unsigned char padding[5]; //Padding to make this a 10-byte CAN message
+} IS_PACKED obd2_cer_poll_t;
+
+static inline void poll_obd_cer (obd2_cer_poll_t *p)
+{ 
+	p->obd2_poll_id = 0x07DF; 
+	p->num_more_bytes = 2; 
+	p->mode = 1; 
+	p->cer_pid = 0x44; 
+	p->padding[0] = 0; 
+	p->padding[1] = 0; 
+	p->padding[2] = 0; 
+	p->padding[3] = 0; 
+	p->padding[4] = 0; 
+}
+
+/**
+ *	OBD2 Commanded Equivalence Ratio poll
+ *	ECM OBD message ID 0x07E8 
+ *	Message ID (byte 2) 0x044
+ *	Polled 
+ */
+typedef struct {
+	timestamp_t ts;
+	unsigned char num_more_bytes;// =0x04
+	unsigned char cer_pid;	// =0x44
+	unsigned char mode;	// =0x41
+	float cer;	/// Byte 3-4
+} obd2_cer_t;
+
+static inline void get_obd_cer(unsigned char *data, 
+				obd2_cer_t *p)
+{ 
+	p->num_more_bytes = data[0]; 
+	p->mode = data[1]; 
+	p->cer_pid = data[2]; 
+	p->cer = ((data[3] << 8) + data[4])/32768.0; 
+}
+
+/**
+ *	OBD2 Mass AirFlow sensor poll
+ *	ECM OBD message poll ID 0x07DF 
+ *	Message ID (byte 2) 0x010
+ *	Polled 
+ */
+typedef struct {
+	unsigned short obd2_poll_id;// =0x07DF
+	unsigned char num_more_bytes;// =0x02
+	unsigned char mode;	// =0x01, current data
+	unsigned char maf_pid;	// =0x10
+	unsigned char padding[5]; //Padding to make this a 10-byte CAN message
+} IS_PACKED obd2_maf_poll_t;
+
+static inline void poll_obd_maf(obd2_maf_poll_t *p)
+{ 
+	p->obd2_poll_id = 0x07DF; 
+	p->num_more_bytes = 2; 
+	p->mode = 1; 
+	p->maf_pid = 0x10; 
+	p->padding[0] = 0; 
+	p->padding[1] = 0; 
+	p->padding[2] = 0; 
+	p->padding[3] = 0; 
+	p->padding[4] = 0; 
+}
+
+/**
+ *	OBD2 Mass AirFlow sensor response
+ *	ECM OBD message ID 0x07e8 
+ *	Message ID (byte 2) 0x010
+ *	Polled 
+ */
+typedef struct {
+	timestamp_t ts;
+	unsigned char num_more_bytes;// =0x04
+	unsigned char maf_pid;	// =0x10
+	unsigned char mode;	// =0x41
+	float maf;	/// Byte 3-4
+	float fuel_rate;/// grams fuel/second=MAF/CER
+} obd2_maf_t;
+
+static inline void get_obd_maf(unsigned char *data, 
+				obd2_maf_t *p)
+{ 
+	p->num_more_bytes = data[0]; 
+	p->mode = data[1]; 
+	p->maf_pid = data[2]; 
+	p->maf = ((data[3] << 8) + data[4])/100.0; 
+}

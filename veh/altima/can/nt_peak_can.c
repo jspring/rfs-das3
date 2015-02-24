@@ -28,6 +28,7 @@ int peak_can_read_line(FILE *fp, unsigned long *id,
 	
 	/// read line from file
 	if (!fgets(buf, PEAK_MAXLINE, fp)) return PEAK_CAN_EOF; 
+//printf("peak_can_read_line: %s\n", buf);
 
 	/// check if first field is 'm' (CAN message string)
 	stop = -1;	/// begin at start of array
@@ -70,6 +71,47 @@ int peak_can_read_line(FILE *fp, unsigned long *id,
 
 	/// Return the number of bytes filled in for the CAN data
 	return (num_bytes);	
+}
+
+/** 	peak_can_send_obd2_poll creates an OBD2 poll message of type 'm', standard frame, and
+ *	sends it to an already opened file 'fp'. 
+ *
+ *	These are examples of strings that can be sent to the Peak PCAN-USB converter.
+ *	They are from Peak Systems "PCAN Driver for Linux User Manual", page 32.
+ *
+ *	# a comment
+ *	# a message, standard frame, id=0x123, 0 Data bytes
+ *	m s 0x123 0
+ *	# a message, standard frame, id=0x123, 1 Data byte, Data
+ *	m s 0x123 1 0x11
+ *	# a message, standard frame, id=0x123, 2 Data bytes, Data
+ *	m s 0x123 2 0x11 0x22
+ *
+ * 	RETURNS: 0 if fwrite is successful, -1 if not.
+ *
+ */
+int peak_can_send_obd2_poll(FILE *fp, unsigned char obd2_msg_id, int verbose)
+{
+	static char bufmsg[21] = "m s 0x7df 8 2 1 0x10\n";// 0x7df = OBD2 poll, 2=2 data bytes, 1=current data request
+	static char bufmsg2[21] = "m s 0x7df 8 2 1 0x44\n";// 0x7df = OBD2 poll, 2=2 data bytes, 1=current data request
+	char obd2_id_str[6] = {0};
+	int ret;
+
+//	sprintf(obd2_id_str, "%#hhx\n", obd2_msg_id);
+//	strcat(bufmsg, obd2_id_str); //Append the OBD2 message ID to the OBD2 poll string
+
+	if(verbose)
+		printf("peak send output string: %s\n", bufmsg);
+
+	/// write OBD2 poll string to file
+	if(obd2_msg_id == 0x10)
+		ret = fwrite(bufmsg, sizeof(char), 21, fp);
+	else
+		ret = fwrite(bufmsg2, sizeof(char), 21, fp);
+	fflush(NULL);
+	if(ret < 0)
+		perror("peak_can_send_obd2_poll");
+	return ret;	
 }
 
 /** Print the data returned by peak_can_read_line
