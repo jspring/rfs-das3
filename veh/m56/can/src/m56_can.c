@@ -195,7 +195,7 @@ int db_trig_list[] =  {
         DB_KOMODO_VAR
 };
 
-int num_trig_variables = sizeof(db_trig_list)/sizeof(db_id_t);
+int num_trig_variables = sizeof(db_trig_list)/sizeof(int);
 
 int main(int argc, char *argv[]) {
 	int verbose = 0;

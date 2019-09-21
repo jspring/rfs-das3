@@ -4,8 +4,10 @@
 
 if [ $? != 0 ]
 then
-	/home/path/db/lnx/db_slv &
+	killall db_slv
 fi
+
+/home/path/db/lnx/db_slv &
 
 killall m56_can
 killall komodo_db_write
