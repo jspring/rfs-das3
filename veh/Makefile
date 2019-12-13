@@ -1,12 +1,9 @@
 all:
-	make -C altima
-	make -C audi
-	make -C m56
+	make -C qnx_vehicle_projects
+#	make -C m56
 install:
-	make -C altima install
-	make -C audi install
-	make -C m56 install
+	make -C qnx_vehicle_projects install
+#	make -C m56  install
 clean:
-	make -C altima clean
-	make -C audi clean
-	make -C m56 clean
+	make -C qnx_vehicle_projects clean
+#	make -C m56 clean
