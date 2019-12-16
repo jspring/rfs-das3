@@ -23,7 +23,8 @@ static void sig_hand(int code)
 const char *usage = "-v verbose -a <acceleration> -b <braking pct>";
 
 int steinhoff_trig_list[] =  {
-        DB_STEINHOFF_MSG_VAR
+        DB_STEINHOFF_MSG_VAR,
+		DB_OUTPUT_VAR
 };
 
 int num_steinhoff_trig_variables = sizeof(steinhoff_trig_list)/sizeof(int);
@@ -48,14 +49,17 @@ int main(int argc, char *argv[]) {
 	int recv_type;
 
 	db_steinhoff_msg_t db_steinhoff_msg;
-	db_steinhoff_out_t db_steinhoff_out;
+	db_steinhoff_out_t db_steinhoff_brake_out;
+	db_steinhoff_out_t db_steinhoff_accel_out;
 	input_t input;
 	output_t output;
 	timestamp_t ts;
 	int ts_ms;
+	int ts_now;
+	int ts_sav;
 
-        accord_accel_cmd_t accord_accel_cmd;
-        accord_brake_cmd_t accord_brake_cmd;
+	accord_accel_cmd_t accord_accel_cmd;
+	accord_brake_cmd_t accord_brake_cmd;
 	accord_vehicle_speed_t accord_vehicle_speed;
 	accord_torque_t  accord_torque;
 	accord_PRNDL_Pos_t  accord_PRNDL_Pos;
@@ -89,26 +93,27 @@ int main(int argc, char *argv[]) {
 		== NULL) {
 			exit(EXIT_FAILURE);
 	}
-//	if (clt_trig_set( pclt, DB_STEINHOFF_MSG_VAR, DB_STEINHOFF_MSG_TYPE) == FALSE )
-//		exit(EXIT_FAILURE);
+
+	if (clt_trig_set( pclt, DB_STEINHOFF_MSG_VAR, DB_STEINHOFF_MSG_TYPE) == FALSE )
+		exit(EXIT_FAILURE);
 
 printf("accord_can: clt_trig_set OK for DB_STEINHOFF_MSG_VAR %d\n", DB_STEINHOFF_MSG_VAR);
         if (setjmp(exit_env) != 0) {
         	accord_brake_cmd.brake_cmd = 0;
-			db_steinhoff_out.port = BRAKE_PORT;
-			db_steinhoff_out.id = 0x99;
-			db_steinhoff_out.size = 6;
-			set_accord_brake_cmd(db_steinhoff_out.data, &accord_brake_cmd);
-			db_clt_write(pclt, DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_out);
+			db_steinhoff_brake_out.port = BRAKE_PORT;
+			db_steinhoff_brake_out.id = 0x99;
+			db_steinhoff_brake_out.size = 6;
+			set_accord_brake_cmd(db_steinhoff_brake_out.data, &accord_brake_cmd);
+			db_clt_write(pclt, DB_STEINHOFF_BRAKE_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_brake_out);
 
 			sleep(0.02);
 
 			accord_accel_cmd.accel_cmd = 0;
-			db_steinhoff_out.port = ACCEL_PORT;
-			db_steinhoff_out.id = 0x98;
-			db_steinhoff_out.size = 1;
-			set_accord_brake_cmd(db_steinhoff_out.data, &accord_accel_cmd);
-			db_clt_write(pclt, DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_out);
+			db_steinhoff_accel_out.port = ACCEL_PORT;
+			db_steinhoff_accel_out.id = 0x98;
+			db_steinhoff_accel_out.size = 1;
+			set_accord_brake_cmd(db_steinhoff_accel_out.data, &accord_accel_cmd);
+			db_clt_write(pclt, DB_STEINHOFF_ACCEL_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_accel_out);
 
         	db_list_done(pclt, NULL, 0, steinhoff_trig_list, num_steinhoff_trig_variables);
                 printf("%s: received %d CAN messages %d IPC message errors\n", 
@@ -141,6 +146,13 @@ printf("accord_can: clt_trig_set OK for DB_STEINHOFF_MSG_VAR %d\n", DB_STEINHOFF
 	db_clt_write(pclt, DB_ACCORD_MSG158_VAR, sizeof(accord_vehicle_speed_t), &accord_vehicle_speed);
 	db_clt_write(pclt, DB_ACCORD_MSG530_VAR, sizeof(accord_torque_t), &accord_torque);
 	db_clt_write(pclt, DB_ACCORD_MSG392_VAR, sizeof(accord_PRNDL_Pos_t), &accord_PRNDL_Pos);
+	if(acceleration == 0)
+		accord_accel_cmd.accel_cmd = 0;
+	if(deceleration == 0)
+		accord_brake_cmd.brake_cmd = 0;
+	get_current_timestamp(&ts);
+	ts_now = TS_TO_MS(&ts);
+	ts_sav = ts_now;
 
 	for(;;) {
 	
@@ -162,8 +174,9 @@ printf("accord_can: clt_trig_set OK for DB_STEINHOFF_MSG_VAR %d\n", DB_STEINHOFF
 						&accord_vehicle_speed.message_timeout_counter); 
 					input.vehicle_speed_mps = accord_vehicle_speed.vehicle_speed_CAN2_MPS;
 					db_clt_write(pclt,DB_INPUT_VAR, sizeof(input_t), &input); 
+					db_clt_read(pclt, DB_OUTPUT_VAR, sizeof(output_t), &output);
 					if(verbose)
-						printf("Accord vehicle speed %.2f\n", input.vehicle_speed_mps);
+						printf("Accord vehicle speed %.2f output.brake_level %.2f output.throttle_pct %.2f\n", input.vehicle_speed_mps, output.brake_level,output.throttle_pct);
 					break;
 				case 0x530:
 					get_accord_torque(db_steinhoff_msg.data, &accord_torque);
@@ -191,43 +204,47 @@ printf("accord_can: clt_trig_set OK for DB_STEINHOFF_MSG_VAR %d\n", DB_STEINHOFF
 						);
 					break;
 				default:
-//					printf("Unknown message %#hx received\n");
+					printf("Unknown message %#hx received\n");
 					break;
 			}
-//			if(print_msg)
-//				printmsg(&db_kom);
-//			if(veryverbose) {
-//				printcan(&db_kom);
-//				printmsg(&db_kom);
-//			}
-		}	
-		else {
-			db_clt_read(pclt, DB_ACCORD_MSG99_VAR, sizeof(accord_brake_cmd_t), &accord_brake_cmd); 
+		}
+
+		get_current_timestamp(&ts);
+		ts_now = TS_TO_MS(&ts);
+
+		if(ts_now - ts_sav >= 20){
+			ts_sav = ts_now;
+
+			db_clt_read(pclt, DB_OUTPUT_VAR, sizeof(output_t), &output);
+
+			memset(&db_steinhoff_brake_out, 0, sizeof(db_steinhoff_out_t));
 			if(deceleration > 0)
 				accord_brake_cmd.brake_cmd = deceleration;
-			if(accord_brake_cmd.brake_cmd > 0) {
-				db_steinhoff_out.port = BRAKE_PORT;
-				db_steinhoff_out.id = 0x99;
-				db_steinhoff_out.size = 6;
-				set_accord_brake_cmd(db_steinhoff_out.data, &accord_brake_cmd); 
-				printf("accord_can: db_steinhoff_out.data[2] %hhx\n", db_steinhoff_out.data[2]);
-				db_clt_write(pclt, DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_out); 
+			else
+				accord_brake_cmd.brake_cmd = output.brake_level;
+			if(accord_brake_cmd.brake_cmd > 0)
+				output.throttle_pct = 0;		//if braking is requested, set throttle to 0
+			db_steinhoff_brake_out.port = BRAKE_PORT;
+			db_steinhoff_brake_out.id = 0x99;
+			db_steinhoff_brake_out.size = 6;
+			set_accord_brake_cmd(db_steinhoff_brake_out.data, &accord_brake_cmd);
+			printf("accord_can: db_steinhoff_out.data[2] %hhx\n", db_steinhoff_brake_out.data[2]);
+			db_clt_write(pclt, DB_STEINHOFF_BRAKE_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_brake_out);
+
+			memset(&db_steinhoff_accel_out, 0, sizeof(db_steinhoff_out_t));
+			if(acceleration > 0) {
+				accord_accel_cmd.accel_cmd = acceleration;
+				accord_brake_cmd.brake_cmd = 0;
 			}
-			else {
-				db_clt_read(pclt, DB_ACCORD_MSG98_VAR, sizeof(accord_accel_cmd_t), &accord_accel_cmd); 
-				if(acceleration > 0) {
-					accord_accel_cmd.accel_cmd = acceleration;
-					accord_brake_cmd.brake_cmd = 0;
-				}
-				if( (accord_brake_cmd.brake_cmd == 0) && (accord_accel_cmd.accel_cmd > 0) ) {
-					db_steinhoff_out.port = ACCEL_PORT;
-					db_steinhoff_out.id = 0x98;
-					db_steinhoff_out.size = 1;
-					set_accord_accel_cmd(db_steinhoff_out.data, &accord_accel_cmd);
-					printf("accord_can: db_steinhoff_out.data[0] %hhx acceleration %.2f\n", db_steinhoff_out.data[0], accord_accel_cmd.accel_cmd);
-					db_clt_write(pclt, DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_out); 
-				}
-			}
+			else
+				accord_accel_cmd.accel_cmd = output.throttle_pct;
+			db_steinhoff_accel_out.port = ACCEL_PORT;
+			db_steinhoff_accel_out.id = 0x98;
+			db_steinhoff_accel_out.size = 1;
+			set_accord_accel_cmd(db_steinhoff_accel_out.data, &accord_accel_cmd);
+			printf("accord_can: db_steinhoff_out.data[0] %hhx acceleration %.2f\n", db_steinhoff_accel_out.data[0], accord_accel_cmd.accel_cmd);
+			db_clt_write(pclt, DB_STEINHOFF_ACCEL_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_accel_out);
+
 			TIMER_WAIT (ptimer);
 		}
 	}

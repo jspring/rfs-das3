@@ -51,7 +51,8 @@ static void sig_hand(int code)
 }
 
 static db_id_t db_steinhoff_vars_list[] = {
-        {DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t)},
+        {DB_STEINHOFF_BRAKE_OUT_VAR, sizeof(db_steinhoff_out_t)},
+        {DB_STEINHOFF_ACCEL_OUT_VAR, sizeof(db_steinhoff_out_t)},
 };
 #define NUM_STEINHOFF_VARS (sizeof(db_steinhoff_vars_list)/sizeof(db_id_t))
 
@@ -72,7 +73,8 @@ int main(int argc, char **argv)
 	int fd_accel;
 	char *port_brake = "2";
 	char *port_accel = "1";
-	db_steinhoff_out_t db_steinhoff_out;  
+	db_steinhoff_out_t db_steinhoff_brake_out;
+	db_steinhoff_out_t db_steinhoff_accel_out;
 	int opt;
 	int verbose = 0;	// by default silent
 	int nmax = 0; // if zero, run forever
@@ -82,11 +84,11 @@ int main(int argc, char **argv)
 	int i;
 	int use_db = 1;
 	int create_db_vars = 0;
-	float Acceleration = 0; //+ for acceleration, 0x98 message; - for deceleration/braking, 0x99 message
+	unsigned char Acceleration = 0; //+ for acceleration, 0x98 message; - for deceleration/braking, 0x99 message
         while ((opt = getopt(argc, argv, "A:a:b:e:i:n:t:vc")) != -1) {
 		switch (opt) {
 			case 'A':
-				Acceleration = atof(optarg);
+				Acceleration = (unsigned char)atoi(optarg);
 				break;
 			case 'e':
 				extended = 1;
@@ -166,6 +168,25 @@ int main(int argc, char **argv)
                                 == NULL) {
                                         exit(EXIT_FAILURE);
                         }
+                        db_steinhoff_brake_out.id = 0x99;
+                        db_steinhoff_brake_out.port = fd_brake;
+                        db_steinhoff_brake_out.size = 6;
+                        memset(&db_steinhoff_brake_out.data[0], 0, 8);
+            			if( db_clt_write(pclt, DB_STEINHOFF_BRAKE_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_brake_out)
+            					== FALSE) {
+            				fprintf(stderr, "can_tx: db_clt_write of db_steinhoff_brake_out returned FALSE. Exiting....\n");
+            				exit(EXIT_FAILURE);
+            			}
+                        db_steinhoff_accel_out.id = 0x99;
+                        db_steinhoff_accel_out.port = fd_brake;
+                        db_steinhoff_accel_out.size = 6;
+                        memset(&db_steinhoff_accel_out.data[0], 0, 8);
+            			if( db_clt_write(pclt, DB_STEINHOFF_ACCEL_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_accel_out)
+            					== FALSE) {
+            				fprintf(stderr, "can_tx: db_clt_write of db_steinhoff_accel_out returned FALSE. Exiting....\n");
+            				exit(EXIT_FAILURE);
+            			}
+
                 }
                 else {
                         if ( (pclt = db_list_init(argv[0], hostname, domain, xport,
@@ -206,24 +227,41 @@ int main(int argc, char **argv)
 		data[3] = 0;
 		data[4] = 0;
 		data[5] = 0;
-		can_write(fd_brake, 0x98, 0, data, 6);
+		can_write(fd_brake, 0x99, 0, data, 6);
+        //Send 0 to enable control
+		id = 0x98;
+		extended = 0;
+		data[0] = 0;
+		data[1] = 0;
+		data[2] = 0;
+		data[3] = 0;
+		data[4] = 0;
+		data[5] = 0;
+		can_write(fd_accel, 0x98, 0, data, 1);
 
 	for(;;) {
-		if(use_db)
-			db_clt_read(pclt, DB_STEINHOFF_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_out);
-		if(db_steinhoff_out.port == BRAKE_PORT){
-			can_write(fd_brake, db_steinhoff_out.id, 0, db_steinhoff_out.data, db_steinhoff_out.size);
+		if(use_db){
+			db_clt_read(pclt, DB_STEINHOFF_BRAKE_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_brake_out);
+			can_write(fd_brake, db_steinhoff_brake_out.id, 0, db_steinhoff_brake_out.data, db_steinhoff_brake_out.size);
+
+			db_clt_read(pclt, DB_STEINHOFF_ACCEL_OUT_VAR, sizeof(db_steinhoff_out_t), &db_steinhoff_accel_out);
+			can_write(fd_accel, db_steinhoff_accel_out.id, 0, db_steinhoff_accel_out.data, db_steinhoff_accel_out.size);
 		}
-		else
-			if(db_steinhoff_out.port == ACCEL_PORT)
-				can_write(fd_accel, db_steinhoff_out.id, 0, db_steinhoff_out.data, db_steinhoff_out.size);
+		else{
+			data[0] = Acceleration;
+			can_write(fd_accel, 0x98, 0, data, 1);
+		}
 		if (verbose) { 
 			timestamp_t ts;
 			get_current_timestamp(&ts);
 			print_timestamp(stdout, &ts);
-			printf(" %ld ", db_steinhoff_out.id);
-			for (i = 0; i < db_steinhoff_out.size; i++)
-				printf("%hhx ", db_steinhoff_out.data[i]);
+			printf(" %ld ", db_steinhoff_brake_out.id);
+			for (i = 0; i < db_steinhoff_brake_out.size; i++)
+				printf("%hhx ", db_steinhoff_brake_out.data[i]);
+			printf("\n");
+			printf(" %ld ", db_steinhoff_accel_out.id);
+			for (i = 0; i < db_steinhoff_accel_out.size; i++)
+				printf("%hhx ", db_steinhoff_accel_out.data[i]);
 			printf("\n");
 			fflush(stdout);
 		}
